@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "examples.datatrans";
+option java_outer_classname = "DataTransProto";
+
+package datatrans;
+
+service DataTrans {
+  rpc Transmission(DataTransRequest) returns (stream Data) {}
+}
+
+message DataTransRequest {
+  string url = 1;
+}
+
+message Data {
+  bytes byte = 1;
+}

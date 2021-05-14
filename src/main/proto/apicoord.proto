@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "examples.apicoord";
+option java_outer_classname = "ApiCoordProto";
+
+package apicoord;
+
+service TranQuery {
+  rpc rb(ReqRbSignature) returns (Signature) {}
+  rpc ri(ReqRiReSignature) returns (Signature) {}
+  rpc re(ReqRiReSignature) returns (Signature) {}
+}
+
+service TranQueryCallback {
+  rpc cb(ResultSignature) returns (Signature) {}
+  rpc ci(ResultSignature) returns (Signature) {}
+  rpc ce(ResultSignature2) returns (Signature2) {}
+}
+
+message ReqRbSignature {
+  Req_rb req_rb = 1;
+  Signature signature = 2;
+}
+
+message ReqRiReSignature {
+  Req_ri_re req_ri_re = 1;
+  Signature signature = 2;
+}
+
+message ResultSignature {
+  Result result = 1;
+  Signature signature = 2;
+}
+
+message ResultSignature2 {
+  Result result = 1;
+  Signature signature = 2;
+  Signature signature2 = 3;
+}
+
+message Signature2 {
+  Signature signature = 1;
+  Signature signature2 = 2;
+}
+
+message Header {//消息头
+  string cid = 1;//接口请求 id
+  string e_from = 2;//请求者指定的应答接收
+  string e_to = 3;//请求的接口服务
+  string method = 4;//调用的方法
+  bool b_req = 5;//
+  bool b_end = 6;//
+  int32 seq = 7;//请求或应答的序号
+  int64 tm_create = 8;//创建请求或应答时本地时间
+}
+
+message Signature {//消息结尾
+  string eid = 1;//参与方的身份 Id
+  bytes hash = 2;//内容的 hash
+  int64 tm_create = 3;//创建签名时本地时间
+  bytes sign = 4;//参与方对内容 Hash 的签名
+}
+
+message Req_rb { //请求
+  Header bh = 1;//请求头
+  int64 tm_from = 2;//账户交易的起始时间
+  int64 tm_to = 3;//账户交易的终止时间
+}
+
+message Req_ri_re { //请求
+  Header bh = 1;//请求头
+  repeated string accounts = 2; //请求的目标账户集合
+}
+
+message TranRec {//单笔交易
+  string account = 1;//交易账户
+  int32 amount = 2;//交易金额
+  int64 tm = 3;//交易时间
+}
+
+message TranRecord {//单个账户历史交易
+  string acc = 1;//目标账户
+  repeated TranRec debit = 2;//借入交易集合
+  repeated TranRec credit = 3;//贷出交易集合
+}
+
+message Result {
+  Header bh = 1;//应答头
+  repeated TranRecord ts = 2;//账户交易历史集合
+}
