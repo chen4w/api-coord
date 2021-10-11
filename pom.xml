@@ -61,9 +61,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.gitee.BTAJL</groupId>
-            <artifactId>RCJava-core</artifactId>
-            <version>v0.4</version>
+            <groupId>repchain</groupId>
+            <artifactId>rcjava-core</artifactId>
+            <version>0.4.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>cn.hutool</groupId>

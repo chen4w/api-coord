@@ -25,18 +25,15 @@ public class DataTransServer {
                 .build()
                 .start();
         logger.info("Server started, listening on " + port);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                System.err.println("*** shutting down gRPC server since JVM is shutting down");
-                try {
-                    DataTransServer.this.stop();
-                } catch (InterruptedException e) {
-                    e.printStackTrace(System.err);
-                }
-                System.err.println("*** server shut down");
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            try {
+                DataTransServer.this.stop();
+            } catch (InterruptedException e) {
+                e.printStackTrace(System.err);
             }
-        });
+            System.err.println("*** server shut down");
+        }));
     }
 
     private void stop() throws InterruptedException {
@@ -78,14 +75,17 @@ public class DataTransServer {
                     int bufferSize = 8;// 256k -> 8B
                     byte[] buffer = new byte[bufferSize];
                     int length;
-                    while ((length = bis.read(buffer, 0, bufferSize)) != -1)
+                    while ((length = bis.read(buffer, 0, bufferSize)) != -1) {
                         responseObserver.onNext(Data.newBuilder().setByte(ByteString.copyFrom(buffer, 0, length)).build());
+                    }
                     responseObserver.onCompleted();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if (tempFile != null) tempFile.delete();
+                if (tempFile != null) {
+                    tempFile.delete();
+                }
             }
         }
     }
