@@ -23,11 +23,23 @@ jar {
 }
 
 dependencies {
+    implementation 'org.yaml:snakeyaml:1.29'
     implementation 'cn.hutool:hutool-all:5.7.5'
     implementation 'repchain:rcjava-core:0.4.3-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
+
+
+task copyResources(type: Copy) {
+    from sourceSets.main.resources
+    into sourceSets.main.java.outputDir
+    processResources.exclude { "**/*.*" }
+}
+
+processResources.dependsOn(copyResources)
 
 test {
     useJUnitPlatform()

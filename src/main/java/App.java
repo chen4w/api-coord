@@ -1,4 +1,12 @@
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.http.HttpUtil;
+import model.yml.Repchain;
+import model.yml.RepchainConfig;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
+import utils.YamlUtils;
+
+import java.util.Map;
 
 /**
  * @author lhc
@@ -10,10 +18,6 @@ import cn.hutool.http.HttpUtil;
 public class App {
 
     public static void main(String[] args) {
-        HttpUtil.createServer(8888)
-                .addAction("/", (req, res)->{
-                    res.write("Hello Hutool Server");
-                })
-                .start();
+        System.out.println(YamlUtils.repchainConfig);
     }
 }

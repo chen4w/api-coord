@@ -1,5 +1,7 @@
 package utils;
 
+import model.ReqAckProof;
+
 /**
  * @author lhc
  * @version 1.0
@@ -9,15 +11,15 @@ package utils;
  */
 public class ResponseAck {
 
-    public void cb() {
+    public void cb(ReqAckProof reqAckProof) {
 
     }
 
-    public void ci(){
+    public void ci(ReqAckProof reqAckProof){
 
     }
 
-    public void ce(){
+    public void ce(ReqAckProof reqAckProof){
 
     }
 }
