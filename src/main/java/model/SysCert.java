@@ -1,6 +1,7 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
@@ -15,11 +16,12 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 public class SysCert implements Serializable {
     private static final long serialVersionUID = 1695879045437578092L;
-    private Integer sysUserId;
     private String cert;
     private String privateKey;
     private String creditCode;
     private String certName;
+    private String password;
 }

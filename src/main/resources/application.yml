@@ -1,7 +1,7 @@
 # repchain配置文件，可将文件复制到yml中，springboot需要自己封装bean
 repchain:
   # repchain 地址
-  host: localhost:8080
+  host: 192.168.2.76:8081
   # 接口协同信息此处为list可以配置多个
   interCo:
     # 用户标识
@@ -27,16 +27,25 @@ repchain:
         W45jFOzme6y8lhbVpefg0GU7mU/AITL5gOV7iJcQG0iyvplHP4TEjVFj3zM+ow4b
         cBuNWzA6z01Mq4DJCwJwPNxi9H2yc0U=
         -----END ENCRYPTED PRIVATE KEY-----
+      # 私钥设置的密码
+      password: 123456
       # 内容hash算法
       algo_hash: SHA256withECDSA
       # 内容签名算法
       algo_sign: SHA256withECDSA
       # 签名证书对应的请求方id和服务方id可在dashboard查看
       services:
-        # 服务名
+        # 调用方id
         - e_from: 15cc9e361632986505972
+          # 调用方host
+          from_host: localhost
+          # 调用方端口
+          from_port: 8889
           # 服务提供方id
           e_to: 1098aa9d1632986347443
-
+          # 服务方地址
+          to_host: localhost
+          # 服务方端口
+          to_port: 8888
 
 

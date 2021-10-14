@@ -18,6 +18,12 @@ import java.util.Map;
 public class App {
 
     public static void main(String[] args) {
-        System.out.println(YamlUtils.repchainConfig);
+        String str = "test";
+        test(str);
+        System.out.println(str);
+    }
+
+    public static void test(String str) {
+        str = str + "aaa";
     }
 }

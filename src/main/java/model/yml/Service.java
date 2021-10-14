@@ -23,4 +23,8 @@ public class Service implements Serializable {
     private static final long serialVersionUID = -7849738826572360811L;
     private String e_from;
     private String e_to;
+    private String from_host;
+    private String from_port;
+    private String to_host;
+    private String to_port;
 }
