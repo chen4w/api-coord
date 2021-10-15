@@ -35,9 +35,21 @@ public class AsyncRequestServer {
     public static void main(String[] args) {
         // 创建Http服务器，端口为8888
         HttpUtil.createServer(8889)
+                .addAction("/callback",AsyncRequestServer::callback)
                 // 签名接口，对调用方数据进行数据签名
                 .addAction("/sign", AsyncRequestServer::sign)
                 .start();
+    }
+
+    /**
+     * @author lhc
+     * @description // 异步请求后的回调接口
+     * @date 4:08 下午 2021/10/14
+     * @params [httpServerRequest, httpServerResponse]
+     * @return void
+     **/
+    private static void callback(HttpServerRequest request, HttpServerResponse response) {
+
     }
 
 

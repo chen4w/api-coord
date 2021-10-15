@@ -164,6 +164,14 @@ public class AsyncClient {
                 .b_end(isEnd)
                 // 请求或应答的序号, 从1开始
                 .seq(seq)
+                // 设置签名请求方法类型，GET , POST, PUT, PATCH, DELETE
+                .sign_method("GET")
+                // 设置签名请求地址
+                .sign_url("http://localhost:8889/sign")
+                // 设置回调地址
+                .callback_url("http://localhost:8889/callback")
+                // 设置回调地址请求类型
+                .callback_method("POST")
                 .build();
     }
 

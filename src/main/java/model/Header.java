@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import model.tran.Signature;
 
 /**
  * @author lhc
@@ -18,6 +17,7 @@ import model.tran.Signature;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Header {
+    private Long id;
     private String cid;
     private String e_from;
     private String e_to;
@@ -26,4 +26,8 @@ public class Header {
     private boolean b_end;
     private int seq;
     private Long tm_create;
+    private String callback_url;
+    private String callback_method;
+    private String sign_url;
+    private String sign_method;
 }
