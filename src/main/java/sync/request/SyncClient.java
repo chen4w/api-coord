@@ -63,7 +63,7 @@ public class SyncClient {
         Map<String, Object> paramMap = new HashMap<>(2);
         paramMap.put("name", "Tom");
         // 此处需要将构建的请求头内容传给服务方
-        paramMap.put("header", JSONUtil.toJsonStr(getHeader(service, cid, 2, false)));
+        paramMap.put("header", JSONUtil.toJsonStr(customHeader(service, cid, 2, false)));
         // 业务逻辑...
         // 构建交易对象提交给区块链进行存证,一个业务逻辑中可以多次调用服务方接口，若中间多次调用服务方接口，则每一次调用都需要进行存证，存证序号seq参数需要递增，如2，3，4，5
         ReqAckProof ri = ri(interCo, service, cid, paramMap,2);
@@ -97,7 +97,7 @@ public class SyncClient {
         // 构建签名对象
         Signature signature = getSignature(interCo, contentHash, content);
         // 构建请求头
-        Header header = getHeader(service, cid, 1, false);
+        Header header = customHeader(service, cid, 1, false);
         // 返回构建的交易对象
         return getReqAckProof(content, header, contentHash, signature, service);
     }
@@ -115,7 +115,7 @@ public class SyncClient {
         // 构建签名对象
         Signature signature = getSignature(interCo, contentHash, JSONUtil.toJsonStr(content));
         // 构建请求头
-        Header header = getHeader(service, cid, seq, false);
+        Header header = customHeader(service, cid, seq, false);
         // 返回构建的交易对象
         return getReqAckProof(content, header, contentHash, signature, service);
     }
@@ -133,7 +133,7 @@ public class SyncClient {
         // 构建签名对象
         Signature signature = getSignature(interCo, contentHash, content);
         // 构建请求头
-        Header header = getHeader(service, cid, seq, true);
+        Header header = customHeader(service, cid, seq, true);
         // 返回构建的交易对象
         return getReqAckProof(content, header, contentHash, signature, service);
     }
@@ -146,7 +146,7 @@ public class SyncClient {
      * @date 5:22 下午 2021/10/13
      * @params [service (yml文件读取，包含请求方id和调用方id), cid (请求id), seq (存证序号), isEnd （是否为结束调用存证）]
      **/
-    private static Header getHeader(Service service, String cid, int seq, boolean isEnd) {
+    public static Header customHeader(Service service, String cid, int seq, boolean isEnd) {
         return Header
                 .builder()
                 // 请求Id
@@ -164,6 +164,10 @@ public class SyncClient {
                 .b_end(isEnd)
                 // 请求或应答的序号, 从1开始
                 .seq(seq)
+                // 设置签名请求方法类型，GET , POST, PUT, PATCH, DELETE
+                .sign_method("GET")
+                // 设置签名请求地址
+                .sign_url("http://localhost:8889/sign")
                 .build();
     }
 

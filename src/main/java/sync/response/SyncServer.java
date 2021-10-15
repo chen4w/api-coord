@@ -35,7 +35,6 @@ import java.util.Map;
 public class SyncServer {
 
     /**
-     * @return void
      * @author lhc
      * @description // 服务断启动
      * @date 3:11 下午 2021/10/11
@@ -52,7 +51,6 @@ public class SyncServer {
     }
 
     /**
-     * @return void
      * @author lhc
      * @description // 模拟controller方法，此处为模拟的业务接口
      * @date 2:17 下午 2021/10/12
@@ -97,7 +95,6 @@ public class SyncServer {
     }
 
     /**
-     * @return void
      * @author lhc
      * @description // 数据签名
      * @date 2:15 下午 2021/10/13
@@ -247,7 +244,14 @@ public class SyncServer {
         Map<String, Object> signMap = new HashMap<>(1);
         signMap.put("data", content);
         signMap.put("header", JSONUtil.toJsonStr(header));
-        String signatureStr = HttpUtil.get("http://" + service.getFrom_host() + ":" + service.getFrom_port() + "/sign", signMap);
+        // 从Header中获取，获取签名方法类型及签名url，并让调用方进行数据签名。此处只判断是否为GET请求，具体请根据实际传输结果进行判断，
+        String signatureStr;
+        if ("GET".equals(header.getSign_method())) {
+            signatureStr = HttpUtil.get(header.getSign_url(), signMap);
+        } else {
+            signatureStr = HttpUtil.post(header.getSign_url(), signMap);
+        }
+        // 将json转换为签名对象
         Signature responseSignature = JSONUtil.toBean(signatureStr, Signature.class);
         // 构建提交给区块链的交易对象
         ReqAckProof reqAckProof = ReqAckProof

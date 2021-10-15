@@ -37,7 +37,7 @@ repchain:
       services:
         # 调用方id
         - e_from: 15cc9e361632986505972
-          # 调用方host
+          # 调用方host，服务方可以不写此处地址及端口号，若为异步调用，调用方会将数据写入header中
           from_host: localhost
           # 调用方端口
           from_port: 8889
