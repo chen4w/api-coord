@@ -28,6 +28,7 @@ public class Service implements Serializable {
     private String to_host;
     private String to_port;
     private String from_cert;
+    private String to_cert;
 
     public String handleCert() {
         String start = "-----BEGIN CERTIFICATE-----";
@@ -36,5 +37,14 @@ public class Service implements Serializable {
         from_cert = from_cert.replaceAll(end, "");
         from_cert = from_cert.replaceAll(" ", "\n");
         return start + from_cert + end + "\n";
+    }
+
+    public String handleToCert() {
+        String start = "-----BEGIN CERTIFICATE-----";
+        String end = "-----END CERTIFICATE-----";
+        to_cert = to_cert.replaceAll(start, "");
+        to_cert = to_cert.replaceAll(end, "");
+        to_cert = to_cert.replaceAll(" ", "\n");
+        return start + to_cert + end + "\n";
     }
 }
