@@ -9,6 +9,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.rcjava.sign.impl.ECDSASign;
 import repchain.inter.cooperation.http.model.Header;
+import repchain.inter.cooperation.http.model.InterCoResult;
 import repchain.inter.cooperation.http.model.SysCert;
 import repchain.inter.cooperation.http.model.tran.ReqAckProof;
 import repchain.inter.cooperation.http.model.tran.Signature;
@@ -89,10 +90,10 @@ public class MultiSyncClient {
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
         String result = HttpUtil.get("http://" + service.getTo_host() + ":" + service.getTo_port() + "/infoList", paramMap);
         System.out.println(result);
-        // 获取返回结果
-        Map<String, Object> resultMap = JSONUtil.parseObj(result);
+        // 获取返回结果对象
+        InterCoResult resultMap = JSONUtil.toBean(result, InterCoResult.class);
         // 获取服务提供方签名信息
-        Signature responseSignature = JSONUtil.toBean(resultMap.get("signature").toString(), Signature.class);
+        Signature responseSignature = resultMap.getSignature();
         // 构建证书对象，用于签名数据及校验权限用
         SysCert sysCert = PkUtil.getSysCert(interCo);
         // 获取yml文件中配置的区块链的host地址

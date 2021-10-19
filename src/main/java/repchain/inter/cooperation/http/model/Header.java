@@ -28,8 +28,8 @@ public class Header {
     private Long tm_create;
     private String callback_url;
     private String callback_method;
-    private String sign_url;
-    private String sign_method;
     private String validStr;
     private String signData;
+    private String data;
+    private int state;
 }
