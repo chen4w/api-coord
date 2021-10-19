@@ -91,6 +91,7 @@ public class MultiSyncServer {
      * @params [name]
      **/
     public static void getInfoList(HttpServerRequest request, HttpServerResponse response) {
+        Map<String, Object> result = new HashMap<>(4);
         try {
             // 1. 获取request请求信息
             // 获取调用方请求头header信息
@@ -100,7 +101,6 @@ public class MultiSyncServer {
             int pageNo = Integer.parseInt(request.getParam("pageNo"));
             int pageSize = Integer.parseInt(request.getParam("pageSize"));
             // 2.校验请求方权限，校验请求方数据签名
-            Map<String, Object> result = new HashMap<>(4);
             if (validAuth(header)) {
                 // 3.构建成功返回结果数据
                 // 模拟数据库分页查询
@@ -120,15 +120,14 @@ public class MultiSyncServer {
                 result.put("msg", "no auth");
                 result.put("signature", sign("no auth"));
             }
-            // 4. 返回数据给请求方
-            response.write(JSONUtil.toJsonStr(result));
         } catch (Exception e) {
-            logger.error("error",e);
-            Map<String, Object> result = new HashMap<>(4);
-            // 3.构建失败返回结果数据
+            logger.error("error", e);
+            // 3.服务器异常返回错误结果
             result.put("code", 2);
-            result.put("msg", "serer error");
-            result.put("signature", sign("serer error"));
+            result.put("msg", "server error");
+            result.put("signature", sign("server error"));
+        } finally {
+            // 4. 返回数据给请求方
             response.write(JSONUtil.toJsonStr(result));
         }
     }
@@ -159,7 +158,7 @@ public class MultiSyncServer {
             return false;
         }
         // 若存在则继续校验签名信息是否正确，先获从yml文件中获取调用方证书信息
-        X509Certificate x509Certificate = null;
+        X509Certificate x509Certificate;
         boolean result = false;
         try {
             x509Certificate = CertUtil.generateX509Cert(service.handleCert());

@@ -14,11 +14,12 @@ import model.tran.Signature;
 import model.yml.InterCo;
 import model.yml.RepchainConfig;
 import model.yml.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.ECSignatureUtil;
 import utils.PkUtil;
 import utils.YamlUtils;
 
-import javax.swing.text.html.Option;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
@@ -33,6 +34,7 @@ import java.util.*;
  */
 public class SyncServer {
 
+    private static final Logger logger = LoggerFactory.getLogger(SyncServer.class);
     /**
      * 模拟数据库列表
      */
@@ -83,34 +85,43 @@ public class SyncServer {
      * @params [name]
      **/
     public static void getInfo(HttpServerRequest request, HttpServerResponse response) {
-        // 1. 获取request请求信息
-        // 获取调用方请求头header信息
-        String headerStr = request.getParam("header");
-        Header header = JSONUtil.toBean(headerStr, Header.class);
-        // 获取业务请求数据
-        String name = request.getParam("name");
-        // 2.校验请求方权限，校验请求方数据签名
         Map<String, Object> result = new HashMap<>(4);
-        if (validAuth( header)) {
-            // 3.构建成功返回结果数据
-            //模拟数据库查询where name = ${name}
-            Optional<Map<Object,Object>> optional = list.stream().filter(map -> map.get("name").equals(name)).findFirst();
-            Map<Object,Object> info = new HashMap<>(1);
-            if (optional.isPresent()) {
-                info = optional.get();
+        try {
+            // 1. 获取request请求信息
+            // 获取调用方请求头header信息
+            String headerStr = request.getParam("header");
+            Header header = JSONUtil.toBean(headerStr, Header.class);
+            // 获取业务请求数据
+            String name = request.getParam("name");
+            // 2.校验请求方权限，校验请求方数据签名
+            if (validAuth( header)) {
+                // 3.构建成功返回结果数据
+                //模拟数据库查询where name = ${name}
+                Optional<Map<Object,Object>> optional = list.stream().filter(map -> map.get("name").equals(name)).findFirst();
+                Map<Object,Object> info = new HashMap<>(1);
+                if (optional.isPresent()) {
+                    info = optional.get();
+                }
+                result.put("code", 0);
+                result.put("msg", "success");
+                result.put("data", info);
+                result.put("signature", sign(info));
+            } else {
+                // 3.构建失败返回结果数据
+                result.put("code", 1);
+                result.put("msg", "no auth");
+                result.put("signature", sign("no auth"));
             }
-            result.put("code", 0);
-            result.put("msg", "success");
-            result.put("data", info);
-            result.put("signature", sign(info));
-        } else {
-            // 3.构建失败返回结果数据
-            result.put("code", 1);
-            result.put("msg", "no auth");
-            result.put("signature", sign("no auth"));
+        } catch (Exception e) {
+            logger.error("error", e);
+            // 3.服务器异常返回错误结果
+            result.put("code", 2);
+            result.put("msg", "server error");
+            result.put("signature", sign("server error"));
+        }finally{
+            // 4. 返回数据给请求方
+            response.write(JSONUtil.toJsonStr(result));
         }
-        // 4. 返回数据给请求方
-        response.write(JSONUtil.toJsonStr(result));
     }
 
 
