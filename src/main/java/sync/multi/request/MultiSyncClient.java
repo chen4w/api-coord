@@ -42,21 +42,21 @@ public class MultiSyncClient {
         // 第一次调用
         // 构建接口调用参数
         Map<String, Object> paramMap = new HashMap<>(3);
-//        paramMap.put("pageSize", 1);
-//        paramMap.put("pageNo", 1);
-//        request(paramMap, cid, 1);
-//        // 第二次调用
-//        // 构建接口调用参数
-//        paramMap = new HashMap<>(3);
-//        paramMap.put("pageSize", 1);
-//        paramMap.put("pageNo", 2);
-//        request(paramMap, cid, 2);
-//        // 第三次调用
-//        // 构建接口调用参数
-//        paramMap = new HashMap<>(3);
-//        paramMap.put("pageSize", 1);
-//        paramMap.put("pageNo", 3);
-//        request(paramMap, cid, 3);
+        paramMap.put("pageSize", 1);
+        paramMap.put("pageNo", 1);
+        request(paramMap, cid, 1);
+        // 第二次调用
+        // 构建接口调用参数
+        paramMap = new HashMap<>(3);
+        paramMap.put("pageSize", 1);
+        paramMap.put("pageNo", 2);
+        request(paramMap, cid, 2);
+        // 第三次调用
+        // 构建接口调用参数
+        paramMap = new HashMap<>(3);
+        paramMap.put("pageSize", 1);
+        paramMap.put("pageNo", 3);
+        request(paramMap, cid, 3);
         // 第四次调用
         // 构建接口调用参数
         paramMap = new HashMap<>(3);
