@@ -1,22 +1,17 @@
-import cn.hutool.core.io.file.FileReader;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
-import cn.hutool.http.HttpUtil;
-import cn.hutool.json.JSONUtil;
 import model.Header;
 import model.yml.InterCo;
-import model.yml.Repchain;
 import model.yml.RepchainConfig;
 import model.yml.Service;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
-import sync.request.SyncClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.SnowIdGenerator;
+import sync.single.request.SyncClient;
 import utils.YamlUtils;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lhc
@@ -28,18 +23,8 @@ import java.util.Map;
 public class App {
 
     public static void main(String[] args) {
-        try {
-            // 获取yml文件中的信息
-            RepchainConfig repchainConfig = YamlUtils.repchainConfig;
-            List<InterCo> interCoList = repchainConfig.getRepchain().getInterCo();
-            InterCo interCo = interCoList.get(0);
-            List<Service> services = interCo.getServices();
-            Service service = services.get(0);
-            Header header = SyncClient.customHeader(service, SnowIdGenerator.getId(), 1, false);
-            Db.use().insert(Entity.create("header").parseBean(header));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        Logger logger = LoggerFactory.getLogger(App.class);
+        logger.info("Hello World");
     }
 
     public static void test(String str) {
