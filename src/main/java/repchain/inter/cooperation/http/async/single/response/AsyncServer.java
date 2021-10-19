@@ -9,19 +9,23 @@ import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.json.JSONUtil;
 import com.rcjava.sign.impl.ECDSASign;
+import com.rcjava.util.CertUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.http.model.Header;
+import repchain.inter.cooperation.http.model.InterCoResult;
 import repchain.inter.cooperation.http.model.tran.Signature;
 import repchain.inter.cooperation.http.model.yml.InterCo;
 import repchain.inter.cooperation.http.model.yml.RepchainConfig;
+import repchain.inter.cooperation.http.model.yml.Service;
+import repchain.inter.cooperation.http.utils.ECSignatureUtil;
 import repchain.inter.cooperation.http.utils.PkUtil;
 import repchain.inter.cooperation.http.utils.YamlUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.security.cert.X509Certificate;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author lhc
@@ -31,6 +35,8 @@ import java.util.Map;
  * @description 同步单次请求服务端代码
  */
 public class AsyncServer {
+
+    private static final Logger logger = LoggerFactory.getLogger(AsyncServer.class);
 
     /**
      * @return void
@@ -42,8 +48,6 @@ public class AsyncServer {
     public static void main(String[] args) {
         // 创建Http服务器，端口为8888
         HttpUtil.createServer(8888)
-                // 签名接口，对调用方数据进行数据签名
-                .addAction("/sign", AsyncServer::sign)
                 // 业务接口地址，此处为需要提供给其他系统调用的业务接口 ,地址为/info
                 .addAction("/info", AsyncServer::getInfo)
                 .start();
@@ -57,51 +61,65 @@ public class AsyncServer {
      * @params [name]
      **/
     public static void getInfo(HttpServerRequest request, HttpServerResponse response) {
-        // 获取请求头
-        String headerStr = request.getParam("header");
-        Header header = JSONUtil.toBean(headerStr, Header.class);
-        // 将header信息存入数据库或其他持久化地方，方便异步返回数据时调用
-        int id = 0;
+        InterCoResult result = InterCoResult.builder().build();
         try {
-            id = Db.use().insert(Entity.create("header").parseBean(header));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            // 获取请求头
+            String headerStr = request.getParam("header");
+            Header header = JSONUtil.toBean(headerStr, Header.class);
+            if (validAuth(header)) {
+                // 获取业务数据，将业务数据存入header并持久化到数据库
+                String name = request.getParam("name");
+                header.setData(JSONUtil.toJsonStr(name));
+                // 将header信息存入数据库或其他持久化地方，方便异步返回数据时调用
+                Db.use().insert(Entity.create("header").parseBean(header,true,true));
+                // 构建返回结果
+                result = result
+                        .toBuilder()
+                        .code(0)
+                        .msg("数据已收到，待审核通过后返回请求数据！")
+                        .signature(sign("数据已收到，待审核通过后返回请求数据！"))
+                        .build();
+            } else {
+                // 3.构建失败返回结果数据
+                result = result
+                        .toBuilder()
+                        .code(1)
+                        .msg("no auth")
+                        .signature(sign("no auth"))
+                        .build();
+            }
+        } catch (Exception e) {
+            // 3.构建服务器异常返回结果数据
+            logger.error("error", e);
+            result = result
+                    .toBuilder()
+                    .code(2)
+                    .msg("server error")
+                    .signature(sign("server error"))
+                    .build();
+        } finally {
+            // 返回数据给请求方
+            response.write(JSONUtil.toJsonStr(result));
         }
-        // 构建返回结果数据
-        String name = request.getParam("name");
-        // 将请求参数存入数据库，方便异步返回数据
-        try {
-            Db.use().insert(Entity.create("header").set("yewu_name", name).set("header_id", id));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        Map<String, Object> result = new HashMap<>(2);
-        result.put("code", 0);
-        result.put("msg", "数据已收到，待审核通过后返回请求数据！");
-        // 返回数据给请求方
-        response.write(JSONUtil.toJsonStr(result));
     }
 
     /**
-     * @return void
      * @author lhc
      * @description // 数据签名
      * @date 2:15 下午 2021/10/13
-     * @params [request, response]
+     * @params [resultData (返回的数据结果) ]
      **/
-    public static void sign(HttpServerRequest request, HttpServerResponse response) {
+    public static Signature sign(Object resultData) {
         // 获取yml文件中的信息
         RepchainConfig repchainConfig = YamlUtils.repchainConfig;
         List<InterCo> interCoList = repchainConfig.getRepchain().getInterCo();
         InterCo interCo = interCoList.get(0);
         // 获取PrivateKey对象
         PrivateKey privateKey = PkUtil.getPrivateKey(interCo.handlePrivateKey(), interCo.getPassword());
-        // 传过来为json字符串
-        String data = request.getParam("data");
         // 将传输内容转换为hash，hash算法需与接口定义一致
-        String contentHash = DigestUtil.sha256Hex(data);
+        String contentHash = DigestUtil.sha256Hex(JSONUtil.toJsonStr(resultData));
         // 构建签名对象
-        Signature signature = Signature
+        return Signature
                 .builder()
                 // 用户的唯一标识
                 .eid(interCo.getCreditCode())
@@ -109,12 +127,48 @@ public class AsyncServer {
                 .cert_name(interCo.getCertName())
                 // 内容hash
                 .hash(contentHash)
-                // 对内容数据进行签名
-                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, data.getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
+                // 对内容数据进行签名，现有阶段都通过SHA256withECDSA算法进行签名，后续提供扩展
+                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, JSONUtil.toJsonStr(resultData).getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
                 // 时间戳
                 .timeCreate(System.currentTimeMillis())
                 .build();
-        // 返回签名数据
-        response.write(JSONUtil.toJsonStr(signature));
+    }
+
+    /**
+     * @return boolean
+     * @author lhc
+     * @description // 校验用户是否拥有调用接口权限
+     * @date 3:47 下午 2021/10/18
+     * @params [signature, header, requestStr]
+     **/
+    public static boolean validAuth(Header header) {
+        // 获取yml文件中的信息
+        RepchainConfig repchainConfig = YamlUtils.repchainConfig;
+        List<InterCo> interCoList = repchainConfig.getRepchain().getInterCo();
+        InterCo interCo = interCoList.get(0);
+        List<Service> services = interCo.getServices();
+        Service service = null;
+        // 判断yml文件中是否包含调用方id
+        for (Service s : services) {
+            if (s.getE_from().equals(header.getE_from())) {
+                service = s;
+            }
+        }
+        // 若不存在id，则返回false，证明调用方没有调用权限
+        if (service == null) {
+            return false;
+        }
+        // 若存在则继续校验签名信息是否正确，先获从yml文件中获取调用方证书信息
+        X509Certificate x509Certificate = null;
+        try {
+            x509Certificate = CertUtil.generateX509Cert(service.handleCert());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 构建校验对象，进行数据校验
+        ECSignatureUtil ecSignatureUtil = new ECSignatureUtil();
+        ecSignatureUtil.setSignAlgorithm("SHA256withECDSA");
+        byte[] sign = HexUtil.decodeHex(header.getValidStr());
+        return ecSignatureUtil.verify(sign, header.getSignData().getBytes(StandardCharsets.UTF_8), x509Certificate);
     }
 }

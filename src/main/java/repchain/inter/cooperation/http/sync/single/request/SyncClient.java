@@ -9,6 +9,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.rcjava.sign.impl.ECDSASign;
 import repchain.inter.cooperation.http.model.Header;
+import repchain.inter.cooperation.http.model.InterCoResult;
 import repchain.inter.cooperation.http.model.SysCert;
 import repchain.inter.cooperation.http.model.tran.ReqAckProof;
 import repchain.inter.cooperation.http.model.tran.Signature;
@@ -61,9 +62,9 @@ public class SyncClient {
         System.out.println(result);
         // 3. 请求及应答信息存证
         // 获取返回结果对象
-        Map<String, Object> resultMap = JSONUtil.parseObj(result);
+        InterCoResult resultMap = JSONUtil.toBean(result, InterCoResult.class);
         // 获取服务提供方签名信息
-        Signature responseSignature = JSONUtil.toBean(resultMap.get("signature").toString(), Signature.class);
+        Signature responseSignature = resultMap.getSignature();
         // 构建证书对象，用于签名数据及校验权限用
         SysCert sysCert = PkUtil.getSysCert(interCo);
         // 获取yml文件中配置的host地址

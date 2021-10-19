@@ -10,6 +10,7 @@ import cn.hutool.json.JSONUtil;
 import com.rcjava.sign.impl.ECDSASign;
 import com.rcjava.util.CertUtil;
 import repchain.inter.cooperation.http.model.Header;
+import repchain.inter.cooperation.http.model.InterCoResult;
 import repchain.inter.cooperation.http.model.tran.Signature;
 import repchain.inter.cooperation.http.model.yml.InterCo;
 import repchain.inter.cooperation.http.model.yml.RepchainConfig;
@@ -85,7 +86,7 @@ public class SyncServer {
      * @params [name]
      **/
     public static void getInfo(HttpServerRequest request, HttpServerResponse response) {
-        Map<String, Object> result = new HashMap<>(4);
+        InterCoResult result = new InterCoResult();
         try {
             // 1. 获取request请求信息
             // 获取调用方请求头header信息
@@ -102,22 +103,32 @@ public class SyncServer {
                 if (optional.isPresent()) {
                     info = optional.get();
                 }
-                result.put("code", 0);
-                result.put("msg", "success");
-                result.put("data", info);
-                result.put("signature", sign(info));
+                // 构建返回结果数据
+                result = result
+                        .toBuilder()
+                        .code(0)
+                        .msg("success")
+                        .data(info)
+                        .signature(sign(info))
+                        .build();
             } else {
                 // 3.构建失败返回结果数据
-                result.put("code", 1);
-                result.put("msg", "no auth");
-                result.put("signature", sign("no auth"));
+                result = result
+                        .toBuilder()
+                        .code(1)
+                        .msg("no auth")
+                        .signature(sign("no auth"))
+                        .build();
             }
         } catch (Exception e) {
             logger.error("error", e);
             // 3.服务器异常返回错误结果
-            result.put("code", 2);
-            result.put("msg", "server error");
-            result.put("signature", sign("server error"));
+            result = result
+                    .toBuilder()
+                    .code(2)
+                    .msg("server error")
+                    .signature(sign("server error"))
+                    .build();
         }finally{
             // 4. 返回数据给请求方
             response.write(JSONUtil.toJsonStr(result));
