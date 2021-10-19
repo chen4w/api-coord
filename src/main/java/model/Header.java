@@ -30,4 +30,6 @@ public class Header {
     private String callback_method;
     private String sign_url;
     private String sign_method;
+    private String validStr;
+    private String signData;
 }

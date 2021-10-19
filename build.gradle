@@ -1,8 +1,9 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
-group 'org.test'
+group 'repchain.interface.cooperation'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -25,12 +26,16 @@ jar {
 dependencies {
     implementation 'org.yaml:snakeyaml:1.29'
     implementation 'cn.hutool:hutool-all:5.7.5'
-    implementation 'repchain:rcjava-core:0.4.3-SNAPSHOT'
+    implementation ('repchain:rcjava-core:0.4.3-SNAPSHOT') {
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     implementation 'mysql:mysql-connector-java:5.1.46'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'ch.qos.logback:logback-classic:1.2.6'
 }
 
 
@@ -44,4 +49,16 @@ processResources.dependsOn(copyResources)
 
 test {
     useJUnitPlatform()
+}
+
+
+publishing {
+    publications{
+        library(MavenPublication){
+            from components.java
+        }
+    }
+    repositories{
+        mavenLocal()
+    }
 }
