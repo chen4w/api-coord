@@ -1,17 +1,8 @@
-import cn.hutool.db.Db;
-import cn.hutool.db.Entity;
-import model.Header;
-import model.yml.InterCo;
-import model.yml.RepchainConfig;
-import model.yml.Service;
+import repchain.inter.cooperation.http.model.yml.InterCo;
+import repchain.inter.cooperation.http.model.yml.RepchainConfig;
+import repchain.inter.cooperation.http.model.yml.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.SnowIdGenerator;
-import sync.single.request.SyncClient;
-import utils.YamlUtils;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * @author lhc
