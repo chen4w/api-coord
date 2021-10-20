@@ -199,7 +199,7 @@ public class SyncServer {
                 // 内容hash
                 .hash(contentHash)
                 // 对内容数据进行签名，现有阶段都通过SHA256withECDSA算法进行签名，后续提供扩展
-                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, JSONUtil.toJsonStr(resultData).getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
+                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, contentHash.getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
                 // 时间戳
                 .timeCreate(System.currentTimeMillis())
                 .build();

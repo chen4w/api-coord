@@ -83,9 +83,9 @@ public class MultiSyncClient {
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(JSONUtil.toJsonStr(paramMap));
         // 使用yml文件中的公钥和证书，对业务请求参数进行数据签名
-        Signature signature = getSignature(interCo, contentHash, JSONUtil.toJsonStr(paramMap));
+        Signature signature = getSignature(interCo, contentHash);
         // 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息
-        Header header = customHeader(service, cid, false, signature, req,JSONUtil.toJsonStr(paramMap));
+        Header header = customHeader(service, cid, false, signature,req);
         paramMap.put("header", JSONUtil.toJsonStr(header));
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
         String result = HttpUtil.get("http://" + service.getTo_host() + ":" + service.getTo_port() + "/infoList", paramMap);
@@ -117,7 +117,7 @@ public class MultiSyncClient {
      * @date 5:22 下午 2021/10/13
      * @params [service (yml文件读取，包含请求方id和调用方id), cid (请求id), seq (存证序号), isEnd （是否为结束调用存证）]
      **/
-    public static Header customHeader(Service service, String cid, boolean isEnd, Signature signature, int seq,String content) {
+    public static Header customHeader(Service service, String cid, boolean isEnd, Signature signature, int seq) {
         return Header
                 .builder()
                 // 请求Id
@@ -137,7 +137,7 @@ public class MultiSyncClient {
                 .seq(seq)
                 // 用于校验权限签名的字符串
                 .validStr(signature.getSign())
-                .signData(content)
+                .signData(signature.getHash())
                 .build();
     }
 
@@ -148,7 +148,7 @@ public class MultiSyncClient {
      * @date 4:41 下午 2021/10/13
      * @params [interCo （读取yml文件内容）, contentHash （内容存证的hash）, content (内容)]
      **/
-    public static Signature getSignature(InterCo interCo, String contentHash, String content) {
+    public static Signature getSignature(InterCo interCo, String contentHash) {
         // 获取PrivateKey对象
         PrivateKey privateKey = PkUtil.getPrivateKey(interCo.handlePrivateKey(), interCo.getPassword());
         // 构建签名对象
@@ -160,8 +160,8 @@ public class MultiSyncClient {
                 .cert_name(interCo.getCertName())
                 // 内容hash
                 .hash(contentHash)
-                // 对内容数据进行签名
-                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, content.getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
+                // 对内容数据hash进行签名
+                .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, contentHash.getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
                 // 时间戳
                 .timeCreate(System.currentTimeMillis())
                 .build();
