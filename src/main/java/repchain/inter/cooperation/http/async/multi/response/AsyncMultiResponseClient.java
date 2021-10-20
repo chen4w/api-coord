@@ -1,4 +1,4 @@
-package repchain.inter.cooperation.http.async.single.response;
+package repchain.inter.cooperation.http.async.multi.response;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.map.MapUtil;
@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.rcjava.sign.impl.ECDSASign;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.http.async.single.response.AsyncResponseClient;
 import repchain.inter.cooperation.http.model.Header;
 import repchain.inter.cooperation.http.model.InterCoResult;
 import repchain.inter.cooperation.http.model.SysCert;
@@ -36,7 +37,7 @@ import java.util.*;
  * @date 2021年10月11日 3:10 下午
  * @description 同步单次请求客户端代码
  */
-public class AsyncResponseClient {
+public class AsyncMultiResponseClient {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncResponseClient.class);
 
@@ -73,28 +74,42 @@ public class AsyncResponseClient {
     public static void main(String[] args) {
         try {
             // 从数据库取出，之前请求方发送的数据及请求头，state=0 代表还没有返回的记录
-            List<Entity> headers = Db.use().findAll(Entity.create("header").set("state", 0));
+            List<Entity> headers = Db.use().query("select * from header where state=0 and data like '%pageSize%' order by cid,id", new HashMap<>(0));
             // 此处根据业务逻辑自己定义，示例为依次调用已持久化的header的回调接口地址，返回数据
-            for (Entity entity : headers) {
-                // 获取还未返回数据的header信息
-                Header header = entity.toBean(Header.class);
-                System.out.println(header);
-                // 获取持久化的请求的业务数据
-                String name = header.getData();
-                // 模拟数据库查询where name = ${name}
-                Optional<Map<Object, Object>> optional = list.stream().filter(map -> map.get("name").equals(name)).findFirst();
-                Map<Object, Object> info = new HashMap<>(1);
-                if (optional.isPresent()) {
-                    info = optional.get();
+            if (headers != null && headers.size() > 0) {
+                String cid = "";
+                int seq = 1;
+                for (Entity entity : headers) {
+                    // 获取还未返回数据的header信息
+                    Header header = entity.toBean(Header.class);
+                    // 获取持久化的请求的业务数据，示例为 {pageNo:1,pageSize:1} 这种数据类型的解析，请根据业务逻辑自行修改
+                    if (cid.equals(header.getCid())) {
+                        seq++;
+                    } else {
+                        seq = 1;
+                    }
+                    cid = header.getCid();
+                    String page = header.getData();
+                    Map<String, Object> map = JSONUtil.parseObj(page);
+                    Integer pageSize = (Integer) map.get("pageSize");
+                    Integer pageNo = (Integer) map.get("pageNo");
+                    // 模拟数据库分页查询
+                    List<Map<Object, Object>> resultList = new ArrayList<>();
+                    int currIdx = (pageNo > 1 ? (pageNo - 1) * pageSize : 0);
+                    for (int i = 0; i < pageSize && i < list.size() - currIdx; i++) {
+                        resultList.add(list.get(currIdx + i));
+                    }
+                    // 构建请求参数对象
+                    Map<String, Object> requestMap = new HashMap<>(1);
+                    requestMap.put("data", resultList);
+                    // 发送请求，并存证
+                    // 设置请求序号
+                    header.setSeq(seq);
+                    request(requestMap, header);
+                    // 更改header状态state=1，表示对当前的异步请求已经返回数据，可根据自身业务逻辑自行修改
+                    header.setState(1);
+                    Db.use().update(Entity.create().parseBean(header, true, true), Entity.create("header").set("id", header.getId()));
                 }
-                // 构建请求参数对象
-                Map<String, Object> requestMap = new HashMap<>(1);
-                requestMap.put("data", info);
-                // 发送请求，并存证
-                request(requestMap, header);
-                // 更改header状态state=1，表示对当前的异步请求已经返回数据，可根据自身业务逻辑自行修改
-                header.setState(1);
-                Db.use().update(Entity.create().parseBean(header, true, true), Entity.create("header").set("id", header.getId()));
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -120,7 +135,7 @@ public class AsyncResponseClient {
         // 使用yml文件中的公钥和证书，对业务请求参数进行数据签名
         Signature signature = getSignature(interCo, contentHash);
         // 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息
-        Header header = customHeader(service, dataHeader.getCid(), false, signature, dataHeader);
+        Header header = customHeader(service, false, signature, dataHeader);
         paramMap.put("header", JSONUtil.toJsonStr(header));
         String result;
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
@@ -157,11 +172,11 @@ public class AsyncResponseClient {
      * @date 5:22 下午 2021/10/13
      * @params [service (yml文件读取，包含请求方id和调用方id), cid (请求id), seq (存证序号), isEnd （是否为结束调用存证）]
      **/
-    public static Header customHeader(Service service, String cid, boolean isEnd, Signature signature, Header header) {
+    public static Header customHeader(Service service, boolean isEnd, Signature signature, Header header) {
         return Header
                 .builder()
                 // 请求Id
-                .cid(cid)
+                .cid(header.getCid())
                 // 请求方id，可从yml文件中获取，此id为服务请求登记时的id，可从dashboard中查看
                 .e_from(service.getE_from())
                 .e_to(service.getE_to())
@@ -170,11 +185,11 @@ public class AsyncResponseClient {
                 // 创建时间
                 .tm_create(System.currentTimeMillis())
                 // 请求 or 应答标志, true 代表请求; false 代表应答
-                .b_req(false)
+                .b_req(true)
                 // 结束标志, true 代表结束（即本次请求/应答为最后一个）,false代表未结束
                 .b_end(isEnd)
                 // 请求或应答的序号, 从1开始
-                .seq(1)
+                .seq(header.getSeq())
                 // 用于校验权限签名的字符串
                 .validStr(signature.getSign())
                 // 用于保存签名的内容
