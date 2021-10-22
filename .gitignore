@@ -1,38 +1,22 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-log/logs
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-log
-
-### IntelliJ IDEA ###
+# npm
+package-lock.json
+node_modules
 .idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# yarn
+yarn.lock
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# vscode
+.vscode
 
-### VS Code ###
-.vscode/
+# vuepress
+docs/.vuepress/dist
+
+# 百度链接推送
+urls.txt
+
+# mac
+.DS_Store
+.gradle
+gradle
+gradlew
+gradlew.bat

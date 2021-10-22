@@ -1,0 +1,64 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js install
+
+PATH: 
+  /opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Volumes/DATA/ideaProject/hcframe-doc/node_modules/.bin:/usr/local/mysql/bin:/Volumes/DATA/dev_soft/apache-maven-3.6.3/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Volumes/DATA/dev_soft/gradle-6.9.1/bin:/usr/local/mysql/bin:/Volumes/DATA/dev_soft/apache-maven-3.6.3/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Volumes/DATA/dev_soft/gradle-6.9.1/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.15.1
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: connect ECONNREFUSED 61.184.215.229:443
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1146:16)
+
+npm manifest: 
+  {
+    "name": "theme-vdoing-blog",
+    "version": "1.0.0",
+    "scripts": {
+      "dev": "vuepress dev docs",
+      "build": "vuepress build docs",
+      "deploy": "bash deploy.sh",
+      "editFm": "node utils/editFrontmatter.js",
+      "baiduPush": "node utils/baiduPush.js https://xugaoyi.com && bash baiduPush.sh",
+      "publish": "cd theme-vdoing && npm publish && cd ../ && npm run updateTheme",
+      "updateTheme": "npm uninstall vuepress-theme-vdoing && rm -rf node_modules && npm i && npm i vuepress-theme-vdoing -D"
+    },
+    "license": "MIT",
+    "devDependencies": {
+      "dayjs": "^1.9.7",
+      "inquirer": "^7.1.0",
+      "json2yaml": "^1.1.0",
+      "vuepress": "1.8.0",
+      "vuepress-plugin-baidu-autopush": "^1.0.1",
+      "vuepress-plugin-baidu-tongji": "^1.0.1",
+      "vuepress-plugin-demo-block": "^0.7.2",
+      "vuepress-plugin-one-click-copy": "^1.0.2",
+      "vuepress-plugin-thirdparty-search": "^1.0.2",
+      "vuepress-plugin-zooming": "^1.1.7",
+      "vuepress-theme-vdoing": "^1.8.1",
+      "yamljs": "^0.3.0"
+    },
+    "dependencies": {
+      "async-validator": "1.11.5",
+      "bpmn-js": "^7.3.0",
+      "bpmn-js-properties-panel": "^0.35.0",
+      "camunda-bpmn-moddle": "^4.4.0",
+      "element-ui": "^2.12.0",
+      "sass": "^1.22.10",
+      "sass-loader": "^7.3.1",
+      "vuepress-plugin-comment": "^0.7.3"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
