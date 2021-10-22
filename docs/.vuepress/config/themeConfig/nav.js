@@ -32,24 +32,33 @@ module.exports = [
                 link: '/pages/99c155/',
             }, {
                 text: '发布公告',
-                link: '/pages/5c0128/',
+                link: '/pages/08fe83/',
             },
         ],
     },
     {
         text: '接口存证',
-        link: '/java/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
+        link: '/save/', //目录页链接，此处link是vdoing主题新增的配置项，有二级导航时，可以点击一级导航跳到目录页
         items: [
             // 说明：以下所有link的值只是在相应md文件定义的永久链接（不是什么特殊生成的编码）。另外，注意结尾是有斜杠的
             {
-                text: '同步请求',
-                link: '/pages/b017cf/',
+                text: '前言',
+                link: '/pages/0ebad0/',
+            },
+            {
+                text: 'HTTP同步请求',
+                link: '/pages/feba98/',
             }, {
-                text: '异步请求',
-                link: '/pages/ca1baf/',
-            }, {
+                text: 'HTTP异步请求',
+                link: '/pages/b83fd6/',
+            },
+            {
+                text: 'GRPC',
+                link: '/pages/932973/',
+            },
+            {
                 text: '查看存证',
-                link: '/pages/ca1baf/',
+                link: '/pages/7f34d8/',
             }
         ],
     },

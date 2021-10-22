@@ -32,6 +32,7 @@
     "element-ui": "^2.12.0",
     "sass": "^1.22.10",
     "sass-loader": "^7.3.1",
+    "swagger-ui-dist": "^3.52.5",
     "vuepress-plugin-comment": "^0.7.3"
   }
 }
