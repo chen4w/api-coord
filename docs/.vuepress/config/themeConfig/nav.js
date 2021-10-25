@@ -46,14 +46,11 @@ module.exports = [
                 link: '/pages/0ebad0/',
             },
             {
-                text: 'HTTP同步请求',
-                link: '/pages/feba98/',
-            }, {
-                text: 'HTTP异步请求',
-                link: '/pages/b83fd6/',
+                text: 'HTTP请求存证',
+                link: '/pages/c8122d/',
             },
             {
-                text: 'GRPC',
+                text: 'GRPC请求存证',
                 link: '/pages/932973/',
             },
             {
