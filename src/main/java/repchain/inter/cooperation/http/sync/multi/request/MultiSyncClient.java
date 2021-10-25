@@ -44,36 +44,36 @@ public class MultiSyncClient {
         Map<String, Object> paramMap = new HashMap<>(3);
         paramMap.put("pageSize", 1);
         paramMap.put("pageNo", 1);
-        request(paramMap, cid, 1);
+        request(paramMap, cid, 1, false);
         // 第二次调用
         // 构建接口调用参数
         paramMap = new HashMap<>(3);
         paramMap.put("pageSize", 1);
         paramMap.put("pageNo", 2);
-        request(paramMap, cid, 2);
+        request(paramMap, cid, 2, false);
         // 第三次调用
         // 构建接口调用参数
         paramMap = new HashMap<>(3);
         paramMap.put("pageSize", 1);
         paramMap.put("pageNo", 3);
-        request(paramMap, cid, 3);
+        request(paramMap, cid, 3, false);
         // 第四次调用
         // 构建接口调用参数
         paramMap = new HashMap<>(3);
         paramMap.put("pageSize", 1);
         paramMap.put("pageNo", 4);
-        request(paramMap, cid, 4);
+        request(paramMap, cid, 4, true);
 
     }
 
     /**
+     * @return void
      * @author lhc
      * @description // 请求数据
      * @date 5:38 下午 2021/10/18
-     * @params [paramMap (请求入参), cid（请求id）, req (请求序号，从1开始递增)]
-     * @return void
+     * @params [paramMap (请求入参), cid（请求id）, req (请求序号，从1开始递增), isEnd（是否为最后一次请求）]
      **/
-    public static void request(Map<String, Object> paramMap, String cid, int req) {
+    public static void request(Map<String, Object> paramMap, String cid, int req, boolean isEnd) {
         // 获取yml文件中的信息
         RepchainConfig repchainConfig = YamlUtils.repchainConfig;
         List<InterCo> interCoList = repchainConfig.getRepchain().getInterCo();
@@ -85,7 +85,7 @@ public class MultiSyncClient {
         // 使用yml文件中的公钥和证书，对业务请求参数进行数据签名
         Signature signature = getSignature(interCo, contentHash);
         // 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息
-        Header header = customHeader(service, cid, false, signature,req);
+        Header header = customHeader(service, cid, isEnd, signature, req);
         paramMap.put("header", JSONUtil.toJsonStr(header));
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
         String result = HttpUtil.get("http://" + service.getTo_host() + ":" + service.getTo_port() + "/infoList", paramMap);

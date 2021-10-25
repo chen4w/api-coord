@@ -38,6 +38,9 @@ public class SyncClient {
 
     public static void main(String[] args) {
         // 1. 构建请求的请求头及请求参数
+        // 构建接口调用参数
+        Map<String, Object> paramMap = new HashMap<>(3);
+        paramMap.put("name", "Tom");
         // 生成本次请求的存证id，此id会在本次请求存证中重复使用
         String cid = SnowIdGenerator.getId();
         // 获取yml文件中的信息
@@ -46,15 +49,13 @@ public class SyncClient {
         InterCo interCo = interCoList.get(0);
         List<Service> services = interCo.getServices();
         Service service = services.get(0);
-        // 构建接口调用参数
-        Map<String, Object> paramMap = new HashMap<>(3);
-        paramMap.put("name", "Tom");
+
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(JSONUtil.toJsonStr(paramMap));
         // 使用yml文件中的公钥和证书，对业务请求参数进行数据签名
         Signature signature = getSignature(interCo, contentHash);
         // 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息
-        Header header = customHeader(service, cid, false, signature);
+        Header header = customHeader(service, cid, true, signature);
         paramMap.put("header", JSONUtil.toJsonStr(header));
         // 2. 请求业务接口
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
@@ -69,10 +70,10 @@ public class SyncClient {
         SysCert sysCert = PkUtil.getSysCert(interCo);
         // 获取yml文件中配置的host地址
         String host = repchainConfig.getRepchain().getHost();
-        // 创建请求实例，若用Spring 此处可以创建javabean
-        RequestAck requestAck = new RequestAck(host);
         // 构建存证交易对象，使用证书和私钥对存证信息进行数据签名，提交给区块链进行存证
         ReqAckProof rb = getReqAckProof(header, contentHash, signature, responseSignature);
+        // 创建请求实例，若用Spring 此处可以创建javabean
+        RequestAck requestAck = new RequestAck(host);
         JSONObject jsonObject = requestAck.rb(rb, sysCert);
         // 若果有错误信息，则提交存证数据失败
         if (!StrUtil.isBlankIfStr(jsonObject.get("err"))) {
@@ -117,7 +118,7 @@ public class SyncClient {
      * @author lhc
      * @description // 构建签名对象
      * @date 4:41 下午 2021/10/13
-     * @params [interCo （读取yml文件内容）, contentHash （内容存证的hash）, content (内容)]
+     * @params [interCo （读取yml文件内容）, contentHash （内容存证的hash）]
      **/
     public static Signature getSignature(InterCo interCo, String contentHash) {
         // 获取PrivateKey对象
@@ -131,7 +132,7 @@ public class SyncClient {
                 .cert_name(interCo.getCertName())
                 // 内容hash
                 .hash(contentHash)
-                // 对内容数据进行签名
+                // 对内容hash数据进行签名
                 .sign(HexUtil.encodeHexStr((new ECDSASign()).sign(privateKey, contentHash.getBytes(StandardCharsets.UTF_8), "SHA256withECDSA")))
                 // 时间戳
                 .timeCreate(System.currentTimeMillis())

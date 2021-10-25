@@ -22,14 +22,14 @@ public class Header {
     private String e_from;
     private String e_to;
     private String method;
-    private boolean b_req;
-    private boolean b_end;
-    private int seq;
+    private Boolean b_req;
+    private Boolean b_end;
+    private Integer seq;
     private Long tm_create;
     private String callback_url;
     private String callback_method;
     private String validStr;
     private String signData;
     private String data;
-    private int state;
+    private Integer state;
 }
