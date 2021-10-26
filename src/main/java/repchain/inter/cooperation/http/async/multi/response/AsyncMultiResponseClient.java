@@ -82,7 +82,7 @@ public class AsyncMultiResponseClient {
                 for (Entity entity : headers) {
                     // 获取还未返回数据的header信息
                     Header header = entity.toBean(Header.class);
-                    // 获取持久化的请求的业务数据，示例为 {pageNo:1,pageSize:1} 这种数据类型的解析，请根据业务逻辑自行修改
+                    // 判断cid是否相同，
                     if (cid.equals(header.getCid())) {
                         seq++;
                     } else {
@@ -90,6 +90,7 @@ public class AsyncMultiResponseClient {
                     }
                     cid = header.getCid();
                     String page = header.getData();
+                    // 获取持久化的请求的业务数据，示例为 {pageNo:1,pageSize:1} 这种数据类型的解析，请根据业务逻辑自行修改
                     Map<String, Object> map = JSONUtil.parseObj(page);
                     Integer pageSize = (Integer) map.get("pageSize");
                     Integer pageNo = (Integer) map.get("pageNo");
@@ -135,7 +136,7 @@ public class AsyncMultiResponseClient {
         // 使用yml文件中的公钥和证书，对业务请求参数进行数据签名
         Signature signature = getSignature(interCo, contentHash);
         // 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息
-        Header header = customHeader(service, false, signature, dataHeader);
+        Header header = customHeader(service,  signature, dataHeader);
         paramMap.put("header", JSONUtil.toJsonStr(header));
         String result;
         // 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中
@@ -172,7 +173,7 @@ public class AsyncMultiResponseClient {
      * @date 5:22 下午 2021/10/13
      * @params [service (yml文件读取，包含请求方id和调用方id), cid (请求id), seq (存证序号), isEnd （是否为结束调用存证）]
      **/
-    public static Header customHeader(Service service, boolean isEnd, Signature signature, Header header) {
+    public static Header customHeader(Service service, Signature signature, Header header) {
         return Header
                 .builder()
                 // 请求Id
@@ -187,7 +188,7 @@ public class AsyncMultiResponseClient {
                 // 请求 or 应答标志, true 代表请求; false 代表应答
                 .b_req(true)
                 // 结束标志, true 代表结束（即本次请求/应答为最后一个）,false代表未结束
-                .b_end(isEnd)
+                .b_end(header.getB_end())
                 // 请求或应答的序号, 从1开始
                 .seq(header.getSeq())
                 // 用于校验权限签名的字符串
