@@ -1,5 +1,8 @@
 package repchain.inter.cooperation.middleware.service;
 
+import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.TransEntity;
+
 /**
  * @author lhc
  * @version 1.0
@@ -8,4 +11,5 @@ package repchain.inter.cooperation.middleware.service;
  * @description 描述
  */
 public interface CommunicationClient {
+    Result sendMessage(TransEntity transEntity);
 }

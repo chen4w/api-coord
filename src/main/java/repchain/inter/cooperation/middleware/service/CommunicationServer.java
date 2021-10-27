@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service;
 
+
 /**
  * @author lhc
  * @version 1.0
@@ -8,4 +9,8 @@ package repchain.inter.cooperation.middleware.service;
  * @description 描述
  */
 public interface CommunicationServer {
+
+    void start();
+
+    void setReceiveClient(ReceiveClient receiveClient);
 }

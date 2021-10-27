@@ -1,5 +1,9 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import cn.hutool.http.server.HttpServerRequest;
+import cn.hutool.http.server.HttpServerResponse;
+import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
 
 /**
@@ -10,4 +14,8 @@ import repchain.inter.cooperation.middleware.service.ReceiveClient;
  * @description 描述
  */
 public class ReceiveClientImpl implements ReceiveClient {
+    @Override
+    public Result msg(TransEntity transEntity) {
+        return null;
+    }
 }

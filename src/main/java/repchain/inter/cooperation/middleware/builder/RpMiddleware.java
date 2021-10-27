@@ -48,8 +48,15 @@ public class RpMiddleware {
                 .build();
     }
 
-    public void startService(){
-
+    public void start(){
+        if (this.receiveServer == null) {
+            throw new NullPointerException("receiveServer can not be null!!!");
+        }
+        if (this.communicationServer == null) {
+            throw new NullPointerException("communicationServer can not be null!!!");
+        }
+        this.receiveServer.start();
+        this.communicationServer.start();
     }
 
     public static class RpMiddlewareBuilder {
@@ -92,6 +99,7 @@ public class RpMiddleware {
 
         public RpMiddlewareBuilder receiveServer(ReceiveServer receiveServer) {
             this.receiveServer = receiveServer;
+            this.receiveServer.setCommunicationClient(this.communicationClient);
             return this;
         }
 
