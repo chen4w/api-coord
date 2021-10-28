@@ -27,7 +27,7 @@
           <p v-if="homeData.tagline" class="description">
             {{ homeData.tagline }}
           </p>
-          <p class="action" :style="isMQMobile?'right:30rem !important;':'right:7rem !important;'" v-if="homeData.actionText && homeData.actionLink">
+          <p class="action" :style="isMQMobile?'right:7rem !important;':'right:30rem !important;'" v-if="homeData.actionText && homeData.actionLink">
             <NavLink class="action-button" :item="actionLink" />
           </p>
         </header>
