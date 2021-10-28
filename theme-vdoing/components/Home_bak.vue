@@ -2,23 +2,23 @@
   <div class="home-wrapper">
     <!-- banner块 s -->
     <div
-        class="banner"
-        :class="{ 'hide-banner': !showBanner }"
-        :style="bannerBgStyle"
+      class="banner"
+      :class="{ 'hide-banner': !showBanner }"
+      :style="bannerBgStyle"
     >
       <div
-          class="banner-conent"
-          :style="
+        class="banner-conent"
+        :style="
           !homeData.features && !homeData.heroImage && `padding-top: 7rem`
         "
       >
         <header class="hero">
           <img
-              v-if="homeData.heroImage"
-              :src="$withBase(homeData.heroImage)"
-              :alt="homeData.heroAlt"
+            v-if="homeData.heroImage"
+            :src="$withBase(homeData.heroImage)"
+            :alt="homeData.heroAlt"
           />
-          <h1 v-if="homeData.heroText" :style="isMQMobile?'margin-bottom: 40px;font-size: 75px;color: #9edb80':'margin-bottom: 40px;font-size: 100px;color: #9edb80'">
+          <h1 v-if="homeData.heroText" style="margin-bottom: 40px;font-size: 100px;color: #9edb80">
             RepChain
           </h1>
           <h1 v-if="homeData.heroText" id="main-title">
@@ -33,28 +33,31 @@
         </header>
 
         <!-- PC端features块 s -->
-        <div class="features" v-if="hasFeatures && !isMQMobile">
+        <div
+          class="features"
+          v-if="homeData.features && homeData.features.length && !isMQMobile"
+        >
           <div
-              class="feature"
-              v-for="(feature, index) in homeData.features"
-              :key="index"
+            class="feature"
+            v-for="(feature, index) in homeData.features"
+            :key="index"
           >
             <router-link v-if="feature.link" :to="feature.link">
               <img
-                  class="feature-img"
-                  v-if="feature.imgUrl"
-                  :src="$withBase(feature.imgUrl)"
-                  :alt="feature.title"
+                class="feature-img"
+                v-if="feature.imgUrl"
+                :src="$withBase(feature.imgUrl)"
+                :alt="feature.title"
               />
               <h2>{{ feature.title }}</h2>
               <p>{{ feature.details }}</p>
             </router-link>
             <a v-else href="javascript:;">
               <img
-                  class="feature-img"
-                  v-if="feature.imgUrl"
-                  :src="$withBase(feature.imgUrl)"
-                  :alt="feature.title"
+                class="feature-img"
+                v-if="feature.imgUrl"
+                :src="$withBase(feature.imgUrl)"
+                :alt="feature.title"
               />
               <h2>{{ feature.title }}</h2>
               <p>{{ feature.details }}</p>
@@ -66,31 +69,35 @@
 
       <!-- 移动端features块 s -->
       <!-- isMQMobile放到v-if上线后会报错 -->
-      <div class="slide-banner" v-if="hasFeatures" v-show="isMQMobile">
+      <div
+        class="slide-banner"
+        v-if="homeData.features && homeData.features.length"
+        v-show="isMQMobile"
+      >
         <div class="banner-wrapper">
           <div class="slide-banner-scroll" ref="slide">
             <div class="slide-banner-wrapper">
               <div
-                  class="slide-item"
-                  v-for="(feature, index) in homeData.features"
-                  :key="index"
+                class="slide-item"
+                v-for="(feature, index) in homeData.features"
+                :key="index"
               >
                 <router-link v-if="feature.link" :to="feature.link">
                   <img
-                      class="feature-img"
-                      v-if="feature.imgUrl"
-                      :src="$withBase(feature.imgUrl)"
-                      :alt="feature.title"
+                    class="feature-img"
+                    v-if="feature.imgUrl"
+                    :src="$withBase(feature.imgUrl)"
+                    :alt="feature.title"
                   />
                   <h2>{{ feature.title }}</h2>
                   <p>{{ feature.details }}</p>
                 </router-link>
                 <a v-else href="javascript:;">
                   <img
-                      class="feature-img"
-                      v-if="feature.imgUrl"
-                      :src="$withBase(feature.imgUrl)"
-                      :alt="feature.title"
+                    class="feature-img"
+                    v-if="feature.imgUrl"
+                    :src="$withBase(feature.imgUrl)"
+                    :alt="feature.title"
                   />
                   <h2>{{ feature.title }}</h2>
                   <p>{{ feature.details }}</p>
@@ -100,10 +107,10 @@
           </div>
           <div class="docs-wrapper">
             <span
-                class="doc"
-                v-for="(item, index) in homeData.features.length"
-                :key="index"
-                :class="{ active: currentPageIndex === index }"
+              class="doc"
+              v-for="(item, index) in homeData.features.length"
+              :key="index"
+              :class="{ active: currentPageIndex === index }"
             ></span>
           </div>
         </div>
@@ -116,22 +123,22 @@
       <template #mainLeft>
         <!-- 简约版文章列表 -->
         <UpdateArticle
-            class="card-box"
-            v-if="homeData.postList === 'simple'"
-            :length="homeData.simplePostListLength || 10"
+          class="card-box"
+          v-if="homeData.postList === 'simple'"
+          :length="homeData.simplePostListLength || 10"
         />
 
         <!-- 详情版文章列表 -->
         <template
-            v-else-if="!homeData.postList || homeData.postList === 'detailed'"
+          v-else-if="!homeData.postList || homeData.postList === 'detailed'"
         >
           <PostList :currentPage="currentPage" :perPage="perPage" />
           <Pagination
-              :total="total"
-              :perPage="perPage"
-              :currentPage="currentPage"
-              @getCurrentPage="handlePagination"
-              v-show="Math.ceil(total / perPage) > 1"
+            :total="total"
+            :perPage="perPage"
+            :currentPage="currentPage"
+            @getCurrentPage="handlePagination"
+            v-show="Math.ceil(total / perPage) > 1"
           />
         </template>
 
@@ -141,22 +148,22 @@
       <template #mainRight>
         <BloggerBar v-if="$themeConfig.blogger" />
         <CategoriesBar
-            v-if="
+          v-if="
             $themeConfig.category !== false &&
             $categoriesAndTags.categories.length
           "
-            :categoriesData="$categoriesAndTags.categories"
-            :length="10"
+          :categoriesData="$categoriesAndTags.categories"
+          :length="10"
         />
         <TagsBar
-            v-if="$themeConfig.tag !== false && $categoriesAndTags.tags.length"
-            :tagsData="$categoriesAndTags.tags"
-            :length="30"
+          v-if="$themeConfig.tag !== false && $categoriesAndTags.tags.length"
+          :tagsData="$categoriesAndTags.tags"
+          :length="30"
         />
         <div
-            class="custom-html-box card-box"
-            v-if="homeSidebarB"
-            v-html="homeSidebarB"
+          class="custom-html-box card-box"
+          v-if="homeSidebarB"
+          v-html="homeSidebarB"
         ></div>
       </template>
     </MainLayout>
@@ -195,23 +202,15 @@ export default {
     }
   },
   computed: {
-    homeData () {
-      return {
-        ...this.$page.frontmatter
-      }
-    },
-    hasFeatures () {
-      return !!(this.homeData.features && this.homeData.features.length)
-    },
     homeSidebarB () {
       const { htmlModules } = this.$themeConfig
       return htmlModules ? htmlModules.homeSidebarB : ''
     },
     showBanner () { // 当分页不在第一页时隐藏banner栏
       return this.$route.query.p
-      && this.$route.query.p != 1
-      && (!this.homeData.postList || this.homeData.postList === 'detailed')
-          ? false : true
+        && this.$route.query.p != 1
+        && (!this.homeData.postList || this.homeData.postList === 'detailed')
+        ? false : true
     },
     bannerBgStyle () {
       let bannerBg = this.homeData.bannerBg
@@ -234,6 +233,11 @@ export default {
       }
 
     },
+    homeData () {
+      return {
+        ...this.$page.frontmatter
+      }
+    },
     actionLink () {
       return {
         link: this.homeData.actionLink,
@@ -253,21 +257,20 @@ export default {
       this.currentPage = Number(this.$route.query.p)
     }
 
-    if (this.hasFeatures && this.isMQMobile && (!this.$route.query.p || this.$route.query.p == 1)) {
+    if (this.isMQMobile && (!this.$route.query.p || this.$route.query.p == 1)) {
       this.init()
     }
 
-    if (this.hasFeatures) {
-      window.addEventListener('resize', () => {
-        this.isMQMobile = window.innerWidth < MOBILE_DESKTOP_BREAKPOINT ? true : false;
-        if (this.isMQMobile && !this.slide && !this.mark) {
-          this.mark++
-          setTimeout(() => {
-            this.init()
-          }, 60)
-        }
-      })
-    }
+    window.addEventListener('resize', () => {
+      this.isMQMobile = window.innerWidth < MOBILE_DESKTOP_BREAKPOINT ? true : false;
+      if (this.isMQMobile && !this.slide && !this.mark) {
+        this.mark++
+        setTimeout(() => {
+          this.init()
+        }, 60)
+      }
+    })
+
   },
   beforeDestroy () {
     clearTimeout(this.playTimer)
@@ -281,7 +284,7 @@ export default {
         this.currentPage = Number(this.$route.query.p)
       }
 
-      if (this.hasFeatures && this.currentPage === 1 && this.isMQMobile) {
+      if (this.currentPage === 1 && this.isMQMobile) {
         setTimeout(() => {
           this.slide && this.slide.destroy()
           this.init()
@@ -331,8 +334,8 @@ export default {
     },
     getScrollTop () {
       return window.pageYOffset
-          || document.documentElement.scrollTop
-          || document.body.scrollTop
+        || document.documentElement.scrollTop
+        || document.body.scrollTop
     },
   },
 
@@ -354,7 +357,6 @@ export default {
       position relative
       z-index 1
       overflow hidden
-      min-height: 450px
       .hero
         text-align center
         margin-top 3rem
@@ -468,7 +470,7 @@ export default {
   .banner.hide-banner
     display none
     & + .main-wrapper
-      margin-top: ($navbarHeight + 0.9rem)
+      margin-top ($navbarHeight + 0.9rem)
   .main-wrapper
     margin-top 2rem
     .main-left

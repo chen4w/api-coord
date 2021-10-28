@@ -18,9 +18,7 @@
               :src="$withBase(homeData.heroImage)"
               :alt="homeData.heroAlt"
           />
-          <h1 v-if="homeData.heroText" :style="isMQMobile?'margin-bottom: 40px;font-size: 75px;color: #9edb80':'margin-bottom: 40px;font-size: 100px;color: #9edb80'">
-            RepChain
-          </h1>
+
           <h1 v-if="homeData.heroText" id="main-title">
             {{ homeData.heroText }}
           </h1>
@@ -354,7 +352,6 @@ export default {
       position relative
       z-index 1
       overflow hidden
-      min-height: 450px
       .hero
         text-align center
         margin-top 3rem
