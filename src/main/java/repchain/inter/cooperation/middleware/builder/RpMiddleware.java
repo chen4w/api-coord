@@ -89,6 +89,7 @@ public class RpMiddleware {
 
         public RpMiddlewareBuilder communicationServer(CommunicationServer communicationServer) {
             this.communicationServer = communicationServer;
+            this.communicationServer.setReceiveClient(this.receiveClient);
             return this;
         }
 

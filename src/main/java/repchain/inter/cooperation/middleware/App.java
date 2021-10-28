@@ -6,6 +6,7 @@ import repchain.inter.cooperation.middleware.service.impl.CommunicationServerImp
 import repchain.inter.cooperation.middleware.service.impl.ReceiveClientImpl;
 import repchain.inter.cooperation.middleware.service.impl.ReceiveServerImpl;
 
+
 /**
  * @author lhc
  * @version 1.0
@@ -24,4 +25,5 @@ public class App {
                 .build();
         middleware.start();
     }
+
 }

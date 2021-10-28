@@ -1,10 +1,12 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
-import cn.hutool.http.server.HttpServerRequest;
-import cn.hutool.http.server.HttpServerResponse;
+import cn.hutool.http.HttpUtil;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author lhc
@@ -14,8 +16,12 @@ import repchain.inter.cooperation.middleware.service.ReceiveClient;
  * @description 描述
  */
 public class ReceiveClientImpl implements ReceiveClient {
+
     @Override
     public Result msg(TransEntity transEntity) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("loginName", transEntity.getHeader().getData());
+        String result = HttpUtil.get("http://42.193.105.24//user/sgUser/valid",map);
+        return Result.newBuilder().setData(result).setMsg("Action OK").build();
     }
 }

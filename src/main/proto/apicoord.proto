@@ -19,8 +19,8 @@ message TransEntity{
 message Result{
   int32 code = 1;
   string msg = 2 ;
-  Signature signature=3;
-  string data=4;
+  Signature signature = 3;
+  string data = 4;
 }
 
 message Header {//消息头
@@ -38,6 +38,17 @@ message Header {//消息头
   string signData = 12;
   string data = 13;
   int32 state = 14;
+  HttpType httpType = 15;
+  string url = 16;
+}
+
+enum  HttpType
+{
+  GET = 0;
+  POST = 1;
+  PUT = 2;
+  DELETE = 3;
+  PATCH = 4;
 }
 
 message Signature {//消息结尾

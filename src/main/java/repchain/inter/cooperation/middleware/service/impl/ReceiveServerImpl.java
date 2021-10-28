@@ -1,17 +1,22 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
 import cn.hutool.core.thread.ExecutorBuilder;
-import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
+import cn.hutool.json.JSONUtil;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.proto.Header;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.*;
 
 
@@ -23,6 +28,7 @@ import java.util.concurrent.*;
  * @description 描述
  */
 public class ReceiveServerImpl implements ReceiveServer {
+
     private static final Logger logger = LoggerFactory.getLogger(CommunicationServerImpl.class);
 
     public CommunicationClient communicationClient;
@@ -53,12 +59,16 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     @Override
     public void msg(HttpServerRequest request, HttpServerResponse response) {
-        TransEntity.newBuilder().build();
-        Result result = communicationClient.sendMessage(TransEntity.newBuilder().build());
+        String data = request.getParam("data");
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(Header.newBuilder().setData(data).build()).build();
+        Result result = communicationClient.sendMessage(transEntity);
+        System.out.println(result.getData());
+        response.setContentType("text/html;charset=utf-8");
+        response.write(result.getData());
     }
 
     @Override
-    public void file (HttpServerRequest request, HttpServerResponse response){
+    public void file(HttpServerRequest request, HttpServerResponse response) {
 
     }
 }
