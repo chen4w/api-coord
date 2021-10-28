@@ -7,7 +7,7 @@ module.exports = {
   theme: require.resolve('../../theme-vdoing'), // 使用本地主题
   title: "接口协同",
   description: '基于RepChain区块链的接口协同组件',
-  base: '/doc/', // 格式：'/<仓库名>/'， 默认'/'
+  base: '/api-coord/', // 格式：'/<仓库名>/'， 默认'/'
   markdown: {
     lineNumbers: true, // 代码行号
   },
