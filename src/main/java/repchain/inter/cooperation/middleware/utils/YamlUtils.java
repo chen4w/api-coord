@@ -25,4 +25,12 @@ public class YamlUtils {
         FileReader fileReader = new FileReader(path + "/application.yml");
         repchainConfig = yaml.load(fileReader.getInputStream());
     }
+
+    public static RepchainConfig getYamlNowTime(){
+        Yaml yaml = new Yaml(new Constructor(RepchainConfig.class));
+        YamlUtils yamlUtils = new YamlUtils();
+        String path = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
+        FileReader fileReader = new FileReader(path + "/application.yml");
+        return yaml.load(fileReader.getInputStream());
+    }
 }

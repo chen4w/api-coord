@@ -23,5 +23,6 @@ public class Repchain implements Serializable {
 
     private static final long serialVersionUID = 2532596334359427852L;
     private String host;
+    private Long height;
     private List<InterCo> interCo;
 }

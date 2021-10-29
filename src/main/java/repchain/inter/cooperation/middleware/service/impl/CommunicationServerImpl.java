@@ -5,7 +5,6 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import repchain.inter.cooperation.middleware.async.multi.request.AsyncMultiRequestServer;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;

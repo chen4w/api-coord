@@ -25,5 +25,4 @@ public class App {
                 .build();
         middleware.start();
     }
-
 }
