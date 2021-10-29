@@ -101,6 +101,7 @@ public class RpMiddleware {
         public RpMiddlewareBuilder receiveServer(ReceiveServer receiveServer) {
             this.receiveServer = receiveServer;
             this.receiveServer.setCommunicationClient(this.communicationClient);
+            this.receiveServer.setTransactionCommit(this.transactionCommit);
             return this;
         }
 

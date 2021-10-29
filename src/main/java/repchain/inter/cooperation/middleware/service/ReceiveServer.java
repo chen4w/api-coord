@@ -21,4 +21,6 @@ public interface ReceiveServer {
     Object msg(String serviceId,int seq,boolean isEnd, Map<String,Object> map);
 
     void file(HttpServerRequest request, HttpServerResponse response);
+
+    void setTransactionCommit(TransactionCommit commit);
 }

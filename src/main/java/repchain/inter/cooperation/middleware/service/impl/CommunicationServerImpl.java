@@ -11,6 +11,7 @@ import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
+import repchain.inter.cooperation.middleware.service.TransactionCommit;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -66,6 +67,7 @@ public class CommunicationServerImpl implements CommunicationServer {
     public void setReceiveClient(ReceiveClient receiveClient) {
         this.receiveClient = receiveClient;
     }
+
 
     private void stop() throws InterruptedException {
         if (server != null) {

@@ -1,6 +1,5 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
-import cn.hutool.core.util.IdUtil;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;

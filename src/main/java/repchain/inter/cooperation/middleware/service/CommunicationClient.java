@@ -11,5 +11,13 @@ import repchain.inter.cooperation.middleware.proto.TransEntity;
  * @description 描述
  */
 public interface CommunicationClient {
+
+    /**
+     * @author `lhc`
+     * @description // 中间件发送数据给中间件
+     * @date 2021/10/29 5:31 下午
+     * @params [transEntity]
+     * @return repchain.inter.cooperation.middleware.proto.Result
+     **/
     Result sendMessage(TransEntity transEntity);
 }

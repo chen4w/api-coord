@@ -1,10 +1,7 @@
 package repchain.inter.cooperation.middleware;
 
 import repchain.inter.cooperation.middleware.builder.RpMiddleware;
-import repchain.inter.cooperation.middleware.service.impl.CommunicationClientImpl;
-import repchain.inter.cooperation.middleware.service.impl.CommunicationServerImpl;
-import repchain.inter.cooperation.middleware.service.impl.ReceiveClientImpl;
-import repchain.inter.cooperation.middleware.service.impl.ReceiveServerImpl;
+import repchain.inter.cooperation.middleware.service.impl.*;
 
 
 /**
@@ -16,9 +13,16 @@ import repchain.inter.cooperation.middleware.service.impl.ReceiveServerImpl;
  */
 public class App {
 
-
+    /**
+     * @author lhc
+     * @description // 构建中间件建造者，启动中间件
+     * @date 2021/10/29 5:25 下午
+     * @params [args]
+     * @return void
+     **/
     public static void main(String[] args) {
         RpMiddleware middleware = RpMiddleware.builder()
+                .transactionCommit(new TransactionCommitImpl())
                 .communicationClient(new CommunicationClientImpl())
                 .receiveServer(new ReceiveServerImpl())
                 .receiveClient(new ReceiveClientImpl())

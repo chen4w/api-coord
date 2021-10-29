@@ -13,6 +13,7 @@ import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
+import repchain.inter.cooperation.middleware.service.TransactionCommit;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
 
 import java.util.Map;
@@ -32,6 +33,7 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     public CommunicationClient communicationClient;
 
+    public TransactionCommit commit;
 
     @Override
     public void setCommunicationClient(CommunicationClient communicationClient) {
@@ -106,5 +108,10 @@ public class ReceiveServerImpl implements ReceiveServer {
         System.out.println(result.getData());
         response.setContentType("text/html;charset=utf-8");
         response.write(result.getData());
+    }
+
+    @Override
+    public void setTransactionCommit(TransactionCommit commit) {
+        this.commit = commit;
     }
 }
