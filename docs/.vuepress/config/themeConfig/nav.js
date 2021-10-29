@@ -50,7 +50,7 @@ module.exports = [
                 link: '/pages/c8122d/',
             },
             {
-                text: 'GRPC请求存证',
+                text: 'gRPC请求存证',
                 link: '/pages/932973/',
             },
             {
