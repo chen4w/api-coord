@@ -11,5 +11,5 @@ import repchain.inter.cooperation.middleware.proto.TransEntity;
  * @description 描述
  */
 public interface CommunicationClient {
-    Result sendMessage(TransEntity transEntity);
+    Result sendMessage(TransEntity transEntity,String id);
 }

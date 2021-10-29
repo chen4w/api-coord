@@ -5,18 +5,16 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.json.JSONUtil;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.constant.MiddleConstant;
 import repchain.inter.cooperation.middleware.proto.Header;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.concurrent.*;
 
 
@@ -51,20 +49,44 @@ public class ReceiveServerImpl implements ReceiveServer {
         // 创建http服务
         HttpUtil.createServer(port)
                 .setExecutor(executor)
-                .addAction("/msg", this::msg)
+                .addAction("/msg", (req, res) -> {
+                    try {
+                        String id = req.getParam("id");
+                        int seq = Integer.parseInt(req.getParam("seq"));
+                        Integer isEnd = Integer.parseInt(req.getParam("isEnd"));
+                        String url= req.getParam("url");
+                        boolean endFlag;
+                        if (isEnd == MiddleConstant.NOT_END) {
+                            endFlag = false;
+                        } else {
+                            endFlag = true;
+                        }
+                        String data = req.getParam("data");
+                        Map<String, Object> map = JSONUtil.parseObj(data);
+                        res.setContentType("text/html;charset=utf-8");
+                        Object result = msg(id, seq, endFlag, map);
+                        String resultStr;
+                        if (result instanceof String) {
+                            resultStr = (String) result;
+                        } else {
+                            resultStr = JSONUtil.toJsonStr(result);
+                        }
+                        res.write(resultStr);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                        res.write(e.getMessage());
+                    }
+                })
                 .addAction("/file", this::file)
                 .start();
         logger.info("Http Server started, listening on " + port);
     }
 
     @Override
-    public void msg(HttpServerRequest request, HttpServerResponse response) {
-        String data = request.getParam("data");
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(Header.newBuilder().setData(data).build()).build();
-        Result result = communicationClient.sendMessage(transEntity);
-        System.out.println(result.getData());
-        response.setContentType("text/html;charset=utf-8");
-        response.write(result.getData());
+    public Object msg(String id, int seq, boolean isEnd, Map<String, Object> map) {
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(Header.newBuilder().setData(JSONUtil.toJsonStr(map)).build()).build();
+        Result result = communicationClient.sendMessage(transEntity, id);
+        return result.getData();
     }
 
     @Override

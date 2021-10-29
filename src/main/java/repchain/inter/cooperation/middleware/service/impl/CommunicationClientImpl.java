@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class CommunicationClientImpl implements CommunicationClient {
 
     @Override
-    public Result sendMessage(TransEntity transEntity) {
+    public Result sendMessage(TransEntity transEntity,String id) {
         ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:50051").usePlaintext().build();
         try {
             TransformGrpc.TransformBlockingStub blockingStub = TransformGrpc.newBlockingStub(channel);

@@ -3,6 +3,8 @@ package repchain.inter.cooperation.middleware.service;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 
+import java.util.Map;
+
 /**
  * @author lhc
  * @version 1.0
@@ -16,7 +18,7 @@ public interface ReceiveServer {
 
     void start();
 
-    void msg(HttpServerRequest request, HttpServerResponse response);
+    Object msg(String id,int seq,boolean isEnd, Map<String,Object> map);
 
     void file(HttpServerRequest request, HttpServerResponse response);
 }
