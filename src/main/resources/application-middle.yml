@@ -1,0 +1,82 @@
+# repchain配置文件，可将文件复制到yml中，springboot需要自己封装bean，若感觉此部分内容较多也可以持久化到数据库中
+repchain:
+  # repchain 地址
+  host: 192.168.2.76:8081
+  # 同步区块高度
+  height: 0
+  # 用户唯一标识
+  creditCode: 12324109989878127839
+  # 证书名称
+  certName: test
+  # 证书
+  cert: -----BEGIN CERTIFICATE-----
+    MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+    IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+    VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+    E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+    DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+    ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+    zZXMcw==
+    -----END CERTIFICATE-----
+  # 加密私钥
+  privateKey: -----BEGIN ENCRYPTED PRIVATE KEY-----
+    MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAi0q5jmLN61vAIBZDAU
+    BggqhkiG9w0DBwQITUCFquFjnwEEgZAbZouweJPtR6zRaDhULbyzF3uaOnMErtx3
+    kIguDP/qeb3wVoTW8kFuOw1jdrY5WyHGCngfpM5br6AUaEqIlBnA7rS3KZfhsxxq
+    yLQcaySsfUowUE61oStDJtDgHMJE0dbxuYXjnzSQrnp9AnnX65uwUeDE6c+i7DnW
+    pWoroVTXK/dQb4vWNmxmacQ6G8jmW0s=
+    -----END ENCRYPTED PRIVATE KEY-----
+  # 私钥设置的密码
+  password: 123456
+  # 签名证书对应的请求方id和服务方id可在dashboard查看
+  services:
+    # 调用方id
+    - serviceId: 15cc9e36163298650597zxsa2
+      e_from: 15cc9e361632986505972
+      # 服务方证书
+      from_cert: -----BEGIN CERTIFICATE-----
+        MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+        IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+        VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+        E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+        DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+        ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+        zZXMcw==
+        -----END CERTIFICATE-----
+      # 服务提供方id
+      e_to: 1098aa9d1632986347443
+      # 调用方证书
+      to_cert: -----BEGIN CERTIFICATE-----
+        MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+        IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+        VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+        E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+        DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+        ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+        zZXMcw==
+        -----END CERTIFICATE-----
+# 中间件配置
+middleware:
+  # 访问服务提供者接口客户端
+  receiveClient:
+    # 超时时间
+    timeout: 5000
+  # 中间件代理服务器，调用方调用此服务器进行数据转发
+  receiveServer:
+    # 端口
+    port: 8888
+    # 初始线程池大小
+    corePoolSize: 50
+    # 最大线程池大小
+    maxPoolSize: 200
+    # 队列，用于存在未执行的线程
+    workQueue: 100
+  # 中间件之间通信的客户端
+  comuniClient:
+    timeout: 5000
+  # 中间件之间通信的服务器
+  comuniServer:
+    port: 50010
+    corePoolSize: 50
+    maxPoolSize: 200
+    workQueue: 100

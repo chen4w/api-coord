@@ -2,6 +2,7 @@ package repchain.inter.cooperation.middleware.utils;
 
 import cn.hutool.core.lang.Singleton;
 import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 
 /**
  * @author lhc
@@ -23,6 +24,6 @@ public class SnowIdGenerator {
     public static String getId(){
         Snowflake snowflake = getInstance();
         long id = snowflake.nextId();
-        return String.valueOf(id);
+        return IdUtil.simpleUUID()+id;
     }
 }

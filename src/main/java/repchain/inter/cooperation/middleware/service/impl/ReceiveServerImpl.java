@@ -13,6 +13,7 @@ import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
+import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -51,7 +52,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .setExecutor(executor)
                 .addAction("/msg", (req, res) -> {
                     try {
-                        String id = req.getParam("id");
+                        String id = req.getParam("serviceId");
                         int seq = Integer.parseInt(req.getParam("seq"));
                         Integer isEnd = Integer.parseInt(req.getParam("isEnd"));
                         String url= req.getParam("url");
@@ -83,14 +84,27 @@ public class ReceiveServerImpl implements ReceiveServer {
     }
 
     @Override
-    public Object msg(String id, int seq, boolean isEnd, Map<String, Object> map) {
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(Header.newBuilder().setData(JSONUtil.toJsonStr(map)).build()).build();
-        Result result = communicationClient.sendMessage(transEntity, id);
+    public Object msg(String serviceId, int seq, boolean isEnd, Map<String, Object> map) {
+        String data = JSONUtil.toJsonStr(map);
+        // 创建交易id
+        String cid = SnowIdGenerator.getId();
+        Header header = Header.newBuilder()
+                .setCid(cid)
+                .setValidStr(data)
+                .setData(data)
+                .build();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(header).build();
+        Result result = communicationClient.sendMessage(transEntity);
         return result.getData();
     }
 
     @Override
     public void file(HttpServerRequest request, HttpServerResponse response) {
-
+        String data = request.getParam("data");
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(Header.newBuilder().setData(data).build()).build();
+        Result result = communicationClient.sendMessage(transEntity);
+        System.out.println(result.getData());
+        response.setContentType("text/html;charset=utf-8");
+        response.write(result.getData());
     }
 }

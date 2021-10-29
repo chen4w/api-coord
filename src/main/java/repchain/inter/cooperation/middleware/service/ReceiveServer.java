@@ -18,7 +18,7 @@ public interface ReceiveServer {
 
     void start();
 
-    Object msg(String id,int seq,boolean isEnd, Map<String,Object> map);
+    Object msg(String serviceId,int seq,boolean isEnd, Map<String,Object> map);
 
     void file(HttpServerRequest request, HttpServerResponse response);
 }

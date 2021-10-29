@@ -16,6 +16,7 @@ import repchain.inter.cooperation.middleware.service.impl.ReceiveServerImpl;
  */
 public class App {
 
+
     public static void main(String[] args) {
         RpMiddleware middleware = RpMiddleware.builder()
                 .communicationClient(new CommunicationClientImpl())

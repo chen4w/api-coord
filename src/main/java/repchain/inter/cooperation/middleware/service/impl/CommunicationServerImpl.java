@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import cn.hutool.core.thread.ExecutorBuilder;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
@@ -12,6 +13,8 @@ import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,9 +35,16 @@ public class CommunicationServerImpl implements CommunicationServer {
     @Override
     public void start() {
         int port = 50051;
+        // 创建线程池
+        ExecutorService executor = ExecutorBuilder.create()
+                .setCorePoolSize(5)
+                .setMaxPoolSize(10)
+                .setWorkQueue(new LinkedBlockingQueue<>(100))
+                .build();
         try {
             server = ServerBuilder.forPort(port)
                     .addService(new TransformImpl())
+                    .executor(executor)
                     .build()
                     .start();
         } catch (IOException e) {

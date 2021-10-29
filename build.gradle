@@ -49,6 +49,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:5.1.46'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.6'
+    implementation 'org.apache.commons:commons-pool2:2.5.0'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

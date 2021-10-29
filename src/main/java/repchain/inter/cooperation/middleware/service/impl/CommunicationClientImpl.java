@@ -2,6 +2,8 @@ package repchain.inter.cooperation.middleware.service.impl;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
+import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
@@ -18,18 +20,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class CommunicationClientImpl implements CommunicationClient {
 
+
     @Override
-    public Result sendMessage(TransEntity transEntity,String id) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:50051").usePlaintext().build();
-        try {
-            TransformGrpc.TransformBlockingStub blockingStub = TransformGrpc.newBlockingStub(channel);
-            return blockingStub.send(transEntity);
-        } finally {
-            try {
-                channel.shutdownNow().awaitTermination(5, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    public Result sendMessage(TransEntity transEntity) {
+        String host = "localhost";
+        int port = 50051;
+        ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
+        Result result = comClientSingle.sendMessage(transEntity);
+        ComClientPool.returnObject(comClientSingle, host, port);
+        return result;
     }
 }

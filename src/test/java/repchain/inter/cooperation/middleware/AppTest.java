@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
-import repchain.inter.cooperation.middleware.model.yml.RepchainConfig;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 /**
@@ -26,7 +25,5 @@ public class AppTest
      */
     @Test
     public void testYaml(){
-        RepchainConfig repchainConfig = YamlUtils.getYamlNowTime();
-        System.out.println(JSONUtil.toJsonPrettyStr(repchainConfig));
     }
 }
