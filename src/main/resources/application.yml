@@ -1,0 +1,84 @@
+# repchain配置文件，可将文件复制到yml中，springboot需要自己封装bean，若感觉此部分内容较多也可以持久化到数据库中
+repchain:
+  # repchain 地址
+  host: 192.168.2.76:8081
+  # 同步区块高度
+  height: 0
+  # 接口协同信息此处为list可以配置多个
+  interCo:
+    # 用户标识
+    - creditCode: 12324109989878127839
+      # 证书名称
+      certName: test
+      # 证书
+      cert: -----BEGIN CERTIFICATE-----
+        MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+        IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+        VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+        E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+        DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+        ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+        zZXMcw==
+        -----END CERTIFICATE-----
+      # 加密私钥
+      privateKey: -----BEGIN ENCRYPTED PRIVATE KEY-----
+        MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAi0q5jmLN61vAIBZDAU
+        BggqhkiG9w0DBwQITUCFquFjnwEEgZAbZouweJPtR6zRaDhULbyzF3uaOnMErtx3
+        kIguDP/qeb3wVoTW8kFuOw1jdrY5WyHGCngfpM5br6AUaEqIlBnA7rS3KZfhsxxq
+        yLQcaySsfUowUE61oStDJtDgHMJE0dbxuYXjnzSQrnp9AnnX65uwUeDE6c+i7DnW
+        pWoroVTXK/dQb4vWNmxmacQ6G8jmW0s=
+        -----END ENCRYPTED PRIVATE KEY-----
+      # 私钥设置的密码
+      password: 123456
+      # 内容hash算法
+      algo_hash: SHA256withECDSA
+      # 内容签名算法
+      algo_sign: SHA256withECDSA
+      # 签名证书对应的请求方id和服务方id可在dashboard查看
+      services:
+        # 调用方id
+        - e_from: 15cc9e361632986505972
+          # 调用方host，服务方可以不写此处地址及端口号，若为异步调用，调用方会将数据写入header中
+          from_host: localhost
+          # 调用方端口
+          from_port: 8889
+          # 服务方证书
+          from_cert: -----BEGIN CERTIFICATE-----
+            MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+            IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+            VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+            E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+            DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+            ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+            zZXMcw==
+            -----END CERTIFICATE-----
+          # 服务提供方id
+          e_to: 1098aa9d1632986347443
+          # 服务方地址
+          to_host: localhost
+          # 服务方端口
+          to_port: 8888
+          # 调用方证书
+          to_cert: -----BEGIN CERTIFICATE-----
+            MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+            IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+            VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+            E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+            DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+            ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+            zZXMcw==
+            -----END CERTIFICATE-----
+
+#middleware:
+#  receiveClient:
+#    host: 192.168.4.1
+#    port: 8081
+#    timeout: 5000
+#  receiveServer:
+#    port: 8888
+#  comuniClient:
+#    host: 192.168.4.1
+#    port: 8081
+#    timeout: 5000
+#  comuniServer:
+#    port: 50010
