@@ -49,6 +49,7 @@ public class RpMiddleware {
     }
 
     public void start(){
+        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
         if (this.receiveServer == null) {
             throw new NullPointerException("receiveServer can not be null!!!");
         }
@@ -57,6 +58,7 @@ public class RpMiddleware {
         }
         this.receiveServer.start();
         this.communicationServer.start();
+        this.blockSync.start();
     }
 
     public static class RpMiddlewareBuilder {

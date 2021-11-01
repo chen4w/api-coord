@@ -50,6 +50,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'org.apache.commons:commons-pool2:2.5.0'
+    implementation 'net.sf.ehcache:ehcache:2.10.2'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

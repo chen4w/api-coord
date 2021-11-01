@@ -2,6 +2,7 @@ package repchain.inter.cooperation.middleware;
 
 import repchain.inter.cooperation.middleware.builder.RpMiddleware;
 import repchain.inter.cooperation.middleware.service.impl.*;
+import repchain.inter.cooperation.middleware.utils.EhcacheManager;
 
 
 /**
@@ -22,12 +23,14 @@ public class App {
      * @params [args]
      **/
     public static void main(String[] args) {
+
         RpMiddleware middleware = RpMiddleware.builder()
                 .transactionCommit(new TransactionCommitImpl())
                 .communicationClient(new CommunicationClientImpl())
                 .receiveServer(new ReceiveServerImpl())
                 .receiveClient(new ReceiveClientImpl())
                 .communicationServer(new CommunicationServerImpl())
+                .blockSync(new BlockSyncImpl())
                 .build();
         middleware.start();
     }

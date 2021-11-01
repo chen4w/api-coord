@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.constant.MiddleConstant;
+import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.proto.Header;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
@@ -15,6 +16,7 @@ import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
 import repchain.inter.cooperation.middleware.service.TransactionCommit;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
+import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.util.Map;
 import java.util.concurrent.*;
@@ -42,12 +44,13 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     @Override
     public void start() {
-        int port = 8888;
+        MiddleServer recServer= YamlUtils.middleConfig.getMiddleware().getRecServer();
+        int port = recServer.getPort();
         // 创建线程池
         ExecutorService executor = ExecutorBuilder.create()
-                .setCorePoolSize(5)
-                .setMaxPoolSize(10)
-                .setWorkQueue(new LinkedBlockingQueue<>(100))
+                .setCorePoolSize(recServer.getCorePoolSize())
+                .setMaxPoolSize(recServer.getMaxPoolSize())
+                .setWorkQueue(new LinkedBlockingQueue<>(recServer.getWorkQueue()))
                 .build();
         // 创建http服务
         HttpUtil.createServer(port)

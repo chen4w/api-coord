@@ -6,12 +6,13 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
-import repchain.inter.cooperation.middleware.service.TransactionCommit;
+import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -35,12 +36,13 @@ public class CommunicationServerImpl implements CommunicationServer {
 
     @Override
     public void start() {
-        int port = 50051;
+        MiddleServer  comServer= YamlUtils.middleConfig.getMiddleware().getComServer();
+        int port = comServer.getPort();
         // 创建线程池
         ExecutorService executor = ExecutorBuilder.create()
-                .setCorePoolSize(5)
-                .setMaxPoolSize(10)
-                .setWorkQueue(new LinkedBlockingQueue<>(100))
+                .setCorePoolSize(comServer.getCorePoolSize())
+                .setMaxPoolSize(comServer.getMaxPoolSize())
+                .setWorkQueue(new LinkedBlockingQueue<>(comServer.getWorkQueue()))
                 .build();
         try {
             server = ServerBuilder.forPort(port)

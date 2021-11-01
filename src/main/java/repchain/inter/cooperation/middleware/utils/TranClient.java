@@ -24,7 +24,7 @@ public class TranClient {
     private Peer.CertId certId;
     private Peer.ChaincodeId chainCodeId;
     private TranCreator tranCreator;
-    private static ConcurrentHashMap<String, TranClient> userClientMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, TranClient> userClientMap = new ConcurrentHashMap<>();
 
     public TranClient(String creditCode, String certName,String privateKeyPem,String chainCodeName,String password) {
         this.chainCodeId = Peer.ChaincodeId.newBuilder().setChaincodeName(chainCodeName).setVersion(1).build();
