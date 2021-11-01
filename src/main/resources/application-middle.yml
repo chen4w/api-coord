@@ -55,14 +55,14 @@ repchain:
         ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
         zZXMcw==
         -----END CERTIFICATE-----
-# 中间件配置
+## 中间件配置
 middleware:
-  # 访问服务提供者接口客户端
-  receiveClient:
+  # 用来访问服务方提供的接口的客户端
+  recClient:
     # 超时时间
     timeout: 5000
-  # 中间件代理服务器，调用方调用此服务器进行数据转发
-  receiveServer:
+  # 用来让调用方访问的服务器
+  recServer:
     # 端口
     port: 8888
     # 初始线程池大小
@@ -72,11 +72,22 @@ middleware:
     # 队列，用于存在未执行的线程
     workQueue: 100
   # 中间件之间通信的客户端
-  comuniClient:
+  comClient:
     timeout: 5000
+    maxTotal: 8
+    minIdle: 1
+    maxIdle: 8
+    maxWaitMillis: -1
+    lifo: true
+    minEvictableIdleTimeMillis: 1800000
+    blockWhenExhausted: true
   # 中间件之间通信的服务器
-  comuniServer:
+  comServer:
+    # 端口
     port: 50010
+    # 初始线程池大小
     corePoolSize: 50
+    # 最大线程池大小
     maxPoolSize: 200
+    # 队列，有用存储未执行的线程
     workQueue: 100

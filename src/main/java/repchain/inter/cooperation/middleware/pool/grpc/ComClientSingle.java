@@ -43,7 +43,7 @@ public class ComClientSingle {
         } catch (StatusRuntimeException e) {
             String msg = "RPC调用失败: " + e.getMessage();
             logger.error(msg, e);
-            result = Result.newBuilder().setMsg("RPC调用失败: " + e.getMessage()).setCode(2).build();
+            result = Result.newBuilder().setMsg(msg).setCode(2).build();
         }
         return result;
     }

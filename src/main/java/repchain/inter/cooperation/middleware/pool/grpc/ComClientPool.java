@@ -1,9 +1,10 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.model.yml.ComClient;
+import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,24 +29,10 @@ public class ComClientPool {
      * @return void
      **/
     private static GenericObjectPool<ComClientSingle> createPool(String host,int port){
-        // 连接池的配置
-        GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        // 池中的最大连接数
-        poolConfig.setMaxTotal(8);
-        // 最少的空闲连接数
-        poolConfig.setMinIdle(1);
-        // 最多的空闲连接数
-        poolConfig.setMaxIdle(8);
-        // 当连接池资源耗尽时,调用者最大阻塞的时间,超时时抛出异常 单位:毫秒数
-        poolConfig.setMaxWaitMillis(-1);
-        // 连接池存放池化对象方式,true放在空闲队列最前面,false放在空闲队列最后
-        poolConfig.setLifo(true);
-        // 连接空闲的最小时间,达到此值后空闲连接可能会被移除,默认即为30分钟
-        poolConfig.setMinEvictableIdleTimeMillis(1000L * 60L * 30L);
-        // 连接耗尽时是否阻塞,默认为true
-        poolConfig.setBlockWhenExhausted(true);
+        // 连接池的配置，从yml文件中读取
+        ComClient comClient = YamlUtils.middleConfig.getMiddleware().getComClient();
         // 连接池创建
-        GenericObjectPool<ComClientSingle> objectPool = new GenericObjectPool<>(new ComClientFactory(host, port), poolConfig);
+        GenericObjectPool<ComClientSingle> objectPool = new GenericObjectPool<>(new ComClientFactory(host, port), comClient);
         // 存入hash
         poolMap.put(host + port, objectPool);
         return objectPool;

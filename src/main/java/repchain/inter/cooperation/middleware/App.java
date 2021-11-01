@@ -13,12 +13,13 @@ import repchain.inter.cooperation.middleware.service.impl.*;
  */
 public class App {
 
+
     /**
+     * @return void
      * @author lhc
      * @description // 构建中间件建造者，启动中间件
      * @date 2021/10/29 5:25 下午
      * @params [args]
-     * @return void
      **/
     public static void main(String[] args) {
         RpMiddleware middleware = RpMiddleware.builder()

@@ -8,15 +8,14 @@ import lombok.NoArgsConstructor;
 /**
  * @author lhc
  * @version 1.0
- * @className MiddleConfig
- * @date 2021年10月29日 2:27 下午
+ * @className RClient
+ * @date 2021年11月01日 9:28 上午
  * @description 描述
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class MiddleConfig {
-    private RepChain repchain;
-    private Middleware middleware;
+public class RecClient {
+    private Long timeout;
 }
