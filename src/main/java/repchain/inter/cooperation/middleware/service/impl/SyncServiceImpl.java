@@ -26,4 +26,19 @@ public class SyncServiceImpl implements SyncService {
         EhcacheManager.put(EhCacheConstant.REPCHAIN, EhCacheConstant.BLOCK, block.getHeight());
         logger.info("区块：{} 保存成功", block.getHeight());
     }
+
+    @Override
+    public void defInterface(Peer.OperLog ol) {
+
+    }
+
+    @Override
+    public void register(Peer.OperLog ol) {
+
+    }
+
+    @Override
+    public void ackProof(Peer.OperLog ol) {
+
+    }
 }

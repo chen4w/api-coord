@@ -10,5 +10,12 @@ import com.rcjava.protos.Peer;
  * @description 描述
  */
 public interface SyncService {
+
     void saveBlock(Peer.Block block);
+
+    void defInterface(Peer.OperLog ol);
+
+    void register(Peer.OperLog ol);
+
+    void ackProof(Peer.OperLog ol);
 }

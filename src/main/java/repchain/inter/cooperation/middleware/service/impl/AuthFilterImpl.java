@@ -9,5 +9,6 @@ import repchain.inter.cooperation.middleware.service.AuthFilter;
  * @date 2021年10月27日 9:51 上午
  * @description 描述
  */
-public class AuthFilterImpl  implements AuthFilter {
+public class AuthFilterImpl implements AuthFilter {
+
 }

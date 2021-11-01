@@ -9,10 +9,16 @@ import com.rcjava.sync.SyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
+import repchain.inter.cooperation.middleware.constant.InterfaceConstant;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.service.BlockSync;
 import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.KeyUtils;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -40,7 +46,7 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
         Long height = (Long) EhcacheManager.getValue(EhCacheConstant.REPCHAIN, EhCacheConstant.BLOCK);
         long tempLocHeight;
         if (height != null) {
-            tempLocHeight = Math.max(locHeight,height);
+            tempLocHeight = Math.max(locHeight, height);
         } else {
             tempLocHeight = locHeight;
         }
@@ -64,44 +70,32 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
         try {
             // 将区块高度持久化
             syncService.saveBlock(block);
-//            // true为电力合约，false为用户合约
-//            AtomicBoolean flag = new AtomicBoolean(true);
-//            block.getTransactionsList().forEach(result -> {
-//                if (ElectricBaseClient.CERT.equals(result.getCid().getChaincodeName())) {
-//                    flag.set(false);
-//                }
-//            });
-//            if (flag.get()) {
-//                // 电力合约操作
-//                block.getTransactionResultsList().forEach(result -> result.getOlList().forEach(ol -> {
-//                    if (ol.getKey().startsWith(ElectricConstant.ORDER)) {
-//                        // 订单操作
-//                        blockSyncService.orderOperation(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.CASH)) {
-//                        // 用户余额操作
-//                        blockSyncService.changeCash(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.ROLE)) {
-//                        // 用户授权操作
-//                        blockSyncService.role(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.DEAL)) {
-//                        // 交易操作
-//                        blockSyncService.deal(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.CHARGE_ELECTRICITY)) {
-//                        // 电量变动
-//                        blockSyncService.changeElectric(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.CONTRACT)) {
-//                        // 同步合同生成
-//                        blockSyncService.contract(ol);
-//                    } else if (ol.getKey().startsWith(ElectricConstant.ELECTRIC_PRICE)) {
-//                        // 设置电量
-//                        blockSyncService.electricPrice(ol);
-//                    }
-//                }));
-//            } else {
-//                // 用户注册及证书
-//                block.getTransactionResultsList().forEach(result ->
-//                        result.getOlList().forEach(blockSyncService::userRegister));
-//            }
+            List<String> list = new LinkedList<>();
+            block.getTransactionsList().forEach(result -> list.add(result.getCid().getChaincodeName()));
+            // 合约数据同步操作
+            AtomicInteger i = new AtomicInteger();
+            block.getTransactionResultsList().forEach(result -> {
+                String chainCodeName = list.get(i.get());
+                result.getOlList().forEach(ol -> {
+                    String key = ol.getKey();
+                    // 接口协同合约
+                    if (InterfaceConstant.NAME.equals(chainCodeName)) {
+                        // 接口定义
+                        if (KeyUtils.startsWith(key, InterfaceConstant.DEF)) {
+                            syncService.defInterface(ol);
+                        }
+                        // 接口登记
+                        if (KeyUtils.startsWith(key, InterfaceConstant.REGISTER) || KeyUtils.startsWith(key, InterfaceConstant.INVOKE_REGISTER)) {
+                            syncService.register(ol);
+                        }
+                        // 接口存证
+                        if (KeyUtils.startsWith(key, InterfaceConstant.ACK_PROOF)) {
+                            syncService.ackProof(ol);
+                        }
+                    }
+                });
+                i.getAndIncrement();
+            });
         } catch (Exception ex) {
             throw new SyncBlockException(ex);
         }
