@@ -10,5 +10,5 @@ import repchain.inter.cooperation.middleware.model.Header;
  * @description 描述
  */
 public interface AuthFilter {
-    boolean validAuth(Header header, String algo_sign);
+    boolean validAuth(Header header, String algo_sign,boolean isReq);
 }

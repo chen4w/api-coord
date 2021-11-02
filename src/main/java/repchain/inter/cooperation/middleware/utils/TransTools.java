@@ -57,15 +57,20 @@ public class TransTools {
     }
 
     /**
+     * @return boolean
      * @author lhc
      * @description // 校验用户是否拥有调用接口权限
      * @date 3:47 下午 2021/10/18
      * @params [signature, header, requestStr]
-     * @return boolean
      **/
-    public static boolean validAuth(Header header,String alg){
+    public static boolean validAuth(Header header, String alg, boolean isReq) {
         // 获取yml文件中的信息
-        String cert = YamlUtils.getFromCert(header.getE_from());
+        String cert;
+        if (isReq) {
+            cert = YamlUtils.getFromCert(header.getE_from());
+        } else {
+            cert = YamlUtils.getToCert(header.getE_to());
+        }
         if (StrUtil.isEmpty(cert)) {
             return false;
         }

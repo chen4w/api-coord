@@ -14,7 +14,7 @@ import repchain.inter.cooperation.middleware.utils.TransTools;
 public class AuthFilterImpl implements AuthFilter {
 
     @Override
-    public boolean validAuth(Header header, String algo_sign) {
-        return TransTools.validAuth(header,algo_sign);
+    public boolean validAuth(Header header, String algo_sign,boolean isReq) {
+        return TransTools.validAuth(header,algo_sign,isReq);
     }
 }

@@ -2,7 +2,6 @@ package repchain.inter.cooperation.middleware.service.impl;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.model.Header;
@@ -53,7 +52,7 @@ public class ReceiveClientImpl implements ReceiveClient {
             return Result.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).build();
         } else {
             ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id());
-            if (authFilter.validAuth(header, apiDefinition.getAlgo_sign())) {
+            if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(),header.getB_req())) {
                 Map<String, Object> map = JSONUtil.parseObj(header.getData());
                 RecClient recClient = YamlUtils.middleConfig.getMiddleware().getRecClient();
                 String subUrl;
