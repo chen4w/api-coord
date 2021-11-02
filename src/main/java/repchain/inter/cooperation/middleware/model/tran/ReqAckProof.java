@@ -2,6 +2,8 @@ package repchain.inter.cooperation.middleware.model.tran;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * @author lhc
  * @version 1.0
@@ -14,8 +16,9 @@ import lombok.*;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @ToString
-public class ReqAckProof {
+public class ReqAckProof implements Serializable {
 
+    private static final long serialVersionUID = -2117922369045092998L;
     private String cid;
     private String e_from;
     private String e_to;

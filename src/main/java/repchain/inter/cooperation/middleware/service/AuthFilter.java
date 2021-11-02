@@ -1,5 +1,7 @@
 package repchain.inter.cooperation.middleware.service;
 
+import repchain.inter.cooperation.middleware.model.Header;
+
 /**
  * @author lhc
  * @version 1.0
@@ -8,4 +10,5 @@ package repchain.inter.cooperation.middleware.service;
  * @description 描述
  */
 public interface AuthFilter {
+    boolean validAuth(Header header, String algo_sign);
 }

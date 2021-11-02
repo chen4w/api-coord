@@ -1,15 +1,11 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
-import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author lhc
@@ -23,8 +19,8 @@ public class CommunicationClientImpl implements CommunicationClient {
 
     @Override
     public Result sendMessage(TransEntity transEntity) {
-        String host = "localhost";
-        int port = 50051;
+        String host = transEntity.getHost();
+        int port = transEntity.getPort();
         ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
         Result result = comClientSingle.sendMessage(transEntity);
         ComClientPool.returnObject(comClientSingle, host, port);

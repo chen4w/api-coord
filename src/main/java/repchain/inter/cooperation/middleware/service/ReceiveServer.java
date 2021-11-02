@@ -18,7 +18,10 @@ public interface ReceiveServer {
 
     void start();
 
-    Object msg(String serviceId,int seq,boolean isEnd, Map<String,Object> map);
+    Object msg(String serviceId, int seq, boolean isEnd,
+               String url,boolean bReqFlag,String method,
+               String callbackMethod,String callbackUrl,String cid,
+               Map<String, Object> map);
 
     void file(HttpServerRequest request, HttpServerResponse response);
 

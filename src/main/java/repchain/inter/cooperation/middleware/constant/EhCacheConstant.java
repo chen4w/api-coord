@@ -10,5 +10,8 @@ package repchain.inter.cooperation.middleware.constant;
 public class EhCacheConstant {
 
     public static final String REPCHAIN = "RepChain";
+    public static final String REQ_ACK_PROOF = "ReqAckProof";
+    public static final String API_DEFINITION = "ApiDefinition";
+    public static final String API_SERV_AND_ACK= "ApiServAndAck";
     public static final String BLOCK = "block";
 }

@@ -21,4 +21,5 @@ public interface ReceiveClient {
      **/
     Result msg(TransEntity transEntity);
 
+    void setAuthFilter(AuthFilter authFilter);
 }

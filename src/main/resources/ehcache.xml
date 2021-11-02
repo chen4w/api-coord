@@ -23,4 +23,25 @@
            overflowToDisk="true"
            diskPersistent="true"
            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 存证缓存 -->
+    <cache name="ReqAckProof"
+           maxElementsInMemory = "1"
+           eternal="true"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LRU"/>
+    <!-- 定义缓存 -->
+    <cache name="ApiDefinition"
+           maxElementsInMemory = "1"
+           eternal="true"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LRU"/>
+    <!-- 登记缓存 -->
+    <cache name="ApiServAndAck"
+           maxElementsInMemory = "1"
+           eternal="true"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LRU"/>
 </ehcache>

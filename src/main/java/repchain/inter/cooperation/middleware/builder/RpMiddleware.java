@@ -97,6 +97,7 @@ public class RpMiddleware {
 
         public RpMiddlewareBuilder receiveClient(ReceiveClient receiveClient) {
             this.receiveClient = receiveClient;
+            this.receiveClient.setAuthFilter(this.authFilter);
             return this;
         }
 

@@ -27,4 +27,22 @@ public class RepChain {
     private String privateKey;
     private String password;
     private List<Service> services;
+
+    public String handleCert() {
+        String start = "-----BEGIN CERTIFICATE-----";
+        String end = "-----END CERTIFICATE-----";
+        cert = cert.replaceAll(start, "");
+        cert = cert.replaceAll(end, "");
+        cert = cert.replaceAll(" ", "\n");
+        return start + cert + end + "\n";
+    }
+
+    public String handlePrivateKey() {
+        String start = "-----BEGIN ENCRYPTED PRIVATE KEY-----";
+        String end = "-----END ENCRYPTED PRIVATE KEY-----";
+        privateKey = privateKey.replaceAll(start, "");
+        privateKey = privateKey.replaceAll(end, "");
+        privateKey = privateKey.replaceAll(" ", "\n");
+        return start + privateKey + end + "\n";
+    }
 }

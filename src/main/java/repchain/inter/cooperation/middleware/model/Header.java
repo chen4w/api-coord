@@ -32,4 +32,6 @@ public class Header {
     private String signData;
     private String data;
     private Integer state;
+    private String httpType;
+    private String url;
 }

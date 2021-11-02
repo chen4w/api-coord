@@ -30,8 +30,8 @@ repchain:
   password: 123456
   # 签名证书对应的请求方id和服务方id可在dashboard查看
   services:
-    # 调用方id
-    - serviceId: 15cc9e36163298650597zxsa2
+    # 用户自定义id，不能重复，必填
+    - serviceId: 1
       e_from: 15cc9e361632986505972
       # 服务方证书
       from_cert: -----BEGIN CERTIFICATE-----
@@ -59,6 +59,10 @@ repchain:
 middleware:
   # 用来访问服务方提供的接口的客户端
   recClient:
+    host: 42.193.105.24
+    port: 80
+    # http或https
+    protocol: http
     # 超时时间
     timeout: 5000
   # 用来让调用方访问的服务器
@@ -84,7 +88,7 @@ middleware:
   # 中间件之间通信的服务器
   comServer:
     # 端口
-    port: 50010
+    port: 8080
     # 初始线程池大小
     corePoolSize: 50
     # 最大线程池大小

@@ -1,6 +1,7 @@
 package repchain.inter.cooperation.middleware;
 
 import org.junit.jupiter.api.Test;
+import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.utils.EhcacheManager;
 
 /**
@@ -39,5 +40,19 @@ public class CacheTest {
         System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
         Object value = EhcacheManager.getValue("RepChain", "3");
         System.out.println(value);
+    }
+
+    /**
+     * @author lhc
+     * @description // 计算缓存数量
+     * @date 2021/11/2 10:02 上午
+     * @params []
+     * @return void
+     **/
+    @Test
+    public void CountCache(){
+        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
+        Object value = EhcacheManager.getCacheSize(EhCacheConstant.REQ_ACK_PROOF);
+        System.out.println("Number is :"+value);
     }
 }

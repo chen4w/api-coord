@@ -23,6 +23,7 @@ public class App {
      **/
     public static void main(String[] args) {
         RpMiddleware middleware = RpMiddleware.builder()
+                .authFilter(new AuthFilterImpl())
                 .transactionCommit(new TransactionCommitImpl())
                 .communicationClient(new CommunicationClientImpl())
                 .receiveServer(new ReceiveServerImpl())

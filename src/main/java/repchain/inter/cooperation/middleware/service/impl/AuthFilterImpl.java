@@ -1,6 +1,8 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.service.AuthFilter;
+import repchain.inter.cooperation.middleware.utils.TransTools;
 
 /**
  * @author lhc
@@ -11,4 +13,8 @@ import repchain.inter.cooperation.middleware.service.AuthFilter;
  */
 public class AuthFilterImpl implements AuthFilter {
 
+    @Override
+    public boolean validAuth(Header header, String algo_sign) {
+        return TransTools.validAuth(header,algo_sign);
+    }
 }

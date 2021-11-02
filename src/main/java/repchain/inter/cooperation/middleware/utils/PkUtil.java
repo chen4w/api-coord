@@ -4,6 +4,8 @@ import com.rcjava.util.KeyUtil;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.pkcs.PKCSException;
+import repchain.inter.cooperation.middleware.model.SysCert;
+import repchain.inter.cooperation.middleware.model.yml.RepChain;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -29,16 +31,16 @@ public class PkUtil {
         return privateKey;
     }
 //
-//    public static SysCert getSysCert(InterCo interCo) {
-//        return SysCert
-//                .builder()
-//                .certName(interCo.getCertName())
-//                .creditCode(interCo.getCreditCode())
-//                .password(interCo.getPassword())
-//                // 注意此处需要用handleCert方法获取证书内容
-//                .cert(interCo.handleCert())
-//                // 注意此处需要用handlePrivateKey方法获取私钥
-//                .privateKey(interCo.handlePrivateKey())
-//                .build();
-//    }
+    public static SysCert getSysCert(RepChain interCo) {
+        return SysCert
+                .builder()
+                .certName(interCo.getCertName())
+                .creditCode(interCo.getCreditCode())
+                .password(interCo.getPassword())
+                // 注意此处需要用handleCert方法获取证书内容
+                .cert(interCo.handleCert())
+                // 注意此处需要用handlePrivateKey方法获取私钥
+                .privateKey(interCo.handlePrivateKey())
+                .build();
+    }
 }

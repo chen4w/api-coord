@@ -6,6 +6,11 @@ import cn.hutool.core.lang.Snowflake;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
+import repchain.inter.cooperation.middleware.model.yml.RepChain;
+import repchain.inter.cooperation.middleware.model.yml.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author lhc
@@ -34,5 +39,27 @@ public class YamlUtils {
         String path = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
         FileReader fileReader = new FileReader(path + "/application-middle.yml");
         return yaml.load(fileReader.getInputStream());
+    }
+
+    public static Service getService(String serviceId) {
+        List<Service> list = middleConfig.getRepchain().getServices();
+        Optional<Service> opsService = list.stream().filter(service -> serviceId.equals(service.getServiceId())).findAny();
+        return opsService.orElse(null);
+    }
+
+    public static String getFromCert(String id) {
+        List<Service> list = middleConfig.getRepchain().getServices();
+        Optional<Service> opsService = list.stream().filter(service -> id.equals(service.getE_from())).findAny();
+        return opsService.map(Service::handleFromCert).orElse(null);
+    }
+
+    public static String getToCert(String id) {
+        List<Service> list = middleConfig.getRepchain().getServices();
+        Optional<Service> opsService = list.stream().filter(service -> id.equals(service.getE_to())).findAny();
+        return opsService.map(Service::handleToCert).orElse(null);
+    }
+
+    public static RepChain getRepchain() {
+        return middleConfig.getRepchain();
     }
 }

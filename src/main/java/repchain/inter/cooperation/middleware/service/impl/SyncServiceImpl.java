@@ -1,12 +1,16 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
-import cn.hutool.core.map.MapUtil;
 import com.rcjava.protos.Peer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
+import repchain.inter.cooperation.middleware.model.tran.ApiDefinition;
+import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
+import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.service.SyncService;
+import repchain.inter.cooperation.middleware.utils.BlockResultUtil;
 import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+
 
 
 /**
@@ -29,16 +33,21 @@ public class SyncServiceImpl implements SyncService {
 
     @Override
     public void defInterface(Peer.OperLog ol) {
-
+        ApiDefinition apiDefinition = BlockResultUtil.toBean(ol, ApiDefinition.class);
+        String id = apiDefinition.getId();
+        EhcacheManager.put(EhCacheConstant.API_DEFINITION, id, apiDefinition);
     }
 
     @Override
     public void register(Peer.OperLog ol) {
-
+        ApiServAndAck apiServAndAck = BlockResultUtil.toBean(ol, ApiServAndAck.class);
+        String id = apiServAndAck.getId();
+        EhcacheManager.put(EhCacheConstant.API_SERV_AND_ACK, id, apiServAndAck);
     }
 
     @Override
     public void ackProof(Peer.OperLog ol) {
-
+        ReqAckProof reqAckProof = BlockResultUtil.toBean(ol, ReqAckProof.class);
+        EhcacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+reqAckProof.getHash()+reqAckProof.getTm_create());
     }
 }

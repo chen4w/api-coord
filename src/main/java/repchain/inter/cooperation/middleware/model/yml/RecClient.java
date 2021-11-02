@@ -17,5 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class RecClient {
-    private Long timeout;
+    private Integer timeout;
+    private String host;
+    private Integer port;
+    private String protocol;
 }

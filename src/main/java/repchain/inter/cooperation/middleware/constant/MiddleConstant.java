@@ -11,4 +11,6 @@ public class MiddleConstant {
 
     public static final int END = 1;
     public static final int NOT_END = 0;
+    public static final int REQUEST = 1;
+    public static final int CALLBACK = 0;
 }
