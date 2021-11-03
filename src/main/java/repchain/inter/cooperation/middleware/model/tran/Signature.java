@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author lhc
  * @version 1.0
@@ -16,8 +18,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Signature {
+public class Signature implements Serializable {
 
+    private static final long serialVersionUID = 104654482955643156L;
     private String eid;
     private String cert_name;
     private String hash;

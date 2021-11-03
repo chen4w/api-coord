@@ -21,6 +21,6 @@ public class InterCoResult {
 
     private Integer code;
     private String msg;
-    private Signature signature;
     private Object data;
+    private String cid;
 }

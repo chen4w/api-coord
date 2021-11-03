@@ -7,6 +7,7 @@ import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
+import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
@@ -33,5 +34,14 @@ public class AppTest {
         FileReader fileReader = new FileReader(path + "/application-middle.yml");
         MiddleConfig middleConfig = yaml.load(fileReader.getInputStream());
         System.out.println(JSONUtil.toJsonPrettyStr(middleConfig));
+    }
+
+    /**
+     * 测试yml读取
+     */
+    @Test
+    public void testConvertToMap() {
+        ReqOption reqOption = new ReqOption();
+
     }
 }

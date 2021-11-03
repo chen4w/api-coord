@@ -68,7 +68,6 @@ repchain:
             ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
             zZXMcw==
             -----END CERTIFICATE-----
-
 #middleware:
 #  receiveClient:
 #    host: 192.168.4.1

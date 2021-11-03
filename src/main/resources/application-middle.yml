@@ -5,7 +5,7 @@ repchain:
   # 同步区块高度
   height: 0
   # 用户唯一标识
-  creditCode: 12324109989878127839
+  creditCode: CGZL7XOwwa
   # 证书名称
   certName: test
   # 证书
@@ -32,7 +32,7 @@ repchain:
   services:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
-      e_from: 15cc9e361632986505972
+      e_from: bb743c821635920387678
       # 服务方证书
       from_cert: -----BEGIN CERTIFICATE-----
         MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
@@ -44,7 +44,7 @@ repchain:
         zZXMcw==
         -----END CERTIFICATE-----
       # 服务提供方id
-      e_to: 1098aa9d1632986347443
+      e_to: 7b5c66df1635920342945
       # 调用方证书
       to_cert: -----BEGIN CERTIFICATE-----
         MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw

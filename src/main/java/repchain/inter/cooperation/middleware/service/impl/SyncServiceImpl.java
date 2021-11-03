@@ -22,7 +22,7 @@ import repchain.inter.cooperation.middleware.utils.EhcacheManager;
  */
 public class SyncServiceImpl implements SyncService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommunicationServerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SyncServiceImpl.class);
 
     @Override
     public void saveBlock(Peer.Block block) {

@@ -7,14 +7,15 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSONObject;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.MiddleConstant;
 import repchain.inter.cooperation.middleware.model.Header;
+import repchain.inter.cooperation.middleware.model.InterCoResult;
 import repchain.inter.cooperation.middleware.model.MsgVo;
-import repchain.inter.cooperation.middleware.model.SysCert;
 import repchain.inter.cooperation.middleware.model.tran.ApiDefinition;
 import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
@@ -43,7 +44,7 @@ import java.util.concurrent.*;
  */
 public class ReceiveServerImpl implements ReceiveServer {
 
-    private static final Logger logger = LoggerFactory.getLogger(CommunicationServerImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReceiveServerImpl.class);
 
     public CommunicationClient communicationClient;
 
@@ -52,6 +53,11 @@ public class ReceiveServerImpl implements ReceiveServer {
     @Override
     public void setCommunicationClient(CommunicationClient communicationClient) {
         this.communicationClient = communicationClient;
+    }
+
+    @Override
+    public void setTransactionCommit(TransactionCommit commit) {
+        this.commit = commit;
     }
 
     @Override
@@ -84,38 +90,19 @@ public class ReceiveServerImpl implements ReceiveServer {
             String callbackMethod = req.getParam("callbackMethod");
             String callbackUrl = req.getParam("callbackUrl");
             String cid = req.getParam("cid");
-            boolean bReqFlag;
-            if (bReq == MiddleConstant.REQUEST) {
-                bReqFlag = true;
-            } else {
-                bReqFlag = false;
-            }
-            boolean endFlag;
-            if (isEnd == MiddleConstant.NOT_END) {
-                endFlag = false;
-            } else {
-                endFlag = true;
-            }
+            boolean bReqFlag = bReq == MiddleConstant.REQUEST;
+            boolean endFlag = isEnd != MiddleConstant.NOT_END;
             String data = req.getParam("data");
             Map<String, Object> map = JSONUtil.parseObj(data);
             res.setContentType("text/html;charset=utf-8");
-            MsgVo msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl,cid, map);
+            MsgVo msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, map);
             Result result = msgVo.getResult();
-            res.write(result.getData());
-            ReqAckProof rb = msgVo.getReqAckProof();
-            EhcacheManager.put(EhCacheConstant.REQ_ACK_PROOF, rb.getCid() + rb.getHash() + rb.getTm_create(), rb);
-            // 创建请求实例，若用Spring 此处可以创建javabean
-            RepChain repchain = YamlUtils.getRepchain();
-            RequestAck requestAck = new RequestAck(repchain.getHost());
-            SysCert sysCert = PkUtil.getSysCert(repchain);
-            JSONObject jsonObject = requestAck.rb(rb, sysCert);
-            // 若果有错误信息，则提交存证数据失败
-            if (!StrUtil.isBlankIfStr(jsonObject.get("err"))) {
-                System.out.println("提交区块链数据失败：" + jsonObject);
-            }
+            InterCoResult coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0).msg("Action OK").data(result.getData()).build();
+            res.write(JSONUtil.toJsonStr(coResult));
+            commit.saveProof(msgVo.getReqAckProof());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            res.write(e.getMessage());
+            res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(2).msg(e.getMessage()).build()));
         }
     }
 
@@ -137,7 +124,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             return Result.newBuilder().setCode(2).setMsg("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试").build();
         }
         String data = JSONUtil.toJsonStr(map);
-        if (StrUtil.isNotEmpty(cid)) {
+        if (StrUtil.isBlank(cid)) {
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
@@ -158,13 +145,22 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .tm_create(System.currentTimeMillis())
                 .callback_url(callbackUrl)
                 .callback_method(callbackMethod)
-                .validStr(signature.getHash())
-                .signData(signature.getSign())
+                .validStr(signature.getSign())
+                .signData(signature.getHash())
                 .data(data)
                 .httpType(method)
                 .url(url)
                 .build();
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(to.getAddr()).setPort(to.getPort()).build();
+        String host;
+        int port;
+        if (bReqFlag) {
+            host = to.getAddr();
+            port = to.getPort();
+        } else {
+            host = from.getAddr();
+            port = from.getPort();
+        }
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
         ReqAckProof rb = TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
         return MsgVo.builder().reqAckProof(rb).result(result).build();
@@ -187,10 +183,5 @@ public class ReceiveServerImpl implements ReceiveServer {
         }
         response.setContentType("text/html;charset=utf-8");
         response.write(resultObj);
-    }
-
-    @Override
-    public void setTransactionCommit(TransactionCommit commit) {
-        this.commit = commit;
     }
 }

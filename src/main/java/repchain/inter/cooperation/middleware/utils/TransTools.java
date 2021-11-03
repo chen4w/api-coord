@@ -5,6 +5,8 @@ import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import com.rcjava.sign.impl.ECDSASign;
 import com.rcjava.util.CertUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.model.tran.Signature;
@@ -21,6 +23,8 @@ import java.security.cert.X509Certificate;
  * @description 描述
  */
 public class TransTools {
+
+    private static final Logger logger = LoggerFactory.getLogger(TransTools.class);
 
     public static Signature getSignature(PrivateKey privateKey, String contentHash, String creditCode, String certName, String alg) {
         // 获取PrivateKey对象
@@ -64,27 +68,28 @@ public class TransTools {
      * @params [signature, header, requestStr]
      **/
     public static boolean validAuth(Header header, String alg, boolean isReq) {
-        // 获取yml文件中的信息
-        String cert;
-        if (isReq) {
-            cert = YamlUtils.getFromCert(header.getE_from());
-        } else {
-            cert = YamlUtils.getToCert(header.getE_to());
-        }
-        if (StrUtil.isEmpty(cert)) {
+        try {
+            // 获取yml文件中的信息
+            String cert;
+            if (isReq) {
+                cert = YamlUtils.getFromCert(header.getE_from());
+            } else {
+                cert = YamlUtils.getToCert(header.getE_to());
+            }
+            if (StrUtil.isEmpty(cert)) {
+                return false;
+            }
+            // 若存在则继续校验签名信息是否正确，先获从yml文件中获取调用方证书信息
+            X509Certificate x509Certificate = null;
+            x509Certificate = CertUtil.generateX509Cert(cert);
+            // 构建校验对象，进行数据校验
+            ECSignatureUtil ecSignatureUtil = new ECSignatureUtil();
+            ecSignatureUtil.setSignAlgorithm(alg);
+            byte[] sign = HexUtil.decodeHex(header.getValidStr());
+            return ecSignatureUtil.verify(sign, header.getSignData().getBytes(StandardCharsets.UTF_8), x509Certificate);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return false;
         }
-        // 若存在则继续校验签名信息是否正确，先获从yml文件中获取调用方证书信息
-        X509Certificate x509Certificate = null;
-        try {
-            x509Certificate = CertUtil.generateX509Cert(cert);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // 构建校验对象，进行数据校验
-        ECSignatureUtil ecSignatureUtil = new ECSignatureUtil();
-        ecSignatureUtil.setSignAlgorithm(alg);
-        byte[] sign = HexUtil.decodeHex(header.getValidStr());
-        return ecSignatureUtil.verify(sign, header.getSignData().getBytes(StandardCharsets.UTF_8), x509Certificate);
     }
 }
