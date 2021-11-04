@@ -1,15 +1,27 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
+import cn.hutool.core.net.multipart.MultipartRequestInputStream;
+import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import static com.esotericsoftware.minlog.Log.info;
+import static org.bouncycastle.crypto.tls.AlertLevel.warning;
 
 /**
  * @author lhc
@@ -41,11 +53,92 @@ public class ComClientSingle {
             TransformGrpc.TransformBlockingStub blockingStub = TransformGrpc.newBlockingStub(channel);
             result = blockingStub.send(transEntity);
         } catch (StatusRuntimeException e) {
-            String msg = "RPC调用失败: " + e.getMessage();
+            String msg = "无法调用远程中间件: " + e.getMessage();
             logger.error(msg, e);
             result = Result.newBuilder().setMsg(msg).setCode(2).build();
         }
         return result;
+    }
+
+    public Result sendFile(TransFile transFile,InputStream is){
+        final Result[] result = new Result[1];
+        try {
+            TransformGrpc.TransformStub stub = TransformGrpc.newStub(channel);
+            final CountDownLatch finishLatch = new CountDownLatch(1);
+            StreamObserver<Result> responseObserver = new StreamObserver<Result>() {
+                @Override
+                public void onNext(Result info) {
+                    result[0] = info;
+                    logger.info("end :"+info.getMsg());
+                }
+
+                @Override
+                public void onError(Throwable t) {
+                    finishLatch.countDown();
+                }
+
+                @Override
+                public void onCompleted() {
+                    info("Finished RecordRoute");
+                    finishLatch.countDown();
+                }
+            };
+
+            StreamObserver<TransFile> requestObserver = stub.sendFile(responseObserver);
+            try {
+                BufferedReader reader = null;
+
+//                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+//                MultipartRequestInputStream input = new MultipartRequestInputStream(is);
+//                input.readBoundary();
+//                input.skipBytes(128);
+//                int count = 0;
+//                while (true) {
+//                    byte b = readByte(input);
+//                    if (isBoundary(b)) {
+//                        break;
+//                    }
+//                    out.write(b);
+//                    count++;
+//                }
+//                return count;
+//                is.skip(128);
+//                String line = "";
+//                while ((line = input.readString(StandardCharsets.UTF_8)) != null) {
+//                    requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(line.getBytes(StandardCharsets.UTF_8))).build());
+//                }
+                byte[] buff = new byte[2048];
+                int len;
+                while ((len = is.read(buff)) != -1) {
+                    requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(buff)).build());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Mark the end of requests
+            requestObserver.onCompleted();
+
+            // Receiving happens asynchronously
+            try {
+                if (!finishLatch.await(1, TimeUnit.MINUTES)) {
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            logger.info("sendFile success");
+
+        }catch(Exception e){
+
+        }
+        return result[0];
+    }
+
+    private byte readByte(MultipartRequestInputStream is) throws IOException {
+        int i = is.read();
+        if (i == -1) {
+            throw new IOException("End of HTTP request stream reached");
+        }
+        return (byte) i;
     }
 
     /**

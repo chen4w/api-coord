@@ -10,6 +10,15 @@ package apicoord;
 
 service Transform{
   rpc send(TransEntity) returns (Result){}
+  rpc sendFile(stream TransFile) returns (Result) {}
+}
+
+message TransFile{
+  string header = 1;
+  int32 port = 2;
+  string host= 3;
+  bytes file = 4;
+  string fileName=5;
 }
 
 message TransEntity{
@@ -42,6 +51,7 @@ message Header {//消息头
   int32 state = 14;
   string httpType = 15;
   string url = 16;
+  bool sync = 17;
 }
 
 

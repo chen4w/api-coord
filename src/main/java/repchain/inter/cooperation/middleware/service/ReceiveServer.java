@@ -20,7 +20,7 @@ public interface ReceiveServer {
 
     Object msg(String serviceId, int seq, boolean isEnd,
                String url,boolean bReqFlag,String method,
-               String callbackMethod,String callbackUrl,String cid,
+               String callbackMethod,String callbackUrl,String cid,boolean sync,
                Map<String, Object> map);
 
     void file(HttpServerRequest request, HttpServerResponse response);

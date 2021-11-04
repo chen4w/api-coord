@@ -26,9 +26,14 @@ public class MiddlewareClient {
 
     public InterCoResult msg(String serviceId, String url, HttpType httpType, Map<String, Object> map) {
         ReqOption reqOption = new ReqOption();
+        return getInterCoResult(serviceId, url, httpType, map, reqOption);
+    }
+
+    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption) {
         reqOption.setServiceId(serviceId);
         reqOption.setUrl(url);
         reqOption.setMethod(httpType.toString());
+        map.put("cid", reqOption.getCid());
         reqOption.setData(JSONUtil.toJsonStr(map));
         Map<String,Object> form = Convert.toMap(String.class, Object.class, reqOption);
         String resultStr = HttpRequest.post(middlewareUrl+"/msg")
@@ -40,15 +45,7 @@ public class MiddlewareClient {
 
 
     public InterCoResult msg(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption) {
-        reqOption.setServiceId(serviceId);
-        reqOption.setUrl(url);
-        reqOption.setMethod(httpType.toString());
-        reqOption.setData(JSONUtil.toJsonStr(map));
-        Map<String,Object> form = Convert.toMap(String.class, Object.class, reqOption);
-        String resultStr = HttpRequest.post(middlewareUrl+"/msg")
-                .form(form)
-                .timeout(this.timeout)
-                .execute().body();
-        return JSONUtil.toBean(resultStr, InterCoResult.class);
+        return getInterCoResult(serviceId, url, httpType, map, reqOption);
     }
+
 }

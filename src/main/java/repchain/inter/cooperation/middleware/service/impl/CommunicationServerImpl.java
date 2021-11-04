@@ -9,15 +9,20 @@ import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * @author lhc
@@ -36,7 +41,7 @@ public class CommunicationServerImpl implements CommunicationServer {
 
     @Override
     public void start() {
-        MiddleServer  comServer= YamlUtils.middleConfig.getMiddleware().getComServer();
+        MiddleServer comServer = YamlUtils.middleConfig.getMiddleware().getComServer();
         int port = comServer.getPort();
         // 创建线程池
         ExecutorService executor = ExecutorBuilder.create()
@@ -79,10 +84,56 @@ public class CommunicationServerImpl implements CommunicationServer {
 
     class TransformImpl extends TransformGrpc.TransformImplBase {
         @Override
-        public void send(TransEntity request, StreamObserver<Result> responseObserver){
+        public void send(TransEntity request, StreamObserver<Result> responseObserver) {
             Result result = receiveClient.msg(request);
             responseObserver.onNext(result);
             responseObserver.onCompleted();
+        }
+
+        @Override
+        public StreamObserver<TransFile> sendFile(StreamObserver<Result> responseObserver) {
+            try {
+                return new StreamObserver<TransFile>() {
+                    final long startTime = System.nanoTime();
+                     OutputStream os = null;
+
+                    @Override
+                    public void onNext(TransFile fileInfo) {
+                        try {
+                            if (os == null) {
+                                os = new FileOutputStream("/Volumes/DATA/"+fileInfo.getFileName());
+                            }
+                            fileInfo.getFile().newInput();
+                            fileInfo.getFile().writeTo(os);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        System.out.println("发生错误");
+                        logger.warn("sendFile cancelled");
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        System.out.println("完成");
+                        // 关闭流
+                        try {
+                            os.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        long seconds = NANOSECONDS.toSeconds(System.nanoTime() - startTime);
+                        responseObserver.onNext(Result.newBuilder().setMsg("success, spend time :" + seconds).build());
+                        responseObserver.onCompleted();
+                    }
+                };
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }

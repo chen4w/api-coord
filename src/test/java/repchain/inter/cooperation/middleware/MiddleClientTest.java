@@ -1,5 +1,7 @@
 package repchain.inter.cooperation.middleware;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import repchain.inter.cooperation.middleware.client.HttpType;
@@ -69,5 +71,18 @@ public class MiddleClientTest {
         result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map, reqOption);
         System.out.println(JSONUtil.toJsonPrettyStr(reqOption));
         System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test
+    public void file(){
+//        System.out.println("upload");
+//        HashMap<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("file", FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql"));
+////        paramMap.put("file", FileUtil.file("/Users/lhc/Downloads/IMG_0148.PNG"));
+//        System.out.println("upload");
+//        String result= HttpUtil.post("http://localhost:8888/file", paramMap);
+
+        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql")).setChunkedStreamingMode(2048).execute().body();
+//        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg")).setChunkedStreamingMode(2048).execute().body();
     }
 }

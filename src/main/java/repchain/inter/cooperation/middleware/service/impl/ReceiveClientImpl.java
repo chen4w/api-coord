@@ -94,6 +94,9 @@ public class ReceiveClientImpl implements ReceiveClient {
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
+                if (!header.getSync()) {
+                    EhcacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
+                }
                 String contentHash = DigestUtil.sha256Hex(result);
                 Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), apiDefinition.getAlgo_sign());
                 return Result.newBuilder().setData(result).setMsg("Action OK").setSignature(JSONUtil.toJsonStr(signature)).build();

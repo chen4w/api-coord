@@ -37,4 +37,5 @@ public class ReqOption implements Serializable {
     private String serviceId;
     private String url;
     private String method;
+    private int sync = TRUE;
 }

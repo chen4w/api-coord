@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import cn.hutool.core.net.multipart.UploadFile;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -11,6 +12,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.MiddleConstant;
 import repchain.inter.cooperation.middleware.model.Header;
@@ -23,13 +25,16 @@ import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
+import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
 import repchain.inter.cooperation.middleware.service.TransactionCommit;
 import repchain.inter.cooperation.middleware.utils.*;
 
+import java.io.*;
 import java.security.PrivateKey;
 import java.util.Map;
 import java.util.concurrent.*;
@@ -85,6 +90,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             int seq = Integer.parseInt(req.getParam("seq"));
             Integer isEnd = Integer.parseInt(req.getParam("isEnd"));
             Integer bReq = Integer.parseInt(req.getParam("bReq"));
+            Integer isSync = Integer.parseInt(req.getParam("sync"));
             String url = req.getParam("url");
             String method = req.getParam("method");
             String callbackMethod = req.getParam("callbackMethod");
@@ -92,14 +98,22 @@ public class ReceiveServerImpl implements ReceiveServer {
             String cid = req.getParam("cid");
             boolean bReqFlag = bReq == MiddleConstant.REQUEST;
             boolean endFlag = isEnd != MiddleConstant.NOT_END;
+            boolean sync = isSync == ReqOption.TRUE;
             String data = req.getParam("data");
             Map<String, Object> map = JSONUtil.parseObj(data);
             res.setContentType("text/html;charset=utf-8");
-            MsgVo msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, map);
+            MsgVo msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid,sync, map);
             Result result = msgVo.getResult();
-            InterCoResult coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0).msg("Action OK").data(result.getData()).build();
+            InterCoResult coResult;
+            if (result.getCode() == 0) {
+                coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0).msg("Action OK").data(result.getData()).build();
+            } else {
+                coResult = InterCoResult.builder().code(result.getCode()).msg("Action OK").msg(result.getMsg()).build();
+            }
             res.write(JSONUtil.toJsonStr(coResult));
-            commit.saveProof(msgVo.getReqAckProof());
+            if (msgVo.getReqAckProof() != null) {
+                commit.saveProof(msgVo.getReqAckProof());
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(2).msg(e.getMessage()).build()));
@@ -109,7 +123,7 @@ public class ReceiveServerImpl implements ReceiveServer {
     @Override
     public Object msg(String serviceId, int seq, boolean isEnd,
                       String url, boolean bReqFlag, String method,
-                      String callbackMethod, String callbackUrl, String cid, Map<String, Object> map) {
+                      String callbackMethod, String callbackUrl, String cid,boolean sync, Map<String, Object> map) {
         Service service = YamlUtils.getService(serviceId);
         ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
         ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
@@ -150,6 +164,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .data(data)
                 .httpType(method)
                 .url(url)
+                .sync(sync)
                 .build();
         String host;
         int port;
@@ -162,26 +177,44 @@ public class ReceiveServerImpl implements ReceiveServer {
         }
         TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
-        ReqAckProof rb = TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
+        ReqAckProof rb;
+        if (result.getCode() == 0) {
+            rb = TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
+        } else {
+            rb = null;
+        }
         return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
 
     @Override
     public void file(HttpServerRequest request, HttpServerResponse response) {
-        String resultObj;
+        System.out.println("upload");
+        UploadFile file = request.getMultipart().getFile("file");
+//            file.write("/Volumes/DATA");
+        ComClientSingle clientSingle = new ComClientSingle("localhost",8080);
+        TransFile transFile = TransFile.newBuilder().setFileName(file.getFileName()).build();
+        //            InputStream is = new FileInputStream(new File("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg"));
         try {
-            String data = request.getParam("data");
-            TransEntity transEntity = TransEntity.newBuilder().setHeader("").build();
-            Result result = communicationClient.sendMessage(transEntity);
-            System.out.println(result.getData());
-            resultObj = result.getData();
-            response.setContentType("text/html;charset=utf-8");
-            response.write(result.getData());
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            resultObj = "error";
+            clientSingle.sendFile(transFile, file.getFileInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        response.setContentType("text/html;charset=utf-8");
-        response.write(resultObj);
+
+
+//        String resultObj;
+//        try {
+//            String data = request.getParam("data");
+//            TransEntity transEntity = TransEntity.newBuilder().setHeader("").build();
+//            Result result = communicationClient.sendMessage(transEntity);
+//            System.out.println(result.getData());
+//            resultObj = result.getData();
+//            response.setContentType("text/html;charset=utf-8");
+//            response.write(result.getData());
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            resultObj = "error";
+//        }
+//        response.setContentType("text/html;charset=utf-8");
+        response.write("OK");
     }
 }

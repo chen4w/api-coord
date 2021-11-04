@@ -44,4 +44,11 @@
            overflowToDisk="true"
            diskPersistent="true"
            memoryStoreEvictionPolicy="LRU"/>
+    <!-- 异步数据header记录 -->
+    <cache name="AsyncHeader"
+           maxElementsInMemory = "1"
+           eternal="true"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LRU"/>
 </ehcache>

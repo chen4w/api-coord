@@ -34,4 +34,5 @@ public class Header {
     private Integer state;
     private String httpType;
     private String url;
+    private Boolean sync;
 }

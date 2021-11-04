@@ -60,7 +60,9 @@ public class EhcacheManager {
     public static Object getValue(String cacheName, Object key) {
         try {
             Cache cache = getInstance().getCache(cacheName);
-            return cache.get(key).getObjectValue();
+            Object result = cache.get(key).getObjectValue();
+            cache.flush();
+            return result;
         } catch (NullPointerException e) {
             return null;
         }
@@ -75,6 +77,8 @@ public class EhcacheManager {
      **/
     public static int getCacheSize(String cacheName) {
         Cache cache = getInstance().getCache(cacheName);
-        return cache.getSize();
+        int size = cache.getSize();
+        cache.flush();
+        return size;
     }
 }

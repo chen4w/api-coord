@@ -13,5 +13,6 @@ public class EhCacheConstant {
     public static final String REQ_ACK_PROOF = "ReqAckProof";
     public static final String API_DEFINITION = "ApiDefinition";
     public static final String API_SERV_AND_ACK= "ApiServAndAck";
+    public static final String ASYNC_HEADER = "AsyncHeader";
     public static final String BLOCK = "block";
 }
