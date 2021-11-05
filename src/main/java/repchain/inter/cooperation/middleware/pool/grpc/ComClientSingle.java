@@ -1,10 +1,10 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
 import cn.hutool.core.net.multipart.MultipartRequestInputStream;
+import cn.hutool.core.net.multipart.UploadFileHeader;
 import com.google.protobuf.ByteString;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
@@ -15,13 +15,11 @@ import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static com.esotericsoftware.minlog.Log.info;
-import static org.bouncycastle.crypto.tls.AlertLevel.warning;
 
 /**
  * @author lhc
@@ -41,11 +39,11 @@ public class ComClientSingle {
     }
 
     /**
+     * @return repchain.inter.cooperation.middleware.proto.Result
      * @author lhc
      * @description // 发送消息
      * @date 2021/10/29 5:26 下午
      * @params [transEntity]
-     * @return repchain.inter.cooperation.middleware.proto.Result
      **/
     public Result sendMessage(TransEntity transEntity) {
         Result result;
@@ -60,7 +58,7 @@ public class ComClientSingle {
         return result;
     }
 
-    public Result sendFile(TransFile transFile,InputStream is){
+    public Result sendFile(TransFile transFile, InputStream is) {
         final Result[] result = new Result[1];
         try {
             TransformGrpc.TransformStub stub = TransformGrpc.newStub(channel);
@@ -69,7 +67,7 @@ public class ComClientSingle {
                 @Override
                 public void onNext(Result info) {
                     result[0] = info;
-                    logger.info("end :"+info.getMsg());
+                    logger.info("end :" + info.getMsg());
                 }
 
                 @Override
@@ -83,70 +81,54 @@ public class ComClientSingle {
                     finishLatch.countDown();
                 }
             };
-
             StreamObserver<TransFile> requestObserver = stub.sendFile(responseObserver);
             try {
-                BufferedReader reader = null;
-
-//                reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-//                MultipartRequestInputStream input = new MultipartRequestInputStream(is);
-//                input.readBoundary();
-//                input.skipBytes(128);
-//                int count = 0;
-//                while (true) {
-//                    byte b = readByte(input);
-//                    if (isBoundary(b)) {
-//                        break;
-//                    }
-//                    out.write(b);
-//                    count++;
-//                }
-//                return count;
-//                is.skip(128);
-//                String line = "";
-//                while ((line = input.readString(StandardCharsets.UTF_8)) != null) {
-//                    requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(line.getBytes(StandardCharsets.UTF_8))).build());
-//                }
+                MultipartRequestInputStream input = new MultipartRequestInputStream(is);
+                input.readBoundary();
+                UploadFileHeader header = input.readDataHeader(StandardCharsets.UTF_8);
                 byte[] buff = new byte[2048];
                 int len;
-                while ((len = is.read(buff)) != -1) {
-                    requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(buff)).build());
+                while ((len = input.read(buff)) != -1) {
+                    boolean flag = false;
+                    for (int i = 0; i < buff.length; i++) {
+                        try {
+                            if (input.isBoundary(buff[i])) {
+                                len = i - 1;
+                                flag = true;
+                            }
+                        } catch (IOException e) {
+                            if (!"End of HTTP request stream reached".equals(e.getMessage())) {
+                                logger.error(e.getMessage(),e);
+                            }
+                        }
+                    }
+                    requestObserver.onNext(transFile.toBuilder().setFileName(header.getFileName()).setFile(ByteString.copyFrom(buff, 0, len)).build());
+                    if (flag) {
+                        break;
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // Mark the end of requests
             requestObserver.onCompleted();
-
-            // Receiving happens asynchronously
             try {
-                if (!finishLatch.await(1, TimeUnit.MINUTES)) {
-                }
+                finishLatch.await(1, TimeUnit.MINUTES);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             logger.info("sendFile success");
 
-        }catch(Exception e){
-
+        } catch (Exception e) {
         }
         return result[0];
     }
 
-    private byte readByte(MultipartRequestInputStream is) throws IOException {
-        int i = is.read();
-        if (i == -1) {
-            throw new IOException("End of HTTP request stream reached");
-        }
-        return (byte) i;
-    }
-
     /**
+     * @return void
      * @author lhc
      * @description // 关闭grpc通道
      * @date 2021/10/29 5:26 下午
      * @params []
-     * @return void
      **/
     public void shutdown() throws InterruptedException {
         logger.debug("关闭grpc连接...");

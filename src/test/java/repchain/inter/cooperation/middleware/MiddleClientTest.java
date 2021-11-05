@@ -82,7 +82,9 @@ public class MiddleClientTest {
 //        System.out.println("upload");
 //        String result= HttpUtil.post("http://localhost:8888/file", paramMap);
 
-        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql")).setChunkedStreamingMode(2048).execute().body();
-//        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg")).setChunkedStreamingMode(2048).execute().body();
+//        String result = HttpRequest.post("http://localhost:8888/file").timeout(300000).form("file",FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql")).setChunkedStreamingMode(2048).execute().body();
+        String result = HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/apache-jmeter-5.4.1.tgz")).setChunkedStreamingMode(2048).execute().body();
+//        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/coord.sql")).setChunkedStreamingMode(2048).execute().body();
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 }

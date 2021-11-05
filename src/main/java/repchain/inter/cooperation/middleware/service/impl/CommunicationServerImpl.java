@@ -15,9 +15,12 @@ import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -95,14 +98,34 @@ public class CommunicationServerImpl implements CommunicationServer {
             try {
                 return new StreamObserver<TransFile>() {
                     final long startTime = System.nanoTime();
-                     OutputStream os = null;
+                    OutputStream os = null;
+
+                    URL url = null;
+                    HttpURLConnection con = null;
 
                     @Override
                     public void onNext(TransFile fileInfo) {
                         try {
-                            if (os == null) {
-                                os = new FileOutputStream("/Volumes/DATA/"+fileInfo.getFileName());
+                            if (con == null) {
+                                if (url == null) {
+                                    url = new URL("http://localhost:8888/testFile?fileName="+fileInfo.getFileName());
+                                }
+                                con = (HttpURLConnection) url.openConnection();
+                                // 设置是否向httpUrlConnection输出，因为这个是post请求，参数要放在
+                                // http正文内，因此需要设为true, 默认情况下是false;
+                                con.setDoOutput(true);
+                                // 设置是否从httpUrlConnection读入，默认情况下是true;
+                                con.setDoInput(true);
+                                // 设定请求的方法为"POST"，默认是GET
+                                con.setRequestMethod("POST");
+                                // Post 请求不能使用缓存
+                                con.setUseCaches(false);
+                                con.setChunkedStreamingMode(2048);
+                                os = con.getOutputStream();
                             }
+//                            if (os == null) {
+//                                os = new FileOutputStream("/Volumes/DATA/"+fileInfo.getFileName());
+//                            }
                             fileInfo.getFile().newInput();
                             fileInfo.getFile().writeTo(os);
                         } catch (IOException e) {
@@ -121,7 +144,21 @@ public class CommunicationServerImpl implements CommunicationServer {
                         System.out.println("完成");
                         // 关闭流
                         try {
+                            System.out.println(con.getResponseCode());
+                            InputStream inputStream2 = con.getInputStream();
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            byte[] data = new byte[2048];
+                            int len = 0;
+                            while ((len = inputStream2.read(data)) != -1) {
+                                bos.write(data, 0, len);
+                            }
+                            inputStream2.close();
+                            String content = bos.toString();
+                            bos.close();
+                            System.out.println("result =" + content);
+                            os.flush();
                             os.close();
+                            con.disconnect();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

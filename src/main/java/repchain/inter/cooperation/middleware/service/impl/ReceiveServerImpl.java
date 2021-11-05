@@ -1,6 +1,7 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
 import cn.hutool.core.net.multipart.UploadFile;
+import cn.hutool.core.net.multipart.UploadSetting;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -80,9 +81,12 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .setExecutor(executor)
                 .addAction("/msg", this::parentMsg)
                 .addAction("/file", this::file)
+                .addAction("/testFile", this::testFile)
                 .start();
         logger.info("Http Server started, listening on " + port);
     }
+
+
 
     public void parentMsg(HttpServerRequest req, HttpServerResponse res) {
         try {
@@ -189,32 +193,44 @@ public class ReceiveServerImpl implements ReceiveServer {
     @Override
     public void file(HttpServerRequest request, HttpServerResponse response) {
         System.out.println("upload");
-        UploadFile file = request.getMultipart().getFile("file");
+//        UploadSetting uploadSetting = new UploadSetting();
+//        uploadSetting.setMaxFileSize(1000*1024);
+//        UploadFile file = request.parseMultipart(uploadSetting).getFile("file");
 //            file.write("/Volumes/DATA");
         ComClientSingle clientSingle = new ComClientSingle("localhost",8080);
-        TransFile transFile = TransFile.newBuilder().setFileName(file.getFileName()).build();
+        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
         //            InputStream is = new FileInputStream(new File("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg"));
+//        try {
+          Result result =  clientSingle.sendFile(transFile, request.getBodyStream());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        response.setContentType("text/html;charset=utf-8");
         try {
-            clientSingle.sendFile(transFile, file.getFileInputStream());
+            response.write(JsonFormat.printer().print(result));
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
+        System.out.println("get");
+//        String fileName = httpServerRequest.getParam("fileName");
+//        try {
+           InputStream in =  httpServerRequest.getBodyStream();
+        int size = 0;
+        byte[] buffer = new byte[1024];
+        try {
+            FileOutputStream fos = new FileOutputStream("/Volumes/DATA/test");
+            while ((size = in.read(buffer,0,1024)) != -1) {
+                fos.write(buffer, 0, size);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-//        String resultObj;
-//        try {
-//            String data = request.getParam("data");
-//            TransEntity transEntity = TransEntity.newBuilder().setHeader("").build();
-//            Result result = communicationClient.sendMessage(transEntity);
-//            System.out.println(result.getData());
-//            resultObj = result.getData();
-//            response.setContentType("text/html;charset=utf-8");
-//            response.write(result.getData());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            resultObj = "error";
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        }
-//        response.setContentType("text/html;charset=utf-8");
-        response.write("OK");
+        httpServerResponse.write("ok");
     }
 }
