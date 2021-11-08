@@ -23,51 +23,98 @@ public class MiddleClientTest {
 
     @Test()
     public void msg() {
-        // 创建客户端
-        MiddlewareClient client = new MiddlewareClient("http://localhost:8888", 50000);
         // 构建请求参数
         Map<String, Object> map = new HashMap<>(1);
         map.put("loginName", "12110107bi45jh675g");
         // 发送请求，并获取返回结果
-        InterCoResult result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map);
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/sgUser/valid")
+                // 设置传输的数据
+                .setForm(map)
+                // 发送数据
+                .msg();
         System.out.println(JSONUtil.toJsonPrettyStr(result));
         System.out.println(result.getData());
     }
 
     @Test()
     public void multi() {
-        MiddlewareClient client = new MiddlewareClient("http://localhost:8888", 50000);
+        // 1.第一次请求
         Map<String, Object> map = new HashMap<>(1);
-        ReqOption reqOption = new ReqOption();
-        reqOption.setIsEnd(ReqOption.FALSE);
         map.put("loginName", "12110107bi45jh675g");
-        InterCoResult result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map, reqOption);
-        System.out.println(JSONUtil.toJsonPrettyStr(reqOption));
-        System.out.println(JSONUtil.toJsonPrettyStr(result));
-        reqOption = new ReqOption();
-        reqOption.setCid(result.getCid());
-        reqOption.setSeq(2);
+        // 传输设置对象
+        ReqOption reqOption = new ReqOption();
+        // 设置是否为最后一次请求，默认为true
         reqOption.setIsEnd(ReqOption.FALSE);
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/sgUser/valid")
+                // 设置传输的数据
+                .setForm(map)
+                // 发送数据
+                .msg(reqOption);
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
+        // 2. 第二次请求
+        reqOption = new ReqOption();
+        // 由于是同一次请求，所以请求id需要一致，获取上一次请求id
+        reqOption.setCid(result.getCid());
+        // 设置请求序号，默认为1
+        reqOption.setSeq(2);
+        // 设置是否为最后一次请求，默认为true
+        reqOption.setIsEnd(ReqOption.FALSE);
+        // 设置请求参数
         map = new HashMap<>(1);
         map.put("loginName", "yewu");
-        result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map, reqOption);
+        result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/sgUser/valid")
+                // 设置传输的数据
+                .setForm(map)
+                // 发送数据
+                .msg(reqOption);
         System.out.println(JSONUtil.toJsonPrettyStr(reqOption));
         System.out.println(JSONUtil.toJsonPrettyStr(result));
+        // 3. 第三次请求
         reqOption = new ReqOption();
+        // 由于是同一次请求，所以请求id需要一致，获取上一次请求id
         reqOption.setCid(result.getCid());
+        // 设置请求序号，默认为1
         reqOption.setSeq(3);
-        reqOption.setIsEnd(ReqOption.FALSE);
+        // 设置请求参数
         map = new HashMap<>(1);
         map.put("loginName", "test");
-        result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map, reqOption);
-        System.out.println(JSONUtil.toJsonPrettyStr(reqOption));
-        System.out.println(JSONUtil.toJsonPrettyStr(result));
-        reqOption = new ReqOption();
-        reqOption.setCid(result.getCid());
-        reqOption.setSeq(4);
-        map = new HashMap<>(1);
-        map.put("loginName", "pro_user");
-        result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map, reqOption);
+        result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/sgUser/valid")
+                // 设置传输的数据
+                .setForm(map)
+                // 发送数据
+                .msg(reqOption);
         System.out.println(JSONUtil.toJsonPrettyStr(reqOption));
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }

@@ -32,6 +32,7 @@ repchain:
   services:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
+      # 提供方证书
       e_from: bb743c821635920387678
       # 服务方证书
       from_cert: -----BEGIN CERTIFICATE-----
