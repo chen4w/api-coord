@@ -30,7 +30,6 @@ public class MiddleClientTest {
         map.put("loginName", "12110107bi45jh675g");
         // 发送请求，并获取返回结果
         InterCoResult result = client.msg("1", "/user/sgUser/valid", HttpType.GET, map);
-
         System.out.println(JSONUtil.toJsonPrettyStr(result));
         System.out.println(result.getData());
     }
