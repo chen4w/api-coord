@@ -18,7 +18,7 @@ public interface ReceiveServer {
 
     void start();
 
-    Object msg(ApiServAndAck to, ApiServAndAck from, ApiDefinition apiDefinition, int seq, boolean isEnd,
+    Object msg(String serviceId, int seq, boolean isEnd,
                String url, boolean bReqFlag, String method,
                String callbackMethod, String callbackUrl, String cid,
                boolean sync, Map<String, Object> map);

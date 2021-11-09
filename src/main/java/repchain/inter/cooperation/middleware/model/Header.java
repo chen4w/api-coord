@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author lhc
  * @version 1.0
@@ -16,7 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Header {
+public class Header implements Serializable {
+    private static final long serialVersionUID = 6987526033319751753L;
     private Long id;
     private String cid;
     private String e_from;

@@ -13,6 +13,7 @@ import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.MiddleConstant;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
+import repchain.inter.cooperation.middleware.model.AckObj;
 import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
 import repchain.inter.cooperation.middleware.model.MsgVo;
@@ -113,23 +114,9 @@ public class ReceiveServerImpl implements ReceiveServer {
             String data = req.getParam("data");
             Map<String, Object> map = JSONUtil.parseObj(data);
             res.setContentType("text/html;charset=utf-8");
-            // 获取根据yml文件及区块数据，获取接口定义，接口登记，及接口调用信息
-            Service service = YamlUtils.getService(id);
-            ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
-            ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
-            if (to == null || from == null) {
-                throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
-            }
-            if (!to.getD_id().equals(from.getD_id())) {
-                throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
-            }
-            ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
-            if (!to.getD_id().equals(from.getD_id())) {
-                throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
-            }
             MsgVo msgVo;
             if (MSG.equals(req.getPath())) {
-                msgVo = (MsgVo) msg(to,from,apiDefinition, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
+                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
             } else {
                 String filepath = req.getParam("filepath");
                 msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, filepath, map);
@@ -153,11 +140,10 @@ public class ReceiveServerImpl implements ReceiveServer {
     }
 
     @Override
-    public Object msg(ApiServAndAck to,ApiServAndAck from,ApiDefinition apiDefinition, int seq, boolean isEnd,
+    public Object msg(String serviceId, int seq, boolean isEnd,
                       String url, boolean bReqFlag, String method,
                       String callbackMethod, String callbackUrl, String cid,
                       boolean sync, Map<String, Object> map) {
-
         String data = "";
         if (map != null && map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
@@ -166,16 +152,17 @@ public class ReceiveServerImpl implements ReceiveServer {
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
         RepChain repchain = YamlUtils.getRepchain();
         PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(data);
-        Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), apiDefinition.getAlgo_sign());
+        Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), ackObj.getApiDefinition().getAlgo_sign());
         // 创建请求头
         Header header = Header.builder()
                 .cid(cid)
-                .e_from(from.getId())
-                .e_to(to.getId())
+                .e_from(ackObj.getFrom().getId())
+                .e_to(ackObj.getTo().getId())
                 .method(method + " " + url)
                 .b_req(bReqFlag)
                 .b_end(isEnd)
@@ -193,11 +180,11 @@ public class ReceiveServerImpl implements ReceiveServer {
         String host;
         int port;
         if (bReqFlag) {
-            host = to.getAddr();
-            port = to.getPort();
+            host = ackObj.getTo().getAddr();
+            port =  ackObj.getTo().getPort();
         } else {
-            host = from.getAddr();
-            port = from.getPort();
+            host = ackObj.getFrom().getAddr();
+            port = ackObj.getFrom().getPort();
         }
         TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
@@ -264,5 +251,36 @@ public class ReceiveServerImpl implements ReceiveServer {
 //            e.printStackTrace();
 //        }
         httpServerResponse.write("ok");
+    }
+
+    private AckObj getAckObj(String serviceId,boolean bReq,String cid) {
+        ApiServAndAck to;
+        ApiServAndAck from;
+        ApiDefinition apiDefinition;
+        Header header = null;
+        if (bReq) {
+            Service service = YamlUtils.getService(serviceId);
+            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
+            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
+        }else{
+            header = (Header) EhcacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid);
+            if (header == null) {
+                throw new ServiceException("无法从缓存中获取请求头信息，缓存id:"+cid);
+            }
+            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to());
+            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from());
+        }
+
+        if (to == null || from == null) {
+            throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
+        }
+        if (!to.getD_id().equals(from.getD_id())) {
+            throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
+        }
+        apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
+        if (!to.getD_id().equals(from.getD_id())) {
+            throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
+        }
+        return AckObj.builder().to(to).from(from).apiDefinition(apiDefinition).header(header).build();
     }
 }
