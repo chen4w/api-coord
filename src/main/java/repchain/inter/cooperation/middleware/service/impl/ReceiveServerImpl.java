@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.MiddleConstant;
+import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
 import repchain.inter.cooperation.middleware.model.MsgVo;
@@ -24,11 +25,10 @@ import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
-import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
-import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
+import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
 import repchain.inter.cooperation.middleware.service.TransactionCommit;
 import repchain.inter.cooperation.middleware.utils.*;
@@ -48,11 +48,16 @@ import java.util.concurrent.*;
  */
 public class ReceiveServerImpl implements ReceiveServer {
 
+    private static final String MSG = "/msg";
+    private static final String FILE = "/file";
+
     private static final Logger logger = LoggerFactory.getLogger(ReceiveServerImpl.class);
 
     public CommunicationClient communicationClient;
 
     public TransactionCommit commit;
+
+    public Persistence persistence;
 
     @Override
     public void setCommunicationClient(CommunicationClient communicationClient) {
@@ -62,6 +67,11 @@ public class ReceiveServerImpl implements ReceiveServer {
     @Override
     public void setTransactionCommit(TransactionCommit commit) {
         this.commit = commit;
+    }
+
+    @Override
+    public void setPersistence(Persistence persistence) {
+        this.persistence = persistence;
     }
 
     @Override
@@ -78,7 +88,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         HttpUtil.createServer(port)
                 .setExecutor(executor)
                 .addAction("/msg", this::parentMsg)
-                .addAction("/file", this::file)
+                .addAction("/file", this::parentMsg)
                 .addAction("/testFile", this::testFile)
                 .start();
         logger.info("Http Server started, listening on " + port);
@@ -87,11 +97,12 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     public void parentMsg(HttpServerRequest req, HttpServerResponse res) {
         try {
+            // 获取请求参数
             String id = req.getParam("serviceId");
             int seq = Integer.parseInt(req.getParam("seq"));
-            Integer isEnd = Integer.parseInt(req.getParam("isEnd"));
-            Integer bReq = Integer.parseInt(req.getParam("bReq"));
-            Integer isSync = Integer.parseInt(req.getParam("sync"));
+            int isEnd = Integer.parseInt(req.getParam("isEnd"));
+            int bReq = Integer.parseInt(req.getParam("bReq"));
+            int isSync = Integer.parseInt(req.getParam("sync"));
             String url = req.getParam("url");
             String method = req.getParam("method");
             String callbackMethod = req.getParam("callbackMethod");
@@ -103,7 +114,28 @@ public class ReceiveServerImpl implements ReceiveServer {
             String data = req.getParam("data");
             Map<String, Object> map = JSONUtil.parseObj(data);
             res.setContentType("text/html;charset=utf-8");
-            MsgVo msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
+            // 获取根据yml文件及区块数据，获取接口定义，接口登记，及接口调用信息
+            Service service = YamlUtils.getService(id);
+            ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
+            ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
+            if (to == null || from == null) {
+                throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
+            }
+            if (!to.getD_id().equals(from.getD_id())) {
+                throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
+            }
+            ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
+            if (!to.getD_id().equals(from.getD_id())) {
+                throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
+            }
+            MsgVo msgVo;
+            if (MSG.equals(req.getPath())) {
+                msgVo = (MsgVo) msg(to,from,apiDefinition, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
+            } else {
+                String filepath = req.getParam("filepath");
+                msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, filepath, map);
+            }
+
             Result result = msgVo.getResult();
             InterCoResult coResult;
             if (result.getCode() == 0) {
@@ -122,23 +154,15 @@ public class ReceiveServerImpl implements ReceiveServer {
     }
 
     @Override
-    public Object msg(String serviceId, int seq, boolean isEnd,
+    public Object msg(ApiServAndAck to,ApiServAndAck from,ApiDefinition apiDefinition, int seq, boolean isEnd,
                       String url, boolean bReqFlag, String method,
-                      String callbackMethod, String callbackUrl, String cid, boolean sync, Map<String, Object> map) {
-        Service service = YamlUtils.getService(serviceId);
-        ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
-        ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
-        if (to == null || from == null) {
-            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取登记信息，请确认信息是否提交或稍后重试").build();
+                      String callbackMethod, String callbackUrl, String cid,
+                      boolean sync, Map<String, Object> map) {
+
+        String data = "";
+        if (map != null && map.isEmpty()) {
+            data = JSONUtil.toJsonStr(map);
         }
-        if (!to.getD_id().equals(from.getD_id())) {
-            return Result.newBuilder().setCode(2).setMsg("服务登记和服务调用所实现的接口定义不一致！").build();
-        }
-        ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
-        if (!to.getD_id().equals(from.getD_id())) {
-            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试").build();
-        }
-        String data = JSONUtil.toJsonStr(map);
         if (StrUtil.isBlank(cid)) {
             // 创建交易id
             cid = SnowIdGenerator.getId();
@@ -146,7 +170,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         RepChain repchain = YamlUtils.getRepchain();
         PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
         // 对业务请求数据进行hash取值
-        String contentHash = DigestUtil.sha256Hex(JSONUtil.toJsonStr(data));
+        String contentHash = DigestUtil.sha256Hex(data);
         Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), apiDefinition.getAlgo_sign());
         // 创建请求头
         Header header = Header.builder()
@@ -188,27 +212,39 @@ public class ReceiveServerImpl implements ReceiveServer {
     }
 
     @Override
-    public void file(HttpServerRequest request, HttpServerResponse response) {
-        System.out.println("upload");
-//        UploadSetting uploadSetting = new UploadSetting();
-//        uploadSetting.setMaxFileSize(1000*1024);
-//        UploadFile file = request.parseMultipart(uploadSetting).getFile("file");
-//            file.write("/Volumes/DATA");
-        ComClientSingle clientSingle = new ComClientSingle("localhost", 8080);
-        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
+    public Object file(String serviceId, int seq, boolean isEnd,
+                       String url, boolean bReqFlag, String method,
+                       String callbackMethod, String callbackUrl, String cid,
+                       boolean sync, String filePath, Map<String, Object> map) {
+        Service service = YamlUtils.getService(serviceId);
+        ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
+        ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
+        if (to == null || from == null) {
+            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取登记信息，请确认信息是否提交或稍后重试").build();
+        }
+        if (!to.getD_id().equals(from.getD_id())) {
+            return Result.newBuilder().setCode(2).setMsg("服务登记和服务调用所实现的接口定义不一致！").build();
+        }
+        ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
+        if (!to.getD_id().equals(from.getD_id())) {
+            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试").build();
+        }
+//        ComClientSingle clientSingle = new ComClientSingle("localhost", 8080);
+//        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
         //            InputStream is = new FileInputStream(new File("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg"));
 //        try {
-        File file = new File("");
-        Result result = clientSingle.sendFile(transFile, request.getBodyStream());
-//        } catch (IOException e) {
+//        File file = new File("");
+//        Result result = clientSingle.sendFile(transFile, request.getBodyStream());
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//        response.setContentType("text/html;charset=utf-8");
+//        try {
+//            response.write(JsonFormat.printer().print(result));
+//        } catch (InvalidProtocolBufferException e) {
 //            e.printStackTrace();
 //        }
-        response.setContentType("text/html;charset=utf-8");
-        try {
-            response.write(JsonFormat.printer().print(result));
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+        return null;
     }
 
     private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {

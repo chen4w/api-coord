@@ -19,4 +19,5 @@ import lombok.NoArgsConstructor;
 public class MiddleConfig {
     private RepChain repchain;
     private Middleware middleware;
+    private MyDatasource datasource;
 }

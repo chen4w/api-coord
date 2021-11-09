@@ -3,6 +3,7 @@ package repchain.inter.cooperation.middleware;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
@@ -41,7 +42,7 @@ public class AppTest {
      */
     @Test
     public void testConvertToMap() {
-        ReqOption reqOption = new ReqOption();
+        System.out.println(DigestUtil.sha256Hex(""));
 
     }
 }

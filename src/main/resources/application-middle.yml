@@ -96,3 +96,17 @@ middleware:
     maxPoolSize: 200
     # 队列，有用存储未执行的线程
     workQueue: 100
+datasource:
+  url: jdbc:sqlite:datasource.db
+  pass: root
+  user: root
+  driver: org.sqlite.JDBC
+  ## 可选配置
+  # 是否在日志中显示执行的SQL
+  showSql: true
+  # 是否格式化显示的SQL
+  formatSql: true
+  # 是否显示SQL参数
+  showParams: true
+  # 打印SQL的日志等级，默认debug，可以是info、warn、error
+  sqlLevel: info

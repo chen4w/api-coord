@@ -1,7 +1,7 @@
 package repchain.inter.cooperation.middleware.service;
 
-import cn.hutool.http.server.HttpServerRequest;
-import cn.hutool.http.server.HttpServerResponse;
+import repchain.inter.cooperation.middleware.model.tran.ApiDefinition;
+import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
 
 import java.util.Map;
 
@@ -18,12 +18,17 @@ public interface ReceiveServer {
 
     void start();
 
-    Object msg(String serviceId, int seq, boolean isEnd,
-               String url,boolean bReqFlag,String method,
-               String callbackMethod,String callbackUrl,String cid,boolean sync,
-               Map<String, Object> map);
+    Object msg(ApiServAndAck to, ApiServAndAck from, ApiDefinition apiDefinition, int seq, boolean isEnd,
+               String url, boolean bReqFlag, String method,
+               String callbackMethod, String callbackUrl, String cid,
+               boolean sync, Map<String, Object> map);
 
-    void file(HttpServerRequest request, HttpServerResponse response);
+    Object file(String serviceId, int seq, boolean isEnd,
+                String url, boolean bReqFlag, String method,
+                String callbackMethod, String callbackUrl, String cid,
+                boolean sync,String filePath, Map<String, Object> map);
 
     void setTransactionCommit(TransactionCommit commit);
+
+    void setPersistence(Persistence persistence);
 }

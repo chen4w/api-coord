@@ -38,7 +38,7 @@ dependencies {
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation 'org.yaml:snakeyaml:1.29'
-    implementation 'cn.hutool:hutool-all:5.7.5'
+    implementation 'cn.hutool:hutool-all:5.7.16'
     implementation ('repchain:rcjava-core:0.4.3-SNAPSHOT') {
         exclude group: "org.slf4j", module: "slf4j-api"
     }
@@ -51,6 +51,8 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'org.apache.commons:commons-pool2:2.5.0'
     implementation 'net.sf.ehcache:ehcache:2.10.2'
+    implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
+    implementation 'com.alibaba:druid:1.2.8'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

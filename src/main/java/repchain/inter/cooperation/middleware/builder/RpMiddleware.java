@@ -19,10 +19,11 @@ public class RpMiddleware {
     private ReceiveClient receiveClient;
     private ReceiveServer receiveServer;
     private TransactionCommit transactionCommit;
+    private Persistence persistence;
 
     public RpMiddleware(AuthFilter authFilter, BlockSync blockSync, CommunicationClient communicationClient,
                         CommunicationServer communicationServer, ReceiveClient receiveClient,
-                        ReceiveServer receiveServer, TransactionCommit transactionCommit) {
+                        ReceiveServer receiveServer, TransactionCommit transactionCommit,Persistence persistence) {
         this.authFilter = authFilter;
         this.blockSync = blockSync;
         this.communicationClient = communicationClient;
@@ -30,6 +31,7 @@ public class RpMiddleware {
         this.receiveClient = receiveClient;
         this.receiveServer = receiveServer;
         this.transactionCommit = transactionCommit;
+        this.persistence = persistence;
     }
 
     public static RpMiddlewareBuilder builder() {
@@ -44,12 +46,16 @@ public class RpMiddleware {
                 .communicationServer(this.communicationServer)
                 .receiveClient(this.receiveClient)
                 .receiveServer(this.receiveServer)
-                .transactionCommit(transactionCommit)
+                .transactionCommit(this.transactionCommit)
+                .persistence(this.persistence)
                 .build();
     }
 
     public void start(){
         System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
+        if (this.persistence != null) {
+            this.persistence.init();
+        }
         if (this.receiveServer == null) {
             throw new NullPointerException("receiveServer can not be null!!!");
         }
@@ -69,6 +75,7 @@ public class RpMiddleware {
         private ReceiveClient receiveClient;
         private ReceiveServer receiveServer;
         private TransactionCommit transactionCommit;
+        private Persistence persistence;
 
         RpMiddlewareBuilder() {
 
@@ -76,6 +83,11 @@ public class RpMiddleware {
 
         public RpMiddlewareBuilder authFilter(AuthFilter authFilter) {
             this.authFilter = authFilter;
+            return this;
+        }
+
+        public RpMiddlewareBuilder persistence(Persistence persistence) {
+            this.persistence = persistence;
             return this;
         }
 
@@ -105,6 +117,7 @@ public class RpMiddleware {
             this.receiveServer = receiveServer;
             this.receiveServer.setCommunicationClient(this.communicationClient);
             this.receiveServer.setTransactionCommit(this.transactionCommit);
+            this.receiveServer.setPersistence(this.persistence);
             return this;
         }
 
@@ -115,7 +128,7 @@ public class RpMiddleware {
 
         public RpMiddleware build() {
             return new RpMiddleware(this.authFilter, this.blockSync, this.communicationClient,
-                    this.communicationServer, this.receiveClient, this.receiveServer, this.transactionCommit);
+                    this.communicationServer, this.receiveClient, this.receiveServer, this.transactionCommit,this.persistence);
         }
     }
 }
