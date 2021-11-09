@@ -19,6 +19,7 @@ message TransFile{
   string host= 3;
   bytes file = 4;
   string fileName=5;
+  string sha256=6;
 }
 
 message TransEntity{

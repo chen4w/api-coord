@@ -58,7 +58,7 @@ public class ComClientSingle {
         return result;
     }
 
-    public Result sendFile(TransFile transFile, InputStream is) {
+    public Result sendFile(TransFile transFile, File file) {
         final Result[] result = new Result[1];
         try {
             TransformGrpc.TransformStub stub = TransformGrpc.newStub(channel);
@@ -83,29 +83,14 @@ public class ComClientSingle {
             };
             StreamObserver<TransFile> requestObserver = stub.sendFile(responseObserver);
             try {
+                FileInputStream is = new FileInputStream(file);
                 MultipartRequestInputStream input = new MultipartRequestInputStream(is);
                 input.readBoundary();
                 UploadFileHeader header = input.readDataHeader(StandardCharsets.UTF_8);
                 byte[] buff = new byte[2048];
                 int len;
                 while ((len = input.read(buff)) != -1) {
-                    boolean flag = false;
-                    for (int i = 0; i < buff.length; i++) {
-                        try {
-                            if (input.isBoundary(buff[i])) {
-                                len = i - 1;
-                                flag = true;
-                            }
-                        } catch (IOException e) {
-                            if (!"End of HTTP request stream reached".equals(e.getMessage())) {
-                                logger.error(e.getMessage(),e);
-                            }
-                        }
-                    }
                     requestObserver.onNext(transFile.toBuilder().setFileName(header.getFileName()).setFile(ByteString.copyFrom(buff, 0, len)).build());
-                    if (flag) {
-                        break;
-                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

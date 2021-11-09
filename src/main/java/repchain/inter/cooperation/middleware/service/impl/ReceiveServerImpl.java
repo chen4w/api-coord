@@ -7,8 +7,6 @@ import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
 import cn.hutool.json.JSONUtil;
-import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.util.JsonFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.client.ReqOption;
@@ -27,6 +25,7 @@ import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.service.ReceiveServer;
@@ -230,11 +229,10 @@ public class ReceiveServerImpl implements ReceiveServer {
             return Result.newBuilder().setCode(2).setMsg("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试").build();
         }
 //        ComClientSingle clientSingle = new ComClientSingle("localhost", 8080);
-//        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
-        //            InputStream is = new FileInputStream(new File("/Users/lhc/Downloads/135701zawtzcv6ab5llcv8.jpg"));
+        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
 //        try {
 //        File file = new File("");
-//        Result result = clientSingle.sendFile(transFile, request.getBodyStream());
+        Result result = communicationClient.sendFile(transFile, new File(filePath));
 ////        } catch (IOException e) {
 ////            e.printStackTrace();
 ////        }

@@ -4,7 +4,11 @@ import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 
 /**
@@ -23,6 +27,16 @@ public class CommunicationClientImpl implements CommunicationClient {
         int port = transEntity.getPort();
         ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
         Result result = comClientSingle.sendMessage(transEntity);
+        ComClientPool.returnObject(comClientSingle, host, port);
+        return result;
+    }
+
+    @Override
+    public Result sendFile(TransFile transFile, File file) {
+        String host = transFile.getHost();
+        int port = transFile.getPort();
+        ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
+        Result result = comClientSingle.sendFile(transFile,file);
         ComClientPool.returnObject(comClientSingle, host, port);
         return result;
     }

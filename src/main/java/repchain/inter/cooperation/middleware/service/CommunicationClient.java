@@ -2,6 +2,9 @@ package repchain.inter.cooperation.middleware.service;
 
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
+import repchain.inter.cooperation.middleware.proto.TransFile;
+
+import java.io.File;
 
 /**
  * @author lhc
@@ -20,4 +23,6 @@ public interface CommunicationClient {
      * @return repchain.inter.cooperation.middleware.proto.Result
      **/
     Result sendMessage(TransEntity transEntity);
+
+    Result sendFile(TransFile transFile, File file);
 }
