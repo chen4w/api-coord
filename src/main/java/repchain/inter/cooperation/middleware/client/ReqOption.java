@@ -38,4 +38,7 @@ public class ReqOption implements Serializable {
     private String url;
     private String method;
     private int sync = TRUE;
+    private String filepath;
+    private String fileHash;
+    private int save = FALSE;
 }

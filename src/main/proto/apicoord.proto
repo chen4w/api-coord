@@ -20,6 +20,7 @@ message TransFile{
   bytes file = 4;
   string fileName=5;
   string sha256=6;
+  bool begin = 7;
 }
 
 message TransEntity{

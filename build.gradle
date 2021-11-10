@@ -19,7 +19,8 @@ repositories {
 }
 
 //禁掉jar task
-jar.enabled = false
+jar.enabled(false)
+//test.enabled(false)
 // 执行shadow的打包
 shadowJar {
     archiveBaseName.set('Middleware')

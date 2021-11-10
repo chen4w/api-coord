@@ -119,7 +119,8 @@ public class ReceiveServerImpl implements ReceiveServer {
                 msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
             } else {
                 String filepath = req.getParam("filepath");
-                msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, filepath, map);
+                String fileHash = req.getParam("fileHash");
+                msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, filepath, fileHash, map);
             }
 
             Result result = msgVo.getResult();
@@ -145,21 +146,126 @@ public class ReceiveServerImpl implements ReceiveServer {
                       String callbackMethod, String callbackUrl, String cid,
                       boolean sync, Map<String, Object> map) {
         String data = "";
-        if (map != null && map.isEmpty()) {
+        if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
         }
         if (StrUtil.isBlank(cid)) {
+            if (!bReqFlag) {
+                throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
+            }
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
         AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
-        RepChain repchain = YamlUtils.getRepchain();
-        PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(data);
-        Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), ackObj.getApiDefinition().getAlgo_sign());
+        Signature signature = getSign(contentHash, ackObj);
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
+        int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
+        Result result = communicationClient.sendMessage(transEntity);
+        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        return MsgVo.builder().reqAckProof(rb).result(result).build();
+    }
+
+    @Override
+    public Object file(String serviceId, int seq, boolean isEnd,
+                       String url, boolean bReqFlag, String method,
+                       String callbackMethod, String callbackUrl, String cid,
+                       boolean sync, String filePath, String fileHash, Map<String, Object> map) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new ServiceException("文件不存在，请检查文件路径是否正确！");
+        }
+        String data = "";
+        if (map != null && !map.isEmpty()) {
+            data = JSONUtil.toJsonStr(map);
+        }
+        if (StrUtil.isBlank(cid)) {
+            if (!bReqFlag) {
+                throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
+            }
+            // 创建交易id
+            cid = SnowIdGenerator.getId();
+        }
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        Signature signature = getSign(fileHash, ackObj);
         // 创建请求头
-        Header header = Header.builder()
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
+        int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
+        TransFile transFile = TransFile.newBuilder().setSha256(fileHash).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+        Result result = communicationClient.sendFile(transFile, file);
+        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        return MsgVo.builder().reqAckProof(rb).result(result).build();
+    }
+
+    public Object fileAysnc(String serviceId, int seq, boolean isEnd,
+                            String url, boolean bReqFlag, String method,
+                            String callbackMethod, String callbackUrl, String cid,
+                            boolean sync, String filePath, String fileHash, Map<String, Object> map) {
+
+
+        return null;
+    }
+
+    private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
+        InputStream in = httpServerRequest.getBodyStream();
+        int size;
+        byte[] buffer = new byte[1024];
+        try {
+            FileOutputStream fos = new FileOutputStream("/Volumes/DATA/test");
+            while ((size = in.read(buffer, 0, 1024)) != -1) {
+                fos.write(buffer, 0, size);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        httpServerResponse.write("ok");
+    }
+
+    private AckObj getAckObj(String serviceId, boolean bReq, String cid) {
+        ApiServAndAck to;
+        ApiServAndAck from;
+        ApiDefinition apiDefinition;
+        Header header = null;
+        if (bReq) {
+            Service service = YamlUtils.getService(serviceId);
+            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
+            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
+        } else {
+            header = (Header) EhcacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid);
+            if (header == null) {
+                throw new ServiceException("无法从缓存中获取请求头信息，缓存id:" + cid);
+            }
+            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to());
+            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from());
+        }
+        if (to == null || from == null) {
+            throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
+        }
+        if (!to.getD_id().equals(from.getD_id())) {
+            throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
+        }
+        apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
+        if (!to.getD_id().equals(from.getD_id())) {
+            throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
+        }
+        return AckObj.builder().to(to).from(from).apiDefinition(apiDefinition).header(header).build();
+    }
+
+    private Signature getSign(String hash, AckObj ackObj) {
+        RepChain repchain = YamlUtils.getRepchain();
+        PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
+        return TransTools.getSignature(privateKey, hash, repchain.getCreditCode(), repchain.getCertName(), ackObj.getApiDefinition().getAlgo_sign());
+    }
+
+    private Header getHeader(AckObj ackObj, String cid, String method, String url, boolean bReqFlag,
+                             boolean isEnd, int seq, String callbackUrl, String callbackMethod,
+                             String data, boolean sync, Signature signature) {
+        // 创建请求头
+        return Header.builder()
                 .cid(cid)
                 .e_from(ackObj.getFrom().getId())
                 .e_to(ackObj.getTo().getId())
@@ -177,110 +283,5 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .url(url)
                 .sync(sync)
                 .build();
-        String host;
-        int port;
-        if (bReqFlag) {
-            host = ackObj.getTo().getAddr();
-            port =  ackObj.getTo().getPort();
-        } else {
-            host = ackObj.getFrom().getAddr();
-            port = ackObj.getFrom().getPort();
-        }
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
-        Result result = communicationClient.sendMessage(transEntity);
-        ReqAckProof rb;
-        if (result.getCode() == 0) {
-            rb = TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
-        } else {
-            rb = null;
-        }
-        return MsgVo.builder().reqAckProof(rb).result(result).build();
-    }
-
-    @Override
-    public Object file(String serviceId, int seq, boolean isEnd,
-                       String url, boolean bReqFlag, String method,
-                       String callbackMethod, String callbackUrl, String cid,
-                       boolean sync, String filePath, Map<String, Object> map) {
-        Service service = YamlUtils.getService(serviceId);
-        ApiServAndAck to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
-        ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
-        if (to == null || from == null) {
-            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取登记信息，请确认信息是否提交或稍后重试").build();
-        }
-        if (!to.getD_id().equals(from.getD_id())) {
-            return Result.newBuilder().setCode(2).setMsg("服务登记和服务调用所实现的接口定义不一致！").build();
-        }
-        ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
-        if (!to.getD_id().equals(from.getD_id())) {
-            return Result.newBuilder().setCode(2).setMsg("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试").build();
-        }
-//        ComClientSingle clientSingle = new ComClientSingle("localhost", 8080);
-        TransFile transFile = TransFile.newBuilder().setFileName("test").build();
-//        try {
-//        File file = new File("");
-        Result result = communicationClient.sendFile(transFile, new File(filePath));
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-//        response.setContentType("text/html;charset=utf-8");
-//        try {
-//            response.write(JsonFormat.printer().print(result));
-//        } catch (InvalidProtocolBufferException e) {
-//            e.printStackTrace();
-//        }
-        return null;
-    }
-
-    private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
-        System.out.println("get");
-//        String fileName = httpServerRequest.getParam("fileName");
-//        try {
-        InputStream in = httpServerRequest.getBodyStream();
-        int size = 0;
-        byte[] buffer = new byte[1024];
-        try {
-            FileOutputStream fos = new FileOutputStream("/Volumes/DATA/test");
-            while ((size = in.read(buffer, 0, 1024)) != -1) {
-                fos.write(buffer, 0, size);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        httpServerResponse.write("ok");
-    }
-
-    private AckObj getAckObj(String serviceId,boolean bReq,String cid) {
-        ApiServAndAck to;
-        ApiServAndAck from;
-        ApiDefinition apiDefinition;
-        Header header = null;
-        if (bReq) {
-            Service service = YamlUtils.getService(serviceId);
-            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
-            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
-        }else{
-            header = (Header) EhcacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid);
-            if (header == null) {
-                throw new ServiceException("无法从缓存中获取请求头信息，缓存id:"+cid);
-            }
-            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to());
-            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from());
-        }
-
-        if (to == null || from == null) {
-            throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
-        }
-        if (!to.getD_id().equals(from.getD_id())) {
-            throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
-        }
-        apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
-        if (!to.getD_id().equals(from.getD_id())) {
-            throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
-        }
-        return AckObj.builder().to(to).from(from).apiDefinition(apiDefinition).header(header).build();
     }
 }

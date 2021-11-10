@@ -20,6 +20,7 @@ import repchain.inter.cooperation.middleware.utils.TransTools;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.security.PrivateKey;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -53,7 +54,12 @@ public class ReceiveClientImpl implements ReceiveClient {
         } else {
             ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id());
             if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(),header.getB_req())) {
-                Map<String, Object> map = JSONUtil.parseObj(header.getData());
+                Map<String,Object> map;
+                if (header.getData() !=null&& header.getData().contains("{")) {
+                    map = JSONUtil.parseObj(header.getData());
+                } else {
+                    map = new HashMap<>(1);
+                }
                 RecClient recClient = YamlUtils.middleConfig.getMiddleware().getRecClient();
                 String subUrl;
                 if (header.getUrl().startsWith("/")) {

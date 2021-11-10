@@ -8,7 +8,9 @@ import repchain.inter.cooperation.middleware.client.HttpType;
 import repchain.inter.cooperation.middleware.client.MiddlewareClient;
 import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
+import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,7 @@ public class MiddleClientTest {
     public void msg() {
         // 构建请求参数
         Map<String, Object> map = new HashMap<>(1);
-        map.put("loginName", "12110107bi45jh675g");
+//        map.put("loginName", "12110107bi45jh675g");
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -41,7 +43,6 @@ public class MiddleClientTest {
                 // 发送数据
                 .msg();
         System.out.println(JSONUtil.toJsonPrettyStr(result));
-        System.out.println(result.getData());
     }
 
     @Test()
@@ -121,6 +122,23 @@ public class MiddleClientTest {
 
     @Test
     public void file(){
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("loginName", "12110107bi45jh675g");
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/sgUser/valid")
+                // 设置传输的数据
+                .setForm(map)
+                // file
+                .setFile(FileUtil.file("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz"))
+                // 发送数据
+                .sendFile();
 //        System.out.println("upload");
 //        HashMap<String, Object> paramMap = new HashMap<>();
 //        paramMap.put("file", FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql"));
@@ -129,8 +147,16 @@ public class MiddleClientTest {
 //        String result= HttpUtil.post("http://localhost:8888/file", paramMap);
 
 //        String result = HttpRequest.post("http://localhost:8888/file").timeout(300000).form("file",FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql")).setChunkedStreamingMode(2048).execute().body();
-        String result = HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/apache-jmeter-5.4.1.tgz")).setChunkedStreamingMode(2048).execute().body();
+//        String result = HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/apache-jmeter-5.4.1.tgz")).setChunkedStreamingMode(2048).execute().body();
 //        HttpRequest.post("http://localhost:8888/file").timeout(30000).form("file",FileUtil.file("/Users/lhc/Downloads/coord.sql")).setChunkedStreamingMode(2048).execute().body();
         System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test
+    public void test256(){
+        File file1 = new File("/Volumes/DATA/ideaProject/api-coord/tmp/file/c4139f94cc794b9390d8662c7c9a4b811458354018019553280");
+        File file2 = new File("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz");
+        boolean flag = GetFileSHA256.getFileSha256(file1).equals(GetFileSHA256.getFileSha256(file2));
+        System.out.println(flag);
     }
 }

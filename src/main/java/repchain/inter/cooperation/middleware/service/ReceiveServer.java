@@ -26,7 +26,7 @@ public interface ReceiveServer {
     Object file(String serviceId, int seq, boolean isEnd,
                 String url, boolean bReqFlag, String method,
                 String callbackMethod, String callbackUrl, String cid,
-                boolean sync,String filePath, Map<String, Object> map);
+                boolean sync,String filePath,String fileHash, Map<String, Object> map);
 
     void setTransactionCommit(TransactionCommit commit);
 

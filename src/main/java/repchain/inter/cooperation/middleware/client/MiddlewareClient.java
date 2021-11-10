@@ -3,7 +3,9 @@ package repchain.inter.cooperation.middleware.client;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
+import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
+import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
 
 import java.io.File;
 import java.util.HashMap;
@@ -59,6 +61,7 @@ public class MiddlewareClient {
 
     public MiddlewareClient setFile(File file) {
         this.file = file;
+        this.filepath = file.getAbsolutePath();
         return this;
     }
 
@@ -74,10 +77,10 @@ public class MiddlewareClient {
 
     public InterCoResult msg() {
         ReqOption reqOption = new ReqOption();
-        return getInterCoResult(serviceId, url, httpType, form, reqOption);
+        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg");
     }
 
-    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption) {
+    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption,String middleUrl) {
         if (serviceId == null) {
             throw new NullPointerException("serviceId can not be null");
         }
@@ -96,7 +99,7 @@ public class MiddlewareClient {
         map.put("cid", reqOption.getCid());
         reqOption.setData(JSONUtil.toJsonStr(map));
         Map<String, Object> form = Convert.toMap(String.class, Object.class, reqOption);
-        String resultStr = HttpRequest.post(host + "/msg")
+        String resultStr = HttpRequest.post(host + middleUrl)
                 .form(form)
                 .timeout(this.timeout)
                 .execute().body();
@@ -105,7 +108,16 @@ public class MiddlewareClient {
 
 
     public InterCoResult msg(ReqOption reqOption) {
-        return getInterCoResult(serviceId, url, httpType, form, reqOption);
+        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg");
     }
 
+    public InterCoResult sendFile() {
+        if (this.file==null) {
+            throw new ServiceException("file can not be null");
+        }
+        ReqOption reqOption = new ReqOption();
+        reqOption.setFilepath(this.filepath);
+        reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file");
+    }
 }

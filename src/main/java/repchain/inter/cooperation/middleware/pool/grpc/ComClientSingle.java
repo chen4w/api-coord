@@ -1,25 +1,24 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
-import cn.hutool.core.net.multipart.MultipartRequestInputStream;
-import cn.hutool.core.net.multipart.UploadFileHeader;
 import com.google.protobuf.ByteString;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.google.protobuf.util.JsonFormat;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.proto.TransformGrpc;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.esotericsoftware.minlog.Log.info;
 
 /**
  * @author lhc
@@ -58,6 +57,13 @@ public class ComClientSingle {
         return result;
     }
 
+    /**
+     * @author lhc
+     * @description // 通过grpc流，发送文件
+     * @date 2021/11/9 4:41 下午
+     * @params [transFile, file]
+     * @return repchain.inter.cooperation.middleware.proto.Result
+     **/
     public Result sendFile(TransFile transFile, File file) {
         final Result[] result = new Result[1];
         try {
@@ -77,33 +83,34 @@ public class ComClientSingle {
 
                 @Override
                 public void onCompleted() {
-                    info("Finished RecordRoute");
+                    try {
+                        logger.info("文件传输完成，文件信息:\n"+ JsonFormat.printer().print(transFile));
+                    } catch (InvalidProtocolBufferException e) {
+                        e.printStackTrace();
+                    }
                     finishLatch.countDown();
                 }
             };
             StreamObserver<TransFile> requestObserver = stub.sendFile(responseObserver);
-            try {
+            if (transFile.getBegin()) {
+                requestObserver.onNext(transFile.toBuilder().build());
+            } else {
                 FileInputStream is = new FileInputStream(file);
-                MultipartRequestInputStream input = new MultipartRequestInputStream(is);
-                input.readBoundary();
-                UploadFileHeader header = input.readDataHeader(StandardCharsets.UTF_8);
                 byte[] buff = new byte[2048];
                 int len;
-                while ((len = input.read(buff)) != -1) {
-                    requestObserver.onNext(transFile.toBuilder().setFileName(header.getFileName()).setFile(ByteString.copyFrom(buff, 0, len)).build());
+                while ((len = is.read(buff)) != -1) {
+                    requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(buff, 0, len)).build());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             requestObserver.onCompleted();
-            try {
-                finishLatch.await(1, TimeUnit.MINUTES);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            if(finishLatch.await(1, TimeUnit.MINUTES)){
+//                throw new ServiceException("中间件传输超时");
+//            }
+            finishLatch.await(1, TimeUnit.MINUTES);
             logger.info("sendFile success");
-
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("文件传输出错：" + e.getMessage());
         }
         return result[0];
     }
