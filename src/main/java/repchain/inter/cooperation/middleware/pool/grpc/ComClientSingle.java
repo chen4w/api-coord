@@ -10,12 +10,11 @@ import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
-import repchain.inter.cooperation.middleware.proto.Result;
-import repchain.inter.cooperation.middleware.proto.TransEntity;
-import repchain.inter.cooperation.middleware.proto.TransFile;
-import repchain.inter.cooperation.middleware.proto.TransformGrpc;
+import repchain.inter.cooperation.middleware.proto.*;
+import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
 
 import java.io.*;
+import java.util.Iterator;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -58,11 +57,11 @@ public class ComClientSingle {
     }
 
     /**
+     * @return repchain.inter.cooperation.middleware.proto.Result
      * @author lhc
      * @description // 通过grpc流，发送文件
      * @date 2021/11/9 4:41 下午
      * @params [transFile, file]
-     * @return repchain.inter.cooperation.middleware.proto.Result
      **/
     public Result sendFile(TransFile transFile, File file) {
         final Result[] result = new Result[1];
@@ -84,7 +83,7 @@ public class ComClientSingle {
                 @Override
                 public void onCompleted() {
                     try {
-                        logger.info("文件传输完成，文件信息:\n"+ JsonFormat.printer().print(transFile));
+                        logger.info("文件传输完成，文件信息:\n" + JsonFormat.printer().print(transFile));
                     } catch (InvalidProtocolBufferException e) {
                         e.printStackTrace();
                     }
@@ -113,6 +112,48 @@ public class ComClientSingle {
             throw new ServiceException("文件传输出错：" + e.getMessage());
         }
         return result[0];
+    }
+
+    /**
+     * @author lhc
+     * @description // grpc请求下载文件
+     * @date 2021/11/11 4:17 下午
+     * @params [transEntity]
+     * @return repchain.inter.cooperation.middleware.proto.ResultFile
+     **/
+    public ResultFile download(TransEntity transEntity) {
+        ResultFile functionResult = null;
+        File dir = new File("./tmp/download");
+        String filepath = "";
+        if (!dir.exists()) {
+            boolean flag = dir.mkdirs();
+            if (!flag) {
+                throw new ServiceException("无法创建下载文件夹");
+            }
+        }
+        OutputStream os = null;
+        TransformGrpc.TransformBlockingStub blockingStub = TransformGrpc.newBlockingStub(channel);
+        Iterator<ResultFile> result = blockingStub.download(transEntity);
+        while (result.hasNext()) {
+            ResultFile file = result.next();
+            try {
+                if (file.getBegin()) {
+                    functionResult = file;
+                    filepath = "./tmp/download/" + SnowIdGenerator.getId();
+                    os = new FileOutputStream(filepath);
+                } else {
+                    file.getFile().newInput();
+                    file.writeTo(os);
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                throw new ServiceException("文件下载出错：" + e.getMessage());
+            }
+        }
+        if (functionResult == null) {
+            throw new ServiceException("文件下载出错");
+        }
+        return functionResult.toBuilder().setFilepath(filepath).build();
     }
 
     /**

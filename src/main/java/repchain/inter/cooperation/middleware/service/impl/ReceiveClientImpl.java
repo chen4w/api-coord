@@ -11,6 +11,7 @@ import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.model.yml.RecClient;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.AuthFilter;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
@@ -37,6 +38,11 @@ public class ReceiveClientImpl implements ReceiveClient {
     @Override
     public void setAuthFilter(AuthFilter authFilter) {
         this.authFilter = authFilter;
+    }
+
+    @Override
+    public ResultFile download(TransEntity request) {
+        return null;
     }
 
     @Override
@@ -104,13 +110,15 @@ public class ReceiveClientImpl implements ReceiveClient {
                     MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
                 }
                 String contentHash = DigestUtil.sha256Hex(result);
-                Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), apiDefinition.getAlgo_sign());
+                Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
+                        repchain.getCertName(), apiDefinition.getAlgo_sign());
                 return Result.newBuilder().setData(result).setMsg("Action OK").setSignature(JSONUtil.toJsonStr(signature)).build();
             } else {
                 String msg = "无权限";
                 // 对业务请求数据进行hash取值
                 String contentHash = DigestUtil.sha256Hex(msg);
-                Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
+                Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
+                        repchain.getCertName(), "sha256withecdsa");
                 return Result.newBuilder().setCode(2).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).build();
             }
         }

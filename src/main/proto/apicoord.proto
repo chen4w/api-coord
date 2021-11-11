@@ -11,6 +11,7 @@ package apicoord;
 service Transform{
   rpc send(TransEntity) returns (Result){}
   rpc sendFile(stream TransFile) returns (Result) {}
+  rpc download(TransEntity) returns (stream ResultFile){}
 }
 
 message TransFile{
@@ -34,6 +35,18 @@ message Result{
   string msg = 2 ;
   string signature = 3;
   string data = 4;
+}
+
+message ResultFile{
+  int32 code = 1;
+  string msg = 2 ;
+  string signature = 3;
+  string data = 4;
+  string fileName=5;
+  bytes file = 6;
+  string sha256=7;
+  bool begin = 8;
+  string filepath = 9;
 }
 
 message Header {//消息头

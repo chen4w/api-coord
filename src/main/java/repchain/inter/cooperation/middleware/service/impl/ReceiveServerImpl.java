@@ -121,12 +121,13 @@ public class ReceiveServerImpl implements ReceiveServer {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
                 if (sync) {
-                    msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, true, filepath, fileHash, map);
+                    msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method,
+                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, map);
                 } else {
-                    msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, false, filepath, fileHash, map, res);
+                    msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
+                            callbackUrl, cid, false, filepath, fileHash, map, res);
                 }
             }
-
             Result result = msgVo.getResult();
             InterCoResult coResult;
             if (result.getCode() == 0) {
@@ -171,7 +172,8 @@ public class ReceiveServerImpl implements ReceiveServer {
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
         TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
-        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature,
+                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
         return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
 
@@ -198,12 +200,16 @@ public class ReceiveServerImpl implements ReceiveServer {
         AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
         Signature signature = getSign(fileHash, ackObj);
         // 创建请求头
-        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl,
+                callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
-        TransFile transFile = TransFile.newBuilder().setSha256(fileHash).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+        TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
+                .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(transFile, file);
-        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        ReqAckProof rb = result.getCode() == 0 ?
+                TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
+                : null;
         return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
 
@@ -232,14 +238,22 @@ public class ReceiveServerImpl implements ReceiveServer {
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
-        TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+        TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true)
+                .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
         if (result.getCode() == 0) {
-            TransFile transFile = TransFile.newBuilder().setSha256(fileHash).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+            TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
+                    .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
             result = communicationClient.sendFile(transFile, file);
-            ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+            ReqAckProof rb = result.getCode() == 0 ?
+                    TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
+                    : null;
         }
         return result;
+    }
+
+    private void downloadFile() {
+
     }
 
     private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
@@ -280,7 +294,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         if (!to.getD_id().equals(from.getD_id())) {
             throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
         }
-        apiDefinition =  MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id(),ApiDefinition.class);
+        apiDefinition = MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id(), ApiDefinition.class);
         if (!to.getD_id().equals(from.getD_id())) {
             throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
         }

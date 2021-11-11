@@ -1,6 +1,7 @@
 package repchain.inter.cooperation.middleware.service;
 
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 
 /**
@@ -22,4 +23,6 @@ public interface ReceiveClient {
     Result msg(TransEntity transEntity);
 
     void setAuthFilter(AuthFilter authFilter);
+
+    ResultFile download(TransEntity request);
 }

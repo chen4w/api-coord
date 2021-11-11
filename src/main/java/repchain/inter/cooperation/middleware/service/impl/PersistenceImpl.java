@@ -2,13 +2,10 @@ package repchain.inter.cooperation.middleware.service.impl;
 
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
-import cn.hutool.db.ds.DSFactory;
 import cn.hutool.json.JSONUtil;
-import cn.hutool.setting.Setting;
-import repchain.inter.cooperation.middleware.model.yml.MyDatasource;
+import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
-import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,12 +22,14 @@ public class PersistenceImpl implements Persistence {
     private final Db db = SqliteUtil.getInstance();
 
 
+
     @Override
-    public void init() {
+    public void saveData(Header header) {
+
     }
 
     @Override
-    public void save() {
+    public void saveResult(Header header, Object result) {
 
     }
 
@@ -39,16 +38,6 @@ public class PersistenceImpl implements Persistence {
 
     }
 
-    @Override
-    public List<Entity> list() {
-        try {
-            List<Entity>list = db.findAll("datasource_config");
-            System.out.println(JSONUtil.toJsonPrettyStr(list));
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return null;
-    }
 
     @Override
     public void getOne(String key) {

@@ -8,5 +8,10 @@ package repchain.inter.cooperation.middleware.client;
  * @description 描述
  */
 public enum HttpType {
-    GET,POST,PUT,PATCH,DELETE;
+    //GET请求，POST请求，PATCH请求，PUT请求，DELETE请求
+    GET,
+    POST,
+    PATCH,
+    PUT,
+    DELETE
 }

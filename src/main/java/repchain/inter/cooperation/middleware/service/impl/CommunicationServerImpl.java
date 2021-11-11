@@ -7,10 +7,7 @@ import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
-import repchain.inter.cooperation.middleware.proto.Result;
-import repchain.inter.cooperation.middleware.proto.TransEntity;
-import repchain.inter.cooperation.middleware.proto.TransFile;
-import repchain.inter.cooperation.middleware.proto.TransformGrpc;
+import repchain.inter.cooperation.middleware.proto.*;
 import repchain.inter.cooperation.middleware.service.CommunicationServer;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
@@ -95,6 +92,13 @@ public class CommunicationServerImpl implements CommunicationServer {
                 e.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        public void download(TransEntity request,StreamObserver<ResultFile> responseObserver) {
+            ResultFile result = receiveClient.download(request);
+            responseObserver.onNext(ResultFile.newBuilder().build());
+            responseObserver.onCompleted();
         }
     }
 }

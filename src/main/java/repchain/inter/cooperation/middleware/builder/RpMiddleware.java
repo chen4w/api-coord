@@ -52,9 +52,6 @@ public class RpMiddleware {
     }
 
     public void start(){
-        if (this.persistence != null) {
-            this.persistence.init();
-        }
         if (this.receiveServer == null) {
             throw new NullPointerException("receiveServer can not be null!!!");
         }

@@ -1,5 +1,8 @@
 package repchain.inter.cooperation.middleware.service;
 
+import repchain.inter.cooperation.middleware.model.Header;
+import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
+
 import java.util.List;
 
 /**
@@ -11,13 +14,12 @@ import java.util.List;
  */
 public interface Persistence {
 
-    void init();
 
-    void save();
+    void saveData(Header header);
+
+    void saveResult(Header header,Object result);
 
     void saveWithFile();
-
-    List list();
 
     void getOne(String key);
 }

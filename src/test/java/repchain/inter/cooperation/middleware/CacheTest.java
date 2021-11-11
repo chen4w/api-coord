@@ -1,7 +1,6 @@
 package repchain.inter.cooperation.middleware;
 
 import org.junit.jupiter.api.Test;
-import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 
 /**
