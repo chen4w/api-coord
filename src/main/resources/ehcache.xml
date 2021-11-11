@@ -7,13 +7,11 @@
 
     <!-- 默认缓存 -->
     <defaultCache
-            maxEntriesLocalHeap="10000"
-            timeToIdleSeconds="120"
-            timeToLiveSeconds="120"
-            maxEntriesLocalDisk="10000000"
-            diskExpiryThreadIntervalSeconds="120"
-            memoryStoreEvictionPolicy="LRU">
-        <persistence strategy="localTempSwap"/>
+            maxElementsInMemory = "1"
+            eternal="true"
+            overflowToDisk="true"
+            diskPersistent="true"
+            maxElementsOnDisk="0">
     </defaultCache>
 
     <!-- Repchain缓存 -->
@@ -22,33 +20,33 @@
            eternal="true"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LRU"/>
+           maxElementsOnDisk="0"/>
     <!-- 存证缓存 -->
     <cache name="ReqAckProof"
            maxElementsInMemory = "1"
            eternal="true"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LRU"/>
+           maxElementsOnDisk="0"/>
     <!-- 定义缓存 -->
     <cache name="ApiDefinition"
            maxElementsInMemory = "1"
            eternal="true"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LRU"/>
+           maxElementsOnDisk="0"/>
     <!-- 登记缓存 -->
     <cache name="ApiServAndAck"
            maxElementsInMemory = "1"
            eternal="true"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LRU"/>
+           maxElementsOnDisk="0"/>
     <!-- 异步数据header记录 -->
     <cache name="AsyncHeader"
            maxElementsInMemory = "1"
            eternal="true"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LRU"/>
+           maxElementsOnDisk="0"/>
 </ehcache>

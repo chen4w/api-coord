@@ -42,7 +42,8 @@ public class AppTest {
      */
     @Test
     public void testConvertToMap() {
-        System.out.println(DigestUtil.sha256Hex(""));
+        Long i = 10L;
+        System.out.println(JSONUtil.toJsonStr(i));
 
     }
 }

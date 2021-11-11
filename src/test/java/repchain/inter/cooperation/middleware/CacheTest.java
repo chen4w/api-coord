@@ -2,7 +2,7 @@ package repchain.inter.cooperation.middleware;
 
 import org.junit.jupiter.api.Test;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
-import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 
 /**
  * @author lhc
@@ -22,10 +22,9 @@ public class CacheTest {
      **/
     @Test
     public void CacheWrite() {
-        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
-        EhcacheManager.put("RepChain", "1", "test1");
-        EhcacheManager.put("RepChain", "2", "test2");
-        EhcacheManager.put("RepChain", "3", "test3");
+        MyCacheManager.put("RepChain", "1", "test1");
+        MyCacheManager.put("RepChain", "2", "test2");
+        MyCacheManager.put("RepChain", "3", "test3");
     }
 
     /**
@@ -37,9 +36,8 @@ public class CacheTest {
      **/
     @Test
     public void CacheRead() {
-        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
-        Object value = EhcacheManager.getValue("RepChain", "3");
-        System.out.println(value);
+//        Object value = MyCacheManager.getValue("RepChain", "3");
+//        System.out.println(value);
     }
 
     /**
@@ -51,8 +49,7 @@ public class CacheTest {
      **/
     @Test
     public void CountCache(){
-        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
-        Object value = EhcacheManager.getCacheSize(EhCacheConstant.REQ_ACK_PROOF);
-        System.out.println("Number is :"+value);
+//        Object value = MyCacheManager.getCacheSize(EhCacheConstant.REQ_ACK_PROOF);
+//        System.out.println("Number is :"+value);
     }
 }

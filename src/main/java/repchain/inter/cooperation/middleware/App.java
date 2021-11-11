@@ -4,6 +4,7 @@ import repchain.inter.cooperation.middleware.builder.RpMiddleware;
 import repchain.inter.cooperation.middleware.service.impl.*;
 
 
+
 /**
  * @author lhc
  * @version 1.0

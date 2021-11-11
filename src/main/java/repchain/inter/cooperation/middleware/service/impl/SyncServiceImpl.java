@@ -9,7 +9,7 @@ import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.service.SyncService;
 import repchain.inter.cooperation.middleware.utils.BlockResultUtil;
-import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 
 
 
@@ -27,7 +27,7 @@ public class SyncServiceImpl implements SyncService {
     @Override
     public void saveBlock(Peer.Block block) {
         logger.info("同步区块成功，区块高度为：{}，开始数据库相关操作", block.getHeight());
-        EhcacheManager.put(EhCacheConstant.REPCHAIN, EhCacheConstant.BLOCK, block.getHeight());
+        MyCacheManager.putHeight(block.getHeight());
         logger.info("区块：{} 保存成功", block.getHeight());
     }
 
@@ -35,19 +35,19 @@ public class SyncServiceImpl implements SyncService {
     public void defInterface(Peer.OperLog ol) {
         ApiDefinition apiDefinition = BlockResultUtil.toBean(ol, ApiDefinition.class);
         String id = apiDefinition.getId();
-        EhcacheManager.put(EhCacheConstant.API_DEFINITION, id, apiDefinition);
+        MyCacheManager.put(EhCacheConstant.API_DEFINITION, id, apiDefinition);
     }
 
     @Override
     public void register(Peer.OperLog ol) {
         ApiServAndAck apiServAndAck = BlockResultUtil.toBean(ol, ApiServAndAck.class);
         String id = apiServAndAck.getId();
-        EhcacheManager.put(EhCacheConstant.API_SERV_AND_ACK, id, apiServAndAck);
+        MyCacheManager.put(EhCacheConstant.API_SERV_AND_ACK, id, apiServAndAck);
     }
 
     @Override
     public void ackProof(Peer.OperLog ol) {
         ReqAckProof reqAckProof = BlockResultUtil.toBean(ol, ReqAckProof.class);
-        EhcacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+reqAckProof.getHash()+reqAckProof.getTm_create());
+        MyCacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+reqAckProof.getHash()+reqAckProof.getTm_create());
     }
 }

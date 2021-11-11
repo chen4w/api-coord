@@ -9,7 +9,7 @@ import repchain.inter.cooperation.middleware.model.SysCert;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.service.TransactionCommit;
-import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 import repchain.inter.cooperation.middleware.utils.PkUtil;
 import repchain.inter.cooperation.middleware.utils.RequestAck;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
@@ -27,7 +27,7 @@ public class TransactionCommitImpl implements TransactionCommit {
 
     @Override
     public void saveProof(ReqAckProof rb) {
-        EhcacheManager.put(EhCacheConstant.REQ_ACK_PROOF, rb.getCid() + rb.getHash() + rb.getTm_create(), rb);
+        MyCacheManager.put(EhCacheConstant.REQ_ACK_PROOF, rb.getCid() + rb.getHash() + rb.getTm_create(), rb);
         // 创建请求实例，若用Spring 此处可以创建javabean
         RepChain repchain = YamlUtils.getRepchain();
         RequestAck requestAck = new RequestAck(repchain.getHost());

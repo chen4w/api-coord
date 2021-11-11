@@ -20,7 +20,7 @@ repositories {
 
 //禁掉jar task
 jar.enabled(false)
-//test.enabled(false)
+test.enabled(false)
 // 执行shadow的打包
 shadowJar {
     archiveBaseName.set('Middleware')
@@ -47,11 +47,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    implementation 'mysql:mysql-connector-java:5.1.46'
+//    implementation 'mysql:mysql-connector-java:5.1.46'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'org.apache.commons:commons-pool2:2.5.0'
-    implementation 'net.sf.ehcache:ehcache:2.10.2'
+//    implementation 'net.sf.ehcache:ehcache:2.10.2'
     implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
     implementation 'com.alibaba:druid:1.2.8'
     implementation 'org.fusesource.jansi:jansi:1.17.1'

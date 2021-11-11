@@ -14,7 +14,7 @@ import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.AuthFilter;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
-import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 import repchain.inter.cooperation.middleware.utils.PkUtil;
 import repchain.inter.cooperation.middleware.utils.TransTools;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
@@ -43,7 +43,7 @@ public class ReceiveClientImpl implements ReceiveClient {
     public Result msg(TransEntity transEntity) {
         RepChain repchain = YamlUtils.getRepchain();
         Header header = JSONUtil.toBean(transEntity.getHeader(), Header.class);
-        ApiServAndAck from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from());
+        ApiServAndAck from =  MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from(),ApiServAndAck.class);
         PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
         if (from == null) {
             String msg = "无法在区块链找到对应的接口登记或接口调用";
@@ -52,7 +52,7 @@ public class ReceiveClientImpl implements ReceiveClient {
             Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
             return Result.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).build();
         } else {
-            ApiDefinition apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id());
+            ApiDefinition apiDefinition =  MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id(),ApiDefinition.class);
             if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(),header.getB_req())) {
                 Map<String,Object> map;
                 if (header.getData() !=null&& header.getData().contains("{")) {
@@ -101,7 +101,7 @@ public class ReceiveClientImpl implements ReceiveClient {
                             .execute().body();
                 }
                 if (!header.getSync()) {
-                    EhcacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
+                    MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
                 }
                 String contentHash = DigestUtil.sha256Hex(result);
                 Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), apiDefinition.getAlgo_sign());

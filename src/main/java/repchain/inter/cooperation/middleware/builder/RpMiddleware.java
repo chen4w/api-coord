@@ -52,7 +52,6 @@ public class RpMiddleware {
     }
 
     public void start(){
-        System.setProperty(net.sf.ehcache.CacheManager.ENABLE_SHUTDOWN_HOOK_PROPERTY,"true");
         if (this.persistence != null) {
             this.persistence.init();
         }

@@ -57,13 +57,13 @@ public class CommunicationServerImpl implements CommunicationServer {
         }
         logger.info("Grpc Server started, listening on " + port);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("*** shutting down gRPC server since JVM is shutting down");
+            logger.info("*** shutting down gRPC server since JVM is shutting down");
             try {
                 CommunicationServerImpl.this.stop();
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             }
-            System.err.println("*** server shut down");
+            logger.info("*** server shut down");
         }));
     }
 

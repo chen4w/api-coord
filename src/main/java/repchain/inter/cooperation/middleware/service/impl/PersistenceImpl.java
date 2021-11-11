@@ -7,6 +7,7 @@ import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.Setting;
 import repchain.inter.cooperation.middleware.model.yml.MyDatasource;
 import repchain.inter.cooperation.middleware.service.Persistence;
+import repchain.inter.cooperation.middleware.utils.SqliteUtil;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.sql.SQLException;
@@ -21,22 +22,11 @@ import java.util.List;
  */
 public class PersistenceImpl implements Persistence {
 
-    private Db db;
+    private final Db db = SqliteUtil.getInstance();
 
 
     @Override
     public void init() {
-        Setting setting = new Setting();
-        MyDatasource myDatasource = YamlUtils.getDatasource();
-        setting.put("url", myDatasource.getUrl());
-        setting.put("pass", myDatasource.getPass());
-        setting.put("user", myDatasource.getUser());
-        setting.put("driver", myDatasource.getDriver());
-        setting.put("showSql", myDatasource.getShowSql());
-        setting.put("formatSql", myDatasource.getFormatSql());
-        setting.put("showParams", myDatasource.getShowParams());
-        setting.put("sqlLevel", myDatasource.getSqlLevel());
-        this.db = Db.use(DSFactory.create(setting).getDataSource());
     }
 
     @Override

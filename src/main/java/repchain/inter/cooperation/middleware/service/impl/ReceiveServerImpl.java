@@ -120,7 +120,11 @@ public class ReceiveServerImpl implements ReceiveServer {
             } else {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
-                msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, filepath, fileHash, map);
+                if (sync) {
+                    msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, true, filepath, fileHash, map);
+                } else {
+                    msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, false, filepath, fileHash, map, res);
+                }
             }
 
             Result result = msgVo.getResult();
@@ -130,7 +134,9 @@ public class ReceiveServerImpl implements ReceiveServer {
             } else {
                 coResult = InterCoResult.builder().code(result.getCode()).msg("Action OK").msg(result.getMsg()).build();
             }
-            res.write(JSONUtil.toJsonStr(coResult));
+            if (!sync && FILE.equals(req.getPath())) {
+                res.write(JSONUtil.toJsonStr(coResult));
+            }
             if (msgVo.getReqAckProof() != null) {
                 commit.saveProof(msgVo.getReqAckProof());
             }
@@ -201,13 +207,39 @@ public class ReceiveServerImpl implements ReceiveServer {
         return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
 
-    public Object fileAysnc(String serviceId, int seq, boolean isEnd,
+    public Object fileAsync(String serviceId, int seq, boolean isEnd,
                             String url, boolean bReqFlag, String method,
                             String callbackMethod, String callbackUrl, String cid,
-                            boolean sync, String filePath, String fileHash, Map<String, Object> map) {
-
-
-        return null;
+                            boolean sync, String filePath, String fileHash, Map<String, Object> map, HttpServerResponse res) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new ServiceException("文件不存在，请检查文件路径是否正确！");
+        }
+        String data = "";
+        if (map != null && !map.isEmpty()) {
+            data = JSONUtil.toJsonStr(map);
+        }
+        if (StrUtil.isBlank(cid)) {
+            if (!bReqFlag) {
+                throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
+            }
+            // 创建交易id
+            cid = SnowIdGenerator.getId();
+        }
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        Signature signature = getSign(fileHash, ackObj);
+        // 创建请求头
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
+        int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
+        TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+        Result result = communicationClient.sendFile(beginTrans, file);
+        if (result.getCode() == 0) {
+            TransFile transFile = TransFile.newBuilder().setSha256(fileHash).setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+            result = communicationClient.sendFile(transFile, file);
+            ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        }
+        return result;
     }
 
     private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
@@ -232,15 +264,15 @@ public class ReceiveServerImpl implements ReceiveServer {
         Header header = null;
         if (bReq) {
             Service service = YamlUtils.getService(serviceId);
-            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to());
-            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from());
+            to = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to(), ApiServAndAck.class);
+            from = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from(), ApiServAndAck.class);
         } else {
-            header = (Header) EhcacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid);
+            header = MyCacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid, Header.class);
             if (header == null) {
                 throw new ServiceException("无法从缓存中获取请求头信息，缓存id:" + cid);
             }
-            to = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to());
-            from = (ApiServAndAck) EhcacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from());
+            to = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to(), ApiServAndAck.class);
+            from = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from(), ApiServAndAck.class);
         }
         if (to == null || from == null) {
             throw new ServiceException("无法从区块链获取登记信息，请确认信息是否提交或稍后重试");
@@ -248,7 +280,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         if (!to.getD_id().equals(from.getD_id())) {
             throw new ServiceException("服务登记和服务调用所实现的接口定义不一致！");
         }
-        apiDefinition = (ApiDefinition) EhcacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id());
+        apiDefinition =  MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, to.getD_id(),ApiDefinition.class);
         if (!to.getD_id().equals(from.getD_id())) {
             throw new ServiceException("无法从区块链获取服务定义信息，请确认信息是否提交或稍后重试");
         }

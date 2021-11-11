@@ -12,7 +12,7 @@ import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.InterfaceConstant;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.service.BlockSync;
-import repchain.inter.cooperation.middleware.utils.EhcacheManager;
+import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 import repchain.inter.cooperation.middleware.utils.KeyUtils;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
@@ -43,7 +43,7 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
         RepChain repchain = YamlUtils.middleConfig.getRepchain();
         String host = repchain.getHost();
         long locHeight = repchain.getHeight();
-        Long height = (Long) EhcacheManager.getValue(EhCacheConstant.REPCHAIN, EhCacheConstant.BLOCK);
+        Long height = MyCacheManager.getHeight();
         long tempLocHeight;
         if (height != null) {
             tempLocHeight = Math.max(locHeight, height);
