@@ -1,14 +1,9 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
 import cn.hutool.db.Db;
-import cn.hutool.db.Entity;
-import cn.hutool.json.JSONUtil;
 import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
-
-import java.sql.SQLException;
-import java.util.List;
 
 /**
  * @author lhc

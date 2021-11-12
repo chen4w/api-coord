@@ -79,7 +79,13 @@ public class CommunicationServerImpl implements CommunicationServer {
     class TransformImpl extends TransformGrpc.TransformImplBase {
         @Override
         public void send(TransEntity request, StreamObserver<Result> responseObserver) {
-            Result result = receiveClient.msg(request);
+            Result result;
+            try{
+                result = receiveClient.msg(request);
+            } catch (Exception e){
+                logger.error(e.getMessage(),e);
+                result = Result.newBuilder().setCode(2).setMsg("远程中间件异常：" + e.getMessage()).build();
+            }
             responseObserver.onNext(result);
             responseObserver.onCompleted();
         }
@@ -89,15 +95,14 @@ public class CommunicationServerImpl implements CommunicationServer {
             try {
                 return new FileServerObserver(responseObserver,receiveClient);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.info(e.getMessage(),e);
             }
             return null;
         }
 
         @Override
         public void download(TransEntity request,StreamObserver<ResultFile> responseObserver) {
-            ResultFile result = receiveClient.download(request);
-            responseObserver.onNext(ResultFile.newBuilder().build());
+            receiveClient.download(request,responseObserver);
             responseObserver.onCompleted();
         }
     }

@@ -24,5 +24,5 @@ public interface ReceiveClient {
 
     void setAuthFilter(AuthFilter authFilter);
 
-    ResultFile download(TransEntity request);
+    void download(TransEntity request,Object response);
 }
