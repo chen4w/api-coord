@@ -8,6 +8,7 @@ import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +27,18 @@ public class YamlUtils {
     public String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
 
     static {
+        String ymlPath = "/conf/application-middle.yml";
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
         YamlUtils yamlUtils = new YamlUtils();
         jarPath = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
-        FileReader fileReader = new FileReader(jarPath + "/conf/application-middle.yml");
+        String prodPath = yamlUtils.path.substring(0, jarPath.lastIndexOf("/"));
+        File file = new File(prodPath+ymlPath);
+        if (file.exists()) {
+            jarPath = prodPath;
+        } else {
+            file = new File(jarPath + ymlPath);
+        }
+        FileReader fileReader = new FileReader(file);
         middleConfig = yaml.load(fileReader.getInputStream());
     }
 

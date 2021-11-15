@@ -1,8 +1,9 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+//    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
     id 'maven-publish'
     id 'com.google.protobuf' version '0.8.17'
+    id 'distribution'
 }
 
 group 'repchain.interface.cooperation'
@@ -34,7 +35,6 @@ test.enabled(false)
 //assemble.dependsOn(shadowJar)
 
 
-
 task clearJar(type: Delete) {
     delete 'build/libs'
 }
@@ -53,7 +53,7 @@ dependencies {
     implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation 'org.yaml:snakeyaml:1.29'
     implementation 'cn.hutool:hutool-all:5.7.16'
-    implementation ('repchain:rcjava-core:0.4.3-SNAPSHOT') {
+    implementation('repchain:rcjava-core:0.4.3-SNAPSHOT') {
         exclude group: "org.slf4j", module: "slf4j-api"
     }
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
@@ -96,6 +96,7 @@ task copyResources(type: Copy) {
     processResources.exclude { "**/*.*" }
 }
 
+
 processResources.dependsOn(copyResources)
 
 test {
@@ -104,12 +105,12 @@ test {
 
 
 publishing {
-    publications{
-        library(MavenPublication){
+    publications {
+        library(MavenPublication) {
             from components.java
         }
     }
-    repositories{
+    repositories {
         mavenLocal()
     }
 }
@@ -122,3 +123,39 @@ jar {
                 'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' ')
     }
 }
+
+distributions {
+    custom {
+        distributionBaseName = project.name
+        contents {
+            from 'build/prod'
+        }
+    }
+}
+
+task clearProd(type: Delete) {
+    delete 'build/prod'
+}
+
+task delLogback(type: Delete) {
+    delete 'build/prod/logback.xml'
+}
+
+task copyLibs(type: Copy) {
+    from('build/libs')
+    into('build/prod/lib')
+}
+
+task copyResourcesToProd(type: Copy) {
+    from sourceSets.main.resources
+    into('build/prod')
+}
+
+copyLibs.dependsOn(copyJar,jar)
+copyResourcesToProd.dependsOn(copyLibs)
+customDistTar.dependsOn(delLogback,copyResourcesToProd)
+customDistZip.dependsOn(delLogback,copyResourcesToProd)
+
+task prod(type: Copy, dependsOn: [build, clearProd, copyLibs, copyResourcesToProd])
+
+

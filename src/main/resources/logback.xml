@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 日志存放路径 -->
-    <property name="log.path" value="log/logs"/>
+<!--    <property name="log.path" value="../log"/>-->
+    <!-- 监听器，指定日志文件存放目录 -->
+    <contextListener class="repchain.inter.cooperation.middleware.logback.CustomLogContextListener" />
+
     <!-- 日志输出格式 -->
     <!-- 带颜色-->
     <property name="log.console"
@@ -63,21 +66,6 @@
         </filter>
     </appender>
 
-    <!-- 用户访问日志输出  -->
-    <appender name="sys-user" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log.path}/sys-user.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 按天回滚 daily -->
-            <fileNamePattern>${log.path}/sys-user.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 日志最大的历史 60天 -->
-            <maxHistory>60</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${log.pattern}</pattern>
-        </encoder>
-    </appender>
-
-
     <root level="info">
         <appender-ref ref="console"/>
     </root>
@@ -87,9 +75,4 @@
         <appender-ref ref="file_info"/>
         <appender-ref ref="file_error"/>
     </root>
-
-    <!--系统用户操作日志-->
-    <logger name="sys-user" level="info">
-        <appender-ref ref="sys-user"/>
-    </logger>
 </configuration>
