@@ -29,7 +29,7 @@ public class YamlUtils {
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
         YamlUtils yamlUtils = new YamlUtils();
         jarPath = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
-        FileReader fileReader = new FileReader(jarPath + "/application-middle.yml");
+        FileReader fileReader = new FileReader(jarPath + "/conf/application-middle.yml");
         middleConfig = yaml.load(fileReader.getInputStream());
     }
 
@@ -37,7 +37,7 @@ public class YamlUtils {
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
         YamlUtils yamlUtils = new YamlUtils();
         String path = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
-        FileReader fileReader = new FileReader(path + "/application-middle.yml");
+        FileReader fileReader = new FileReader(path + "/conf/application-middle.yml");
         return yaml.load(fileReader.getInputStream());
     }
 

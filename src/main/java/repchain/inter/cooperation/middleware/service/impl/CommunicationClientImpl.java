@@ -8,7 +8,6 @@ import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 
 /**

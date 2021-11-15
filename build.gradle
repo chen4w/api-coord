@@ -8,36 +8,49 @@ plugins {
 group 'repchain.interface.cooperation'
 version '1.0-SNAPSHOT'
 
-def grpcVersion = '1.37.0' // CURRENT_GRPC_VERSION
-def protobufVersion = '3.17.2'
-def protocVersion = protobufVersion
-
-
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
+def grpcVersion = '1.37.0' // CURRENT_GRPC_VERSION
+def protobufVersion = '3.17.2'
+def protocVersion = protobufVersion
+
 //禁掉jar task
-jar.enabled(false)
+//jar.enabled(false)
 test.enabled(false)
 // 执行shadow的打包
-shadowJar {
-    archiveBaseName.set('Middleware')
-    archiveClassifier.set('SNAPSHOT')
-    archiveVersion.set('1.0')
-    manifest {
-        // 这里指定main class
-        attributes 'Main-Class': 'repchain.inter.cooperation.middleware.App'
-    }
+//shadowJar {
+//    archiveBaseName.set('Middleware')
+//    archiveClassifier.set('SNAPSHOT')
+//    archiveVersion.set('1.0')
+//    manifest {
+//        // 这里指定main class
+//        attributes 'Main-Class': 'repchain.inter.cooperation.middleware.App'
+//    }
+//}
+//
+//assemble.dependsOn(shadowJar)
+
+
+
+task clearJar(type: Delete) {
+    delete 'build/libs'
 }
 
-assemble.dependsOn(shadowJar)
+task copyJar(type: Copy) {
+    from configurations.compileClasspath
+    into('build/libs')
+}
+
+assemble.dependsOn(copyJar)
+//task release(type: Copy, dependsOn: [build, clearJar, copyJar])
 
 dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
-    runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
+    implementation "io.grpc:grpc-netty-shaded:${grpcVersion}"
     implementation 'org.yaml:snakeyaml:1.29'
     implementation 'cn.hutool:hutool-all:5.7.16'
     implementation ('repchain:rcjava-core:0.4.3-SNAPSHOT') {
@@ -102,3 +115,10 @@ publishing {
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'repchain.inter.cooperation.middleware.App',
+                'Class-Path': configurations.runtimeClasspath.collect { it.getName() }.join(' ')
+    }
+}

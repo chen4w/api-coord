@@ -16,8 +16,6 @@ public class PersistenceImpl implements Persistence {
 
     private final Db db = SqliteUtil.getInstance();
 
-
-
     @Override
     public void saveData(Header header) {
 
@@ -33,9 +31,8 @@ public class PersistenceImpl implements Persistence {
 
     }
 
-
     @Override
-    public void getOne(String key) {
-
+    public Header getOne(String key) {
+        return null;
     }
 }
