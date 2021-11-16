@@ -1,5 +1,8 @@
 package repchain.inter.cooperation.middleware.builder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
 import repchain.inter.cooperation.middleware.service.*;
 
 /**
@@ -10,6 +13,8 @@ import repchain.inter.cooperation.middleware.service.*;
  * @description 中间件建造者，用于建造集成中间件各个模块组件
  */
 public class RpMiddleware {
+
+    private static final Logger logger = LoggerFactory.getLogger(RpMiddleware.class);
 
 
     private AuthFilter authFilter;
@@ -52,6 +57,12 @@ public class RpMiddleware {
     }
 
     public void start(){
+        System.out.println(" ____             ____ _           _         ___ ____ __  __ \n" +
+                "|  _ \\ ___ _ __  / ___| |__   __ _(_)_ __   |_ _/ ___|  \\/  |\n" +
+                "| |_) / _ \\ '_ \\| |   | '_ \\ / _` | | '_ \\   | | |   | |\\/| |\n" +
+                "|  _ <  __/ |_) | |___| | | | (_| | | | | |  | | |___| |  | |\n" +
+                "|_| \\_\\___| .__/ \\____|_| |_|\\__,_|_|_| |_| |___\\____|_|  |_|\n" +
+                "          |_|                                                \n");
         if (this.receiveServer == null) {
             throw new NullPointerException("receiveServer can not be null!!!");
         }
