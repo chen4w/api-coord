@@ -50,6 +50,7 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     private static final String MSG = "/msg";
     private static final String FILE = "/file";
+    private static final String DOWNLOAD = "/download";
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiveServerImpl.class);
 
@@ -89,6 +90,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .setExecutor(executor)
                 .addAction("/msg", this::parentMsg)
                 .addAction("/file", this::parentMsg)
+                .addAction("/download", this::parentMsg)
                 .addAction("/testFile", this::testFile)
                 .start();
         logger.info("Http Server started, listening on " + port);
@@ -117,7 +119,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             MsgVo msgVo;
             if (MSG.equals(req.getPath())) {
                 msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, map);
-            } else {
+            } else if (FILE.equals(req.getPath())) {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
                 if (sync) {
@@ -127,6 +129,11 @@ public class ReceiveServerImpl implements ReceiveServer {
                     msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
                             callbackUrl, cid, false, filepath, fileHash, map, res);
                 }
+            } else {
+                String filepath = req.getParam("filepath");
+                String fileHash = req.getParam("fileHash");
+                msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
+                        callbackMethod, callbackUrl, cid, true, filepath, fileHash, map);
             }
             Result result = msgVo.getResult();
             InterCoResult coResult;
@@ -252,8 +259,11 @@ public class ReceiveServerImpl implements ReceiveServer {
         return result;
     }
 
-    private void downloadFile() {
+    public MsgVo downloadFile(String id, int seq, boolean endFlag, String url, boolean bReqFlag,
+                              String method, String callbackMethod, String callbackUrl, String cid,
+                              boolean b, String filepath, String fileHash, Map<String, Object> map) {
 
+        return null;
     }
 
     private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {

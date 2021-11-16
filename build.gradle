@@ -1,5 +1,4 @@
 plugins {
-//    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
     id 'maven-publish'
     id 'com.google.protobuf' version '0.8.17'
@@ -18,21 +17,7 @@ def grpcVersion = '1.37.0' // CURRENT_GRPC_VERSION
 def protobufVersion = '3.17.2'
 def protocVersion = protobufVersion
 
-//禁掉jar task
-//jar.enabled(false)
 test.enabled(false)
-// 执行shadow的打包
-//shadowJar {
-//    archiveBaseName.set('Middleware')
-//    archiveClassifier.set('SNAPSHOT')
-//    archiveVersion.set('1.0')
-//    manifest {
-//        // 这里指定main class
-//        attributes 'Main-Class': 'repchain.inter.cooperation.middleware.App'
-//    }
-//}
-//
-//assemble.dependsOn(shadowJar)
 
 
 task clearJar(type: Delete) {
@@ -45,7 +30,6 @@ task copyJar(type: Copy) {
 }
 
 assemble.dependsOn(copyJar)
-//task release(type: Copy, dependsOn: [build, clearJar, copyJar])
 
 dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
@@ -64,7 +48,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'org.apache.commons:commons-pool2:2.5.0'
-//    implementation 'net.sf.ehcache:ehcache:2.10.2'
     implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
     implementation 'com.alibaba:druid:1.2.8'
     implementation 'org.fusesource.jansi:jansi:1.17.1'
