@@ -80,10 +80,10 @@ public class CommunicationServerImpl implements CommunicationServer {
         @Override
         public void send(TransEntity request, StreamObserver<Result> responseObserver) {
             Result result;
-            try{
+            try {
                 result = receiveClient.msg(request);
-            } catch (Exception e){
-                logger.error(e.getMessage(),e);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
                 result = Result.newBuilder().setCode(2).setMsg("远程中间件异常：" + e.getMessage()).build();
             }
             responseObserver.onNext(result);
@@ -93,16 +93,22 @@ public class CommunicationServerImpl implements CommunicationServer {
         @Override
         public StreamObserver<TransFile> sendFile(StreamObserver<Result> responseObserver) {
             try {
-                return new FileServerObserver(responseObserver,receiveClient);
+                return new FileServerObserver(responseObserver, receiveClient);
             } catch (Exception e) {
-                logger.info(e.getMessage(),e);
+                logger.info(e.getMessage(), e);
             }
             return null;
         }
 
         @Override
-        public void download(TransEntity request,StreamObserver<ResultFile> responseObserver) {
-            receiveClient.download(request,responseObserver);
+        public void download(TransEntity request, StreamObserver<ResultFile> responseObserver) {
+            try {
+                receiveClient.download(request, responseObserver);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                ResultFile result = ResultFile.newBuilder().setCode(2).setMsg("远程中间件异常：" + e.getMessage()).build();
+                responseObserver.onNext(result);
+            }
             responseObserver.onCompleted();
         }
     }

@@ -4,6 +4,8 @@ import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 
+import java.rmi.ServerException;
+
 /**
  * @author lhc
  * @version 1.0
@@ -24,5 +26,5 @@ public interface ReceiveClient {
 
     void setAuthFilter(AuthFilter authFilter);
 
-    void download(TransEntity request,Object response);
+    void download(TransEntity request,Object response) throws ServerException;
 }

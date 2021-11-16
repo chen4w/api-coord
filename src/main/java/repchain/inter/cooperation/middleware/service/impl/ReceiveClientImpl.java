@@ -28,6 +28,7 @@ import repchain.inter.cooperation.middleware.utils.YamlUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.rmi.ServerException;
 import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,8 @@ public class ReceiveClientImpl implements ReceiveClient {
     }
 
     @Override
-    public void download(TransEntity request, Object response) {
+    @SuppressWarnings("unchecked")
+    public void  download(TransEntity request, Object response)  {
         RepChain repchain = YamlUtils.getRepchain();
         Header header = JSONUtil.toBean(request.getHeader(), Header.class);
         StreamObserver<ResultFile> stream = (StreamObserver<ResultFile>) response;
