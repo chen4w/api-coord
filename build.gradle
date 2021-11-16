@@ -157,5 +157,3 @@ customDistTar.dependsOn(delLogback,copyResourcesToProd)
 customDistZip.dependsOn(delLogback,copyResourcesToProd)
 
 task prod(type: Copy, dependsOn: [build, clearProd, copyLibs, copyResourcesToProd])
-
-
