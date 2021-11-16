@@ -32,7 +32,7 @@ public class YamlUtils {
         YamlUtils yamlUtils = new YamlUtils();
         jarPath = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
         String prodPath = yamlUtils.path.substring(0, jarPath.lastIndexOf("/"));
-        File file = new File(prodPath+ymlPath);
+        File file = new File(prodPath + ymlPath);
         if (file.exists()) {
             jarPath = prodPath;
         } else {
@@ -73,8 +73,10 @@ public class YamlUtils {
         String url = datasource.getUrl();
         if (url.startsWith("jdbc:sqlite:")) {
             url = url.replace("jdbc:sqlite:", "");
-            url = "jdbc:sqlite:"+jarPath + "/" + url;
-            datasource.setUrl(url);
+            if (!url.startsWith("/") && !url.contains(":")) {
+                url = "jdbc:sqlite:" + jarPath + "/" + url;
+                datasource.setUrl(url);
+            }
         }
         return datasource;
     }
