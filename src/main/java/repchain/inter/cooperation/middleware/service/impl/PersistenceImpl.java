@@ -75,10 +75,4 @@ public class PersistenceImpl implements Persistence {
         }
         return entity;
     }
-
-    public static void main(String[] args) {
-        File file = new File("/Volumes/DATA/test");
-        File fil2e = new File("/Volumes/DATA/upload");
-        System.out.println(FileUtil.copy(file,fil2e,false));
-    }
 }
