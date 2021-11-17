@@ -260,9 +260,6 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
         ReqAckProof rb=TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
-        if (commit != null) {
-            commit.saveProof(rb);
-        }
         InterCoResult coResult;
         if (result.getCode() == 0) {
             coResult = InterCoResult.builder().cid(rb.getCid()).code(0).msg("Action OK").data(result.getData()).build();
@@ -270,6 +267,9 @@ public class ReceiveServerImpl implements ReceiveServer {
             coResult = InterCoResult.builder().code(result.getCode()).msg(result.getMsg()).build();
         }
         res.write(JSONUtil.toJsonStr(coResult));
+        if (commit != null) {
+            commit.saveProof(rb);
+        }
         if (result.getCode() == 0) {
             TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
                     .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();

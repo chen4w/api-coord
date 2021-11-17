@@ -34,17 +34,17 @@ public class MyCacheManager {
     public static void put(String cacheName, String key, Object value) {
         Entity entity;
         try {
-            entity = db.queryOne("SELECT value FROM " + cacheName + " where key = ?", key);
+            entity = db.queryOne("SELECT obj FROM " + cacheName + " where id = ?", key);
             if (entity==null||entity.isEmpty()) {
                 db.insert(
                         Entity.create(cacheName)
-                                .set("key", key)
-                                .set("value", JSONUtil.toJsonStr(value))
+                                .set("id", key)
+                                .set("obj", JSONUtil.toJsonStr(value))
                 );
             } else {
                 db.update(
-                        Entity.create().set("value", JSONUtil.toJsonStr(value)),
-                        Entity.create(cacheName).set("key", key)
+                        Entity.create().set("obj", JSONUtil.toJsonStr(value)),
+                        Entity.create(cacheName).set("id", key)
                 );
             }
         } catch (Exception throwable) {
@@ -63,7 +63,7 @@ public class MyCacheManager {
     public static void delete(String cacheName, String key) {
         try {
             db.del(
-                    Entity.create(cacheName).set("key", key)
+                    Entity.create(cacheName).set("id", key)
             );
         } catch (Exception throwable) {
             logger.error(throwable.getMessage(), throwable);
@@ -79,11 +79,11 @@ public class MyCacheManager {
      **/
     public static <T> T getValue(String cacheName, Object key,Class<T> target) {
         try {
-            Entity entity = db.queryOne("SELECT value FROM " + cacheName + " where key = ?", key);
+            Entity entity = db.queryOne("SELECT obj FROM " + cacheName + " where id = ?", key);
             if (entity.isEmpty()) {
                 return null;
             }
-            return JSONUtil.toBean((String) entity.get("value"),target);
+            return JSONUtil.toBean((String) entity.get("obj"),target);
         } catch (Exception throwable) {
             logger.error(throwable.getMessage(), throwable);
         }
@@ -93,31 +93,31 @@ public class MyCacheManager {
     public static Long getHeight() {
         Entity entity = null;
         try {
-            entity = db.queryOne("SELECT value FROM Repchain  where key = ?", EhCacheConstant.BLOCK);
+            entity = db.queryOne("SELECT obj FROM Repchain  where id = ?", EhCacheConstant.BLOCK);
         } catch (SQLException throwable) {
             logger.error(throwable.getMessage(), throwable);
         }
         if (entity == null || entity.isEmpty()) {
             return null;
         } else {
-            return Long.valueOf((String)entity.get("value"));
+            return Long.valueOf((String)entity.get("obj"));
         }
     }
 
     public static void putHeight(Long height) {
         Entity entity;
         try {
-            entity = db.queryOne("SELECT value FROM Repchain where key = ?", EhCacheConstant.BLOCK);
+            entity = db.queryOne("SELECT obj FROM Repchain where id = ?", EhCacheConstant.BLOCK);
             if (entity==null||entity.isEmpty()) {
                 db.insert(
-                        Entity.create("Repchain")
-                                .set("key", EhCacheConstant.BLOCK)
-                                .set("value",height)
+                        Entity.create(EhCacheConstant.REPCHAIN)
+                                .set("id", EhCacheConstant.BLOCK)
+                                .set("obj",height)
                 );
             } else {
                 db.update(
-                        Entity.create().set("value", height),
-                        Entity.create("Repchain").set("key", EhCacheConstant.BLOCK)
+                        Entity.create().set("obj", height),
+                        Entity.create(EhCacheConstant.REPCHAIN).set("id", EhCacheConstant.BLOCK)
                 );
             }
         } catch (Exception throwable) {

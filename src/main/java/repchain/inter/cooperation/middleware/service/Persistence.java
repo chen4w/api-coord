@@ -1,6 +1,10 @@
 package repchain.inter.cooperation.middleware.service;
 
+import cn.hutool.db.Entity;
 import repchain.inter.cooperation.middleware.model.Header;
+
+import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -13,11 +17,7 @@ import repchain.inter.cooperation.middleware.model.Header;
 public interface Persistence {
 
 
-    void saveData(Header header);
+    void saveData(String cid,Header header,Object result,String sendFile,String downloadFile) throws SQLException;
 
-    void saveResult(Header header,Object result);
-
-    void saveWithFile();
-
-    Header getOne(String key);
+    List<Entity> get(String key) throws SQLException;
 }

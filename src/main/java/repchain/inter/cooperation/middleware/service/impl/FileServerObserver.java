@@ -13,7 +13,6 @@ import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
 import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.proto.Result;
-import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.AuthFilter;
@@ -21,8 +20,6 @@ import repchain.inter.cooperation.middleware.service.ReceiveClient;
 import repchain.inter.cooperation.middleware.utils.*;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.security.PrivateKey;
 import java.util.Map;
 
@@ -95,10 +92,10 @@ public class FileServerObserver implements StreamObserver<TransFile> {
     @Override
     public void onError(Throwable t) {
         logger.error("接收文件异常", t);
-        String msg =
-        String contentHash = DigestUtil.sha256Hex("接收方接收文件异常：" + t.getMessage());
+        String msg = "接收方接收文件异常：" + t.getMessage();
+        String contentHash = DigestUtil.sha256Hex(msg);
         Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
-        Result result = Result.newBuilder().setCode(2).setMsg(msg).build();
+        Result result = Result.newBuilder().setCode(2).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).build();
         responseObserver.onNext(result);
         responseObserver.onCompleted();
     }
@@ -116,7 +113,10 @@ public class FileServerObserver implements StreamObserver<TransFile> {
         }
         File tempFile = new File(this.filePath);
         if (this.file.getBegin()) {
-
+            String msg = "开始接收文件";
+            Signature signature = TransTools.getSignature(privateKey, this.file.getSha256(), repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
+            Result result = Result.newBuilder().setCode(0).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).build();
+            responseObserver.onNext(result);
         } else if (!GetFileSHA256.getFileSha256(tempFile).equals(this.file.getSha256())) {
             Result result = Result.newBuilder().setCode(2).setMsg("文件sha256不一致，请重新传输文件").build();
             responseObserver.onNext(result);
