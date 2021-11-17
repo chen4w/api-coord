@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONUtil;
 import io.grpc.stub.StreamObserver;
@@ -68,10 +69,7 @@ public class FileServerObserver implements StreamObserver<TransFile> {
                         if (os == null) {
                             File file = new File("./tmp/file");
                             if (!file.exists()) {
-                                boolean flag = file.mkdirs();
-                                if (flag) {
-                                    throw new ServiceException("创建文件夹失败！");
-                                }
+                                FileUtil.mkdir(file);
                             }
                             this.filePath = "./tmp/file/" + SnowIdGenerator.getId();
                             os = new FileOutputStream(this.filePath);
