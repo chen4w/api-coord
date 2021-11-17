@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import repchain.inter.cooperation.middleware.model.tran.Signature;
 
 /**
  * @author lhc
@@ -23,4 +22,5 @@ public class InterCoResult {
     private String msg;
     private Object data;
     private String cid;
+    private String filePath;
 }

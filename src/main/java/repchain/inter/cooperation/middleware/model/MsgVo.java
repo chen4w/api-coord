@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 
 /**
  * @author lhc
@@ -21,4 +22,5 @@ import repchain.inter.cooperation.middleware.proto.Result;
 public class MsgVo {
     private Result result;
     private ReqAckProof reqAckProof;
+    private ResultFile resultFile;
 }

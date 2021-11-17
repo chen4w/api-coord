@@ -3,6 +3,7 @@ package repchain.inter.cooperation.middleware.service.impl;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientSingle;
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
@@ -36,6 +37,16 @@ public class CommunicationClientImpl implements CommunicationClient {
         int port = transFile.getPort();
         ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
         Result result = comClientSingle.sendFile(transFile,file);
+        ComClientPool.returnObject(comClientSingle, host, port);
+        return result;
+    }
+
+    @Override
+    public ResultFile downloadFile(TransEntity transEntity) {
+        String host = transEntity.getHost();
+        int port = transEntity.getPort();
+        ComClientSingle comClientSingle = ComClientPool.borrowObject(host, port);
+        ResultFile result = comClientSingle.download(transEntity);
         ComClientPool.returnObject(comClientSingle, host, port);
         return result;
     }

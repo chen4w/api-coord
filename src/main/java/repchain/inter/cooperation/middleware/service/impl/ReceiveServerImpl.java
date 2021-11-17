@@ -25,6 +25,7 @@ import repchain.inter.cooperation.middleware.model.yml.MiddleServer;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransFile;
 import repchain.inter.cooperation.middleware.service.CommunicationClient;
@@ -130,23 +131,33 @@ public class ReceiveServerImpl implements ReceiveServer {
                             callbackUrl, cid, false, filepath, fileHash, map, res);
                 }
             } else {
-                String filepath = req.getParam("filepath");
-                String fileHash = req.getParam("fileHash");
                 msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
-                        callbackMethod, callbackUrl, cid, true, filepath, fileHash, map);
+                        callbackMethod, callbackUrl, cid, true, map);
             }
             Result result = msgVo.getResult();
             InterCoResult coResult;
-            if (result.getCode() == 0) {
-                coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0).msg("Action OK").data(result.getData()).build();
+            if (result != null) {
+                if (result.getCode() == 0) {
+                    coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0).msg("Action OK").data(result.getData()).build();
+                } else {
+                    coResult = InterCoResult.builder().code(result.getCode()).msg(result.getMsg()).build();
+                }
             } else {
-                coResult = InterCoResult.builder().code(result.getCode()).msg("Action OK").msg(result.getMsg()).build();
+                ResultFile resultFile = msgVo.getResultFile();
+                if (resultFile.getCode() == 0) {
+                    coResult = InterCoResult.builder().cid(msgVo.getReqAckProof().getCid()).code(0)
+                            .msg("Action OK").data(resultFile.getData()).filePath(resultFile.getFilepath()).build();
+                } else {
+                    coResult = InterCoResult.builder().code(resultFile.getCode()).msg(resultFile.getMsg()).build();
+                }
             }
-            if (!sync && FILE.equals(req.getPath())) {
+            if (!(sync && FILE.equals(req.getPath()))) {
                 res.write(JSONUtil.toJsonStr(coResult));
-            }
-            if (msgVo.getReqAckProof() != null) {
-                commit.saveProof(msgVo.getReqAckProof());
+                if (msgVo.getReqAckProof() != null) {
+                    if (commit != null) {
+                        commit.saveProof(msgVo.getReqAckProof());
+                    }
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -179,7 +190,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
         TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
-        ReqAckProof rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature,
+        ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
                 JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
         return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
@@ -214,7 +225,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
                 .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(transFile, file);
-        ReqAckProof rb = result.getCode() == 0 ?
+        ReqAckProof rb = commit != null ?
                 TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
                 : null;
         return MsgVo.builder().reqAckProof(rb).result(result).build();
@@ -248,22 +259,54 @@ public class ReceiveServerImpl implements ReceiveServer {
         TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true)
                 .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
+        ReqAckProof rb=TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
+        if (commit != null) {
+            commit.saveProof(rb);
+        }
+        InterCoResult coResult;
+        if (result.getCode() == 0) {
+            coResult = InterCoResult.builder().cid(rb.getCid()).code(0).msg("Action OK").data(result.getData()).build();
+        } else {
+            coResult = InterCoResult.builder().code(result.getCode()).msg(result.getMsg()).build();
+        }
+        res.write(JSONUtil.toJsonStr(coResult));
         if (result.getCode() == 0) {
             TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
                     .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
             result = communicationClient.sendFile(transFile, file);
-            ReqAckProof rb = result.getCode() == 0 ?
+            rb = result.getCode() == 0 ?
                     TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
                     : null;
         }
-        return result;
+        return MsgVo.builder().reqAckProof(rb).result(result).build();
     }
 
-    public MsgVo downloadFile(String id, int seq, boolean endFlag, String url, boolean bReqFlag,
+    public MsgVo downloadFile(String serviceId, int seq, boolean isEnd, String url, boolean bReqFlag,
                               String method, String callbackMethod, String callbackUrl, String cid,
-                              boolean b, String filepath, String fileHash, Map<String, Object> map) {
-
-        return null;
+                              boolean sync, Map<String, Object> map) {
+        String data = "";
+        if (map != null && !map.isEmpty()) {
+            data = JSONUtil.toJsonStr(map);
+        }
+        if (StrUtil.isBlank(cid)) {
+            if (!bReqFlag) {
+                throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
+            }
+            // 创建交易id
+            cid = SnowIdGenerator.getId();
+        }
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        // 对业务请求数据进行hash取值
+        String contentHash = DigestUtil.sha256Hex(data);
+        Signature signature = getSign(contentHash, ackObj);
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
+        int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
+        ResultFile result = communicationClient.downloadFile(transEntity);
+        ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
+                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        return MsgVo.builder().reqAckProof(rb).resultFile(result).build();
     }
 
     private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {

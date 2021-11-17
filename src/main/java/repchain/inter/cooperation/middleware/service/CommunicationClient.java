@@ -1,6 +1,7 @@
 package repchain.inter.cooperation.middleware.service;
 
 import repchain.inter.cooperation.middleware.proto.Result;
+import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.proto.TransFile;
 
@@ -25,4 +26,6 @@ public interface CommunicationClient {
     Result sendMessage(TransEntity transEntity);
 
     Result sendFile(TransFile transFile, File file);
+
+    ResultFile downloadFile(TransEntity transEntity);
 }

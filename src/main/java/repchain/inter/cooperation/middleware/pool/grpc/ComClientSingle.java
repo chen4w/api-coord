@@ -102,10 +102,10 @@ public class ComClientSingle {
                 }
             }
             requestObserver.onCompleted();
-//            if(finishLatch.await(1, TimeUnit.MINUTES)){
-//                throw new ServiceException("中间件传输超时");
-//            }
-            finishLatch.await(1, TimeUnit.MINUTES);
+            if(finishLatch.await(1, TimeUnit.HOURS)){
+                throw new ServiceException("中间件传输超时");
+            }
+//            finishLatch.await(1, TimeUnit.MINUTES);
             logger.info("sendFile success");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -126,13 +126,14 @@ public class ReceiveClientImpl implements ReceiveClient {
                         stream.onNext(ResultFile.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
                         stream.onCompleted();
                     }
+                    String data = httpresponse.body();
                     InputStream is = new FileInputStream(filePath);
-                    ResultFile resultFile = ResultFile.newBuilder().setFilepath(filePath).setBegin(true).build();
+                    ResultFile resultFile = ResultFile.newBuilder().setFilepath(filePath).setData(data).setBegin(true).build();
                     stream.onNext(resultFile);
                     byte[] buff = new byte[2048];
                     int len;
                     while ((len = is.read(buff)) != -1) {
-                        stream.onNext(resultFile.toBuilder().setFile(ByteString.copyFrom(buff, 0, len)).build());
+                        stream.onNext(resultFile.toBuilder().setBegin(false).setFile(ByteString.copyFrom(buff, 0, len)).build());
                     }
                     stream.onCompleted();
                 } else {
