@@ -28,7 +28,6 @@ public class MiddlewareClient {
     private Map<String, Object> form;
     private String filepath;
     private File file;
-    private ReqOption reqOption;
 
     public static MiddlewareClient create(String host, int timeout) {
         return new MiddlewareClient(host, timeout);
@@ -70,10 +69,6 @@ public class MiddlewareClient {
         this.timeout = timeout;
     }
 
-    public MiddlewareClient setReqOption(ReqOption reqOption) {
-        this.reqOption = reqOption;
-        return this;
-    }
 
     public InterCoResult msg() {
         ReqOption reqOption = new ReqOption();
@@ -119,5 +114,23 @@ public class MiddlewareClient {
         reqOption.setFilepath(this.filepath);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
         return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file");
+    }
+
+    public InterCoResult sendFile(ReqOption reqOption) {
+        if (this.file==null) {
+            throw new ServiceException("file can not be null");
+        }
+        reqOption.setFilepath(this.filepath);
+        reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file");
+    }
+
+    public InterCoResult download() {
+        ReqOption reqOption = new ReqOption();
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download");
+    }
+
+    public InterCoResult download(ReqOption reqOption) {
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download");
     }
 }
