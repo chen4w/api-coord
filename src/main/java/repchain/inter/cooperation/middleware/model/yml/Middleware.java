@@ -17,6 +17,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class Middleware {
+    private PersistenceYml persistence;
+    private FileYml file;
+    private LogYml log;
     private RecClient recClient;
     private ComClient comClient;
     private MiddleServer recServer;

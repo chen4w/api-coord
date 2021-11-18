@@ -1,4 +1,4 @@
-# repchain配置文件，可将文件复制到yml中，springboot需要自己封装bean，若感觉此部分内容较多也可以持久化到数据库中
+# repchain配置文件
 repchain:
   # repchain 地址
   host: 192.168.2.76:8081
@@ -58,6 +58,20 @@ repchain:
         -----END CERTIFICATE-----
 ## 中间件配置
 middleware:
+  # 文件配置
+  file:
+    # 文件持久化配置
+    path: /data/tme
+    # 文件备份地址配置
+    backupPath: /data/backup
+  # 日志配置
+#  log:
+    # 日志保存路径
+#    path: /data/logs
+  # 持久化
+  persistence:
+    # 接收的请求数据是否持久化，此处会持久化所配置的数据库
+    receiveSave: false
   # 用来访问服务方提供的接口的客户端
   recClient:
     host: 42.193.105.24
@@ -102,9 +116,6 @@ datasource:
 #  pass: root
 #  user: root
 #  driver: org.sqlite.JDBC
-  #      url: jdbc:mysql://192.168.2.76:3306/STATEGRID?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
-  #      username: root
-  #      password: root
   url: jdbc:mysql://192.168.2.76:3306/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
   pass: root
   user: root

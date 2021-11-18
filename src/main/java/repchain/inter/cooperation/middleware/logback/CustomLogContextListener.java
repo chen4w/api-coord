@@ -18,7 +18,9 @@ import repchain.inter.cooperation.middleware.utils.YamlUtils;
  */
 public class CustomLogContextListener extends ContextAwareBase implements LoggerContextListener, LifeCycle {
 
-    /** 存储日志路径标识 */
+    /**
+     * 存储日志路径标识
+     */
     public static final String LOG_PAHT_KEY = "log.path";
 
     @Override
@@ -50,9 +52,12 @@ public class CustomLogContextListener extends ContextAwareBase implements Logger
     public void start() {
         // "user.dir"是指用户当前工作目录
         String s = YamlUtils.jarPath + "/logs/";
+        if (YamlUtils.middleConfig.getMiddleware().getLog() != null) {
+            s = YamlUtils.middleConfig.getMiddleware().getLog().getPath();
+        }
         System.setProperty(LOG_PAHT_KEY, s);
         Context context = getContext();
-        context.putProperty(LOG_PAHT_KEY,  s);
+        context.putProperty(LOG_PAHT_KEY, s);
     }
 
     @Override

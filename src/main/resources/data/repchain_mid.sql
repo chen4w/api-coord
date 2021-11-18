@@ -11,7 +11,7 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 18/11/2021 09:49:40
+ Date: 18/11/2021 10:01:19
 */
 
 SET NAMES utf8mb4;
@@ -55,6 +55,22 @@ CREATE TABLE `async_header` (
 -- ----------------------------
 DROP TABLE IF EXISTS `persistence`;
 CREATE TABLE `persistence` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `cid` varchar(255) DEFAULT NULL,
+  `header` mediumtext,
+  `result` mediumtext,
+  `send_file` mediumtext,
+  `download_file` mediumtext,
+  `time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ckey` (`cid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for persistence_result
+-- ----------------------------
+DROP TABLE IF EXISTS `persistence_result`;
+CREATE TABLE `persistence_result` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `cid` varchar(255) DEFAULT NULL,
   `header` mediumtext,
