@@ -1,7 +1,6 @@
 package repchain.inter.cooperation.middleware.client;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
@@ -40,5 +39,7 @@ public class ReqOption implements Serializable {
     private int sync = TRUE;
     private String filepath;
     private String fileHash;
-    private int save = FALSE;
+    private int reqSave = FALSE;
+    private int resultSave = FALSE;
+    private int fileSave = FALSE;
 }

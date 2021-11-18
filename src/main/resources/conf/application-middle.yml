@@ -98,10 +98,17 @@ middleware:
     workQueue: 100
 # 数据源配置，用于数据持久化，当前版本只支持sqlite
 datasource:
-  url: jdbc:sqlite:data/datasource.db
+#  url: jdbc:sqlite:data/repchain_mid.db
+#  pass: root
+#  user: root
+#  driver: org.sqlite.JDBC
+  #      url: jdbc:mysql://192.168.2.76:3306/STATEGRID?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+  #      username: root
+  #      password: root
+  url: jdbc:mysql://192.168.2.76:3306/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
   pass: root
   user: root
-  driver: org.sqlite.JDBC
+  driver: com.mysql.jdbc.Driver
   ## 可选配置
   # 是否在日志中显示执行的SQL
   showSql: true

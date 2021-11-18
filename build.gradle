@@ -44,7 +44,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-//    implementation 'mysql:mysql-connector-java:5.1.46'
+    implementation 'mysql:mysql-connector-java:5.1.46'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'ch.qos.logback:logback-classic:1.2.6'
     implementation 'org.apache.commons:commons-pool2:2.5.0'

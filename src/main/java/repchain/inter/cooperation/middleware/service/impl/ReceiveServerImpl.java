@@ -106,6 +106,12 @@ public class ReceiveServerImpl implements ReceiveServer {
             int isEnd = Integer.parseInt(req.getParam("isEnd"));
             int bReq = Integer.parseInt(req.getParam("bReq"));
             int isSync = Integer.parseInt(req.getParam("sync"));
+            int reqSave = Integer.parseInt(req.getParam("reqSave"));
+            int resultSave = Integer.parseInt(req.getParam("resultSave"));
+            int fileSave = Integer.parseInt(req.getParam("fileSave"));
+            boolean reqSaveFlag = reqSave == ReqOption.TRUE;
+            boolean resultSaveFlag = resultSave == ReqOption.TRUE;
+            boolean fileSaveFlag = fileSave == ReqOption.TRUE;
             String url = req.getParam("url");
             String method = req.getParam("method");
             String callbackMethod = req.getParam("callbackMethod");
