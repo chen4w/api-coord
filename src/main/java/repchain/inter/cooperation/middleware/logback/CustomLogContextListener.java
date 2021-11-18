@@ -50,7 +50,6 @@ public class CustomLogContextListener extends ContextAwareBase implements Logger
 
     @Override
     public void start() {
-        // "user.dir"是指用户当前工作目录
         String s = YamlUtils.jarPath + "/logs/";
         if (YamlUtils.middleConfig.getMiddleware().getLog() != null) {
             s = YamlUtils.middleConfig.getMiddleware().getLog().getPath();

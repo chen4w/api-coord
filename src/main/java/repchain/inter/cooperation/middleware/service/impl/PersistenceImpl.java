@@ -6,7 +6,7 @@ import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
-import repchain.inter.cooperation.middleware.model.Header;
+import repchain.inter.cooperation.middleware.model.PerVo;
 import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
@@ -28,20 +28,20 @@ public class PersistenceImpl implements Persistence {
     private final Db db = SqliteUtil.getInstance();
 
     @Override
-    public void saveData(String cid, Header header, Object result, String sendFile, String downloadFile) throws SQLException {
-        if (StrUtil.isBlank(cid)) {
+    public Object saveData(PerVo perVo) throws SQLException {
+        if (StrUtil.isBlank(perVo.getCid())) {
             throw new ServiceException("cid 不能为空");
         }
-        if (header == null) {
+        if (perVo.getHeader() == null) {
             throw new ServiceException("header 不能为空");
         }
-        Entity entity = Entity.create(EhCacheConstant.PERSISTENCE).set("cid", cid).set("header", header).set("time", new Date());
-        if (result != null) {
-            entity = entity.set("result", result);
+        Entity entity = Entity.create(EhCacheConstant.PERSISTENCE).set("cid", perVo.getCid()).set("header", perVo.getHeader()).set("time", new Date());
+        if (perVo.getResult() != null) {
+            entity = entity.set("result", perVo.getResult());
         }
-        if (sendFile != null) {
-            String dir = YamlUtils.jarPath + "/file/send/"+cid+"/"+System.currentTimeMillis();
-            File file = new File(sendFile);
+        if (perVo.getSendFile() != null) {
+            String dir = YamlUtils.jarPath + "/file/send/"+perVo.getCid()+"/"+System.currentTimeMillis();
+            File file = new File(perVo.getSendFile());
             if (!file.exists()) {
                 throw new ServiceException("需要保存的文件不存在");
             }
@@ -52,9 +52,9 @@ public class PersistenceImpl implements Persistence {
             FileUtil.copy(file, fileDir, false);
             entity = entity.set("send_file", file.getAbsolutePath());
         }
-        if (downloadFile != null) {
-            File file = new File(downloadFile);
-            String dir = YamlUtils.jarPath + "/file/download/"+cid+"/"+System.currentTimeMillis();
+        if (perVo.getDownloadFile() != null) {
+            File file = new File(perVo.getDownloadFile());
+            String dir = YamlUtils.jarPath + "/file/download/"+perVo.getCid()+"/"+System.currentTimeMillis();
             File fileDir = new File(dir);
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
@@ -62,7 +62,7 @@ public class PersistenceImpl implements Persistence {
             file = FileUtil.copy(file, fileDir, false);
             entity = entity.set("header", file.getAbsolutePath());
         }
-        db.insertForGeneratedKey(
+        return db.insertForGeneratedKey(
                 entity
         );
     }

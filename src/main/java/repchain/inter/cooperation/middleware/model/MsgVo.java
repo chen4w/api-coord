@@ -23,4 +23,5 @@ public class MsgVo {
     private Result result;
     private ReqAckProof reqAckProof;
     private ResultFile resultFile;
+    private Long saveId;
 }

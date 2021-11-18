@@ -2,6 +2,7 @@ package repchain.inter.cooperation.middleware.service;
 
 import cn.hutool.db.Entity;
 import repchain.inter.cooperation.middleware.model.Header;
+import repchain.inter.cooperation.middleware.model.PerVo;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface Persistence {
 
 
-    void saveData(String cid,Header header,Object result,String sendFile,String downloadFile) throws SQLException;
+    Object saveData(PerVo perVo) throws SQLException;
 
     List<Entity> get(String key) throws SQLException;
 }
