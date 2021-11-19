@@ -61,7 +61,7 @@ middleware:
   # 文件配置
   file:
     # 文件持久化配置
-    path: /data/tme
+    temp: /file/tmp
     # 文件备份地址配置
     backupPath: /data/backup
   # 日志配置
@@ -74,9 +74,9 @@ middleware:
     receiveSave: false
   # 用来访问服务方提供的接口的客户端
   recClient:
-    host: 42.193.105.24
+    host: 127.0.0.1
     port: 80
-    # http或https
+    # http
     protocol: http
     # 超时时间
     timeout: 5000
