@@ -28,6 +28,7 @@ public class MiddlewareClient {
     private Map<String, Object> form;
     private String filepath;
     private File file;
+    private Map<String, Object> headers = new HashMap<>();
 
     public static MiddlewareClient create(String host, int timeout) {
         return new MiddlewareClient(host, timeout);
@@ -35,6 +36,11 @@ public class MiddlewareClient {
 
     public MiddlewareClient setUrl(String url) {
         this.url = url;
+        return this;
+    }
+
+    public MiddlewareClient setHeader(String key, String value) {
+        this.headers.put(key, value);
         return this;
     }
 
@@ -72,10 +78,10 @@ public class MiddlewareClient {
 
     public InterCoResult msg() {
         ReqOption reqOption = new ReqOption();
-        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg");
+        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg",headers);
     }
 
-    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption,String middleUrl) {
+    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption,String middleUrl,Map<String,Object> headers) {
         if (serviceId == null) {
             throw new NullPointerException("serviceId can not be null");
         }
@@ -91,6 +97,9 @@ public class MiddlewareClient {
         if (map == null) {
             map = new HashMap<>(1);
         }
+        if (!headers.isEmpty()) {
+            reqOption.setHeaders(JSONUtil.toJsonStr(headers));
+        }
         map.put("cid", reqOption.getCid());
         reqOption.setData(JSONUtil.toJsonStr(map));
         Map<String, Object> form = Convert.toMap(String.class, Object.class, reqOption);
@@ -103,7 +112,7 @@ public class MiddlewareClient {
 
 
     public InterCoResult msg(ReqOption reqOption) {
-        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg");
+        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg",headers);
     }
 
     public InterCoResult sendFile() {
@@ -113,7 +122,7 @@ public class MiddlewareClient {
         ReqOption reqOption = new ReqOption();
         reqOption.setFilepath(this.filepath);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file");
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file",headers);
     }
 
     public InterCoResult sendFile(ReqOption reqOption) {
@@ -122,15 +131,15 @@ public class MiddlewareClient {
         }
         reqOption.setFilepath(this.filepath);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file");
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file",headers);
     }
 
     public InterCoResult download() {
         ReqOption reqOption = new ReqOption();
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download");
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download",headers);
     }
 
     public InterCoResult download(ReqOption reqOption) {
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download");
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download",headers);
     }
 }

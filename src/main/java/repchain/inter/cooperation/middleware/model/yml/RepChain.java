@@ -27,6 +27,7 @@ public class RepChain {
     private String privateKey;
     private String password;
     private List<Service> services;
+    private Integer blockTime;
 
     public String handleCert() {
         String start = "-----BEGIN CERTIFICATE-----";

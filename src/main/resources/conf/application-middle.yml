@@ -4,6 +4,8 @@ repchain:
   host: 192.168.2.76:8081
   # 同步区块高度
   height: 0
+  # 出块时间 (分钟）
+  blockTime: 5
   # 用户唯一标识
   creditCode: CGZL7XOwwa
   # 证书名称
@@ -32,9 +34,9 @@ repchain:
   services:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
-      # 提供方证书
+      # 服务调用方ID
       e_from: bb743c821635920387678
-      # 服务方证书
+      # 调用方证书
       from_cert: -----BEGIN CERTIFICATE-----
         MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
         IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
@@ -46,7 +48,7 @@ repchain:
         -----END CERTIFICATE-----
       # 服务提供方id
       e_to: 7b5c66df1635920342945
-      # 调用方证书
+      # 提供方证书
       to_cert: -----BEGIN CERTIFICATE-----
         MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
         IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
@@ -92,13 +94,21 @@ middleware:
     workQueue: 100
   # 中间件之间通信的客户端
   comClient:
+    # 超时时间（毫秒）
     timeout: 5000
+    # 池中的最大连接数
     maxTotal: 8
+    # 最少的空闲连接数
     minIdle: 1
+    # 最多的空闲连接数
     maxIdle: 8
+    # 当连接池资源耗尽时,调用者最大阻塞的时间,超时时抛出异常 单位:毫秒数
     maxWaitMillis: -1
+    # 连接池存放池化对象方式,true放在空闲队列最前面,false放在空闲队列最后
     lifo: true
+    # 连接空闲的最小时间,达到此值后空闲连接可能会被移除,默认即为30分钟
     minEvictableIdleTimeMillis: 1800000
+    # 连接耗尽时是否阻塞,默认为true
     blockWhenExhausted: true
   # 中间件之间通信的服务器
   comServer:
@@ -110,7 +120,7 @@ middleware:
     maxPoolSize: 200
     # 队列，有用存储未执行的线程
     workQueue: 100
-# 数据源配置，用于数据持久化，当前版本只支持sqlite
+# 数据源配置，用于数据持久化，当前版本支持sqlite，mysql
 datasource:
 #  url: jdbc:sqlite:data/repchain_mid.db
 #  pass: root
@@ -120,7 +130,6 @@ datasource:
   pass: root
   user: root
   driver: com.mysql.jdbc.Driver
-  ## 可选配置
   # 是否在日志中显示执行的SQL
   showSql: true
   # 是否格式化显示的SQL
