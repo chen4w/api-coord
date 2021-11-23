@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author lhc
@@ -44,4 +43,5 @@ public class ReqOption implements Serializable {
     private int resultSave = FALSE;
     private int fileSave = FALSE;
     private String headers;
+    private String fileField;
 }

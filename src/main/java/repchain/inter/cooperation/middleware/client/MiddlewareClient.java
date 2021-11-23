@@ -28,6 +28,7 @@ public class MiddlewareClient {
     private Map<String, Object> form;
     private String filepath;
     private File file;
+    private String fileField;
     private Map<String, Object> headers = new HashMap<>();
 
     public static MiddlewareClient create(String host, int timeout) {
@@ -36,6 +37,11 @@ public class MiddlewareClient {
 
     public MiddlewareClient setUrl(String url) {
         this.url = url;
+        return this;
+    }
+
+    public MiddlewareClient setFileField(String fileField) {
+        this.fileField = fileField;
         return this;
     }
 
@@ -97,6 +103,10 @@ public class MiddlewareClient {
         if (map == null) {
             map = new HashMap<>(1);
         }
+
+        if (this.fileField != null) {
+            reqOption.setFileField(this.fileField);
+        }
         if (!headers.isEmpty()) {
             reqOption.setHeaders(JSONUtil.toJsonStr(headers));
         }
@@ -119,6 +129,9 @@ public class MiddlewareClient {
         if (this.file==null) {
             throw new ServiceException("file can not be null");
         }
+        if (this.fileField==null) {
+            throw new ServiceException("fileField can not be null");
+        }
         ReqOption reqOption = new ReqOption();
         reqOption.setFilepath(this.filepath);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
@@ -126,6 +139,9 @@ public class MiddlewareClient {
     }
 
     public InterCoResult sendFile(ReqOption reqOption) {
+        if (this.fileField==null) {
+            throw new ServiceException("fileField can not be null");
+        }
         if (this.file==null) {
             throw new ServiceException("file can not be null");
         }

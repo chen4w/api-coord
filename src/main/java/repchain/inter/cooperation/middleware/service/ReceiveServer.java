@@ -1,8 +1,5 @@
 package repchain.inter.cooperation.middleware.service;
 
-import repchain.inter.cooperation.middleware.model.tran.ApiDefinition;
-import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
-
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -22,13 +19,13 @@ public interface ReceiveServer {
     Object msg(String serviceId, int seq, boolean isEnd,
                String url, boolean bReqFlag, String method,
                String callbackMethod, String callbackUrl, String cid,
-               boolean sync,boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> map) throws SQLException;
+               boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, Map<String, Object> map) throws SQLException;
 
     Object file(String serviceId, int seq, boolean isEnd,
                 String url, boolean bReqFlag, String method,
                 String callbackMethod, String callbackUrl, String cid,
-                boolean sync,String filePath,String fileHash, boolean reqSaveFlag,
-                boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> map) throws SQLException;
+                boolean sync, String filePath, String fileHash, boolean reqSaveFlag,
+                boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map) throws SQLException;
 
     void setTransactionCommit(TransactionCommit commit);
 

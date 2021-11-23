@@ -4,6 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
+import cn.hutool.json.JSONUtil;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.PerVo;
@@ -35,9 +36,9 @@ public class PersistenceImpl implements Persistence {
         if (perVo.getHeader() == null) {
             throw new ServiceException("header 不能为空");
         }
-        Entity entity = Entity.create(EhCacheConstant.PERSISTENCE).set("cid", perVo.getCid()).set("header", perVo.getHeader()).set("time", new Date());
+        Entity entity = Entity.create(EhCacheConstant.PERSISTENCE).set("cid", perVo.getCid()).set("header", JSONUtil.toJsonStr(perVo.getHeader())).set("time", new Date());
         if (perVo.getResult() != null) {
-            entity = entity.set("result", perVo.getResult());
+            entity = entity.set("result", JSONUtil.toJsonStr(perVo.getResult()));
         }
         if (perVo.getSendFile() != null) {
             String dir = YamlUtils.jarPath + "/file/send/"+perVo.getCid()+"/"+System.currentTimeMillis();
@@ -60,7 +61,7 @@ public class PersistenceImpl implements Persistence {
                 FileUtil.mkdir(fileDir);
             }
             file = FileUtil.copy(file, fileDir, false);
-            entity = entity.set("header", file.getAbsolutePath());
+            entity = entity.set("download_file", file.getAbsolutePath());
         }
         return db.insertForGeneratedKey(
                 entity

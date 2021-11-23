@@ -71,7 +71,7 @@ public class FileServerObserver implements StreamObserver<TransFile> {
                             if (!file.exists()) {
                                 FileUtil.mkdir(file);
                             }
-                            this.filePath = "./tmp/file/" + SnowIdGenerator.getId();
+                            this.filePath = "./tmp/file/" + SnowIdGenerator.getId()+"/"+fileInfo.getFileName();
                             os = new FileOutputStream(this.filePath);
                         }
                         fileInfo.getFile().newInput();
@@ -121,8 +121,7 @@ public class FileServerObserver implements StreamObserver<TransFile> {
         } else {
             Header header = JSONUtil.toBean(this.file.getHeader(), Header.class);
             Map<String, Object> map = JSONUtil.parseObj(header.getData());
-            map.put("filePath", this.filePath);
-            map.put("fileName", this.file.getFileName());
+            map.put(this.file.getFileField(), this.file.getFileName());
             header.setData(JSONUtil.toJsonStr(map));
             TransEntity transEntity = TransEntity
                     .newBuilder()

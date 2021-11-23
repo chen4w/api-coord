@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 public class FileYml {
-    private String path;
+    private String temp;
     private String backupPath;
 }

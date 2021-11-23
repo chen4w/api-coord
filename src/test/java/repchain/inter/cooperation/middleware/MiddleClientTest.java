@@ -1,7 +1,5 @@
 package repchain.inter.cooperation.middleware;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import repchain.inter.cooperation.middleware.client.HttpType;
@@ -27,7 +25,9 @@ public class MiddleClientTest {
     public void msg() {
         // 构建请求参数
         Map<String, Object> map = new HashMap<>(1);
-//        map.put("loginName", "12110107bi45jh675g");
+        map.put("loginName", "12110107bi45jh675g");
+        ReqOption option = new ReqOption();
+        option.setReqSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -41,7 +41,7 @@ public class MiddleClientTest {
                 // 设置传输的数据
                 .setForm(map)
                 // 发送数据
-                .msg();
+                .msg(option);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 
@@ -135,8 +135,10 @@ public class MiddleClientTest {
                 .setUrl("/user/sgUser/valid")
                 // 设置传输的数据
                 .setForm(map)
+                // 设置文件字段
+                .setFileField("file")
                 // file
-                .setFile(FileUtil.file("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz"))
+                .setFile(new File("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz"))
                 // 发送数据
                 .sendFile();
 //        System.out.println("upload");

@@ -22,12 +22,15 @@ message TransFile{
   string fileName=5;
   string sha256=6;
   bool begin = 7;
+  string httpHeader=8;
+  string fileField=9;
 }
 
 message TransEntity{
   string header = 1;
   int32 port = 2;
   string host= 3;
+  string httpHeader=4;
 }
 
 message Result{

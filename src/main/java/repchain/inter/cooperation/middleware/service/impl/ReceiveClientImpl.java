@@ -28,7 +28,6 @@ import repchain.inter.cooperation.middleware.utils.YamlUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.rmi.ServerException;
 import java.security.PrivateKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +52,7 @@ public class ReceiveClientImpl implements ReceiveClient {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void  download(TransEntity request, Object response)  {
+    public void download(TransEntity request, Object response) {
         RepChain repchain = YamlUtils.getRepchain();
         Header header = JSONUtil.toBean(request.getHeader(), Header.class);
         StreamObserver<ResultFile> stream = (StreamObserver<ResultFile>) response;
@@ -66,7 +65,6 @@ public class ReceiveClientImpl implements ReceiveClient {
                 String contentHash = DigestUtil.sha256Hex(msg);
                 Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
                 stream.onNext(ResultFile.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
-                stream.onCompleted();
             } else {
                 ApiDefinition apiDefinition = MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id(), ApiDefinition.class);
                 if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(), header.getB_req())) {
@@ -83,24 +81,36 @@ public class ReceiveClientImpl implements ReceiveClient {
                     } else {
                         subUrl = "/" + header.getUrl();
                     }
+                    Map<String, String> httpHeaders = new HashMap<>();
+                    if (request.getHttpHeader().contains("{")) {
+                        Map<String, Object> httpHeaderMap = JSONUtil.parseObj(request.getHttpHeader());
+                        for (Map.Entry<String, Object> entry : httpHeaderMap.entrySet()) {
+                            httpHeaders.put(entry.getKey(), String.valueOf(entry.getValue()));
+                        }
+                    } else {
+                        httpHeaders = new HashMap<>(1);
+                    }
                     String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
                     String type = header.getHttpType();
                     HttpResponse httpresponse = null;
                     if ("GET".equals(type)) {
                         httpresponse = HttpRequest.get(url)
                                 .form(map)
+                                .headerMap(httpHeaders,true)
                                 .timeout(recClient.getTimeout())
                                 .execute();
                     }
                     if ("POST".equals(type)) {
                         httpresponse = HttpRequest.post(url)
                                 .form(map)
+                                .headerMap(httpHeaders,true)
                                 .timeout(recClient.getTimeout())
                                 .execute();
                     }
                     if ("PUT".equals(type)) {
                         httpresponse = HttpRequest.put(url)
                                 .form(map)
+                                .headerMap(httpHeaders,true)
                                 .timeout(recClient.getTimeout())
                                 .execute();
                     }
@@ -108,12 +118,14 @@ public class ReceiveClientImpl implements ReceiveClient {
                         httpresponse = HttpRequest.patch(url)
                                 .form(map)
                                 .timeout(recClient.getTimeout())
+                                .headerMap(httpHeaders,true)
                                 .execute();
                     }
                     if ("DELETE".equals(type)) {
                         httpresponse = HttpRequest.delete(url)
                                 .form(map)
                                 .timeout(recClient.getTimeout())
+                                .headerMap(httpHeaders,true)
                                 .execute();
                     }
                     String filePath = httpresponse.header("filePath");
@@ -135,7 +147,6 @@ public class ReceiveClientImpl implements ReceiveClient {
                     while ((len = is.read(buff)) != -1) {
                         stream.onNext(resultFile.toBuilder().setBegin(false).setFile(ByteString.copyFrom(buff, 0, len)).build());
                     }
-                    stream.onCompleted();
                 } else {
                     String msg = "无权限";
                     // 对业务请求数据进行hash取值
@@ -143,9 +154,9 @@ public class ReceiveClientImpl implements ReceiveClient {
                     Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
                             repchain.getCertName(), "sha256withecdsa");
                     stream.onNext(ResultFile.newBuilder().setCode(3).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
-                    stream.onCompleted();
                 }
             }
+            stream.onCompleted();
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             String msg = "远程中间件错误：" + e.getMessage();
@@ -188,33 +199,47 @@ public class ReceiveClientImpl implements ReceiveClient {
                 String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
                 String type = header.getHttpType();
                 String result = "";
+                Map<String, String> httpHeaders = new HashMap<>();
+                if (transEntity.getHttpHeader().contains("{")) {
+                    Map<String, Object> httpHeaderMap = JSONUtil.parseObj(transEntity.getHttpHeader());
+                    for (Map.Entry<String, Object> entry : httpHeaderMap.entrySet()) {
+                        httpHeaders.put(entry.getKey(), String.valueOf(entry.getValue()));
+                    }
+                } else {
+                    httpHeaders = new HashMap<>(1);
+                }
                 if ("GET".equals(type)) {
                     result = HttpRequest.get(url)
                             .form(map)
+                            .headerMap(httpHeaders,true)
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
                 if ("POST".equals(type)) {
                     result = HttpRequest.post(url)
                             .form(map)
+                            .headerMap(httpHeaders,true)
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
                 if ("PUT".equals(type)) {
                     result = HttpRequest.put(url)
                             .form(map)
+                            .headerMap(httpHeaders,true)
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
                 if ("PATCH".equals(type)) {
                     result = HttpRequest.patch(url)
                             .form(map)
+                            .headerMap(httpHeaders,true)
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
                 if ("DELETE".equals(type)) {
                     result = HttpRequest.delete(url)
                             .form(map)
+                            .headerMap(httpHeaders,true)
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }

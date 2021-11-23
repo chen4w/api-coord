@@ -49,7 +49,7 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     private static final String MSG = "/msg";
     private static final String FILE = "/file";
-    private static final String DOWNLOAD = "/download";
+//    private static final String DOWNLOAD = "/download";
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiveServerImpl.class);
 
@@ -107,6 +107,9 @@ public class ReceiveServerImpl implements ReceiveServer {
             int reqSave = Integer.parseInt(req.getParam("reqSave"));
             int resultSave = Integer.parseInt(req.getParam("resultSave"));
             int fileSave = Integer.parseInt(req.getParam("fileSave"));
+            String headersStr = req.getParam("headers");
+            String fileField = req.getParam("fileField");
+            Map<String, Object> headers = JSONUtil.parseObj(headersStr);
             boolean reqSaveFlag = reqSave == ReqOption.TRUE;
             boolean resultSaveFlag = resultSave == ReqOption.TRUE;
             boolean fileSaveFlag = fileSave == ReqOption.TRUE;
@@ -123,20 +126,20 @@ public class ReceiveServerImpl implements ReceiveServer {
             res.setContentType("text/html;charset=utf-8");
             MsgVo msgVo;
             if (MSG.equals(req.getPath())) {
-                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, map);
+                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, headers, map);
             } else if (FILE.equals(req.getPath())) {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
                 if (sync) {
                     msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method,
-                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, map);
+                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag,headers,fileField, map);
                 } else {
                     msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
-                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, map, res);
+                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers,fileField,map, res);
                 }
             } else {
                 msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
-                        callbackMethod, callbackUrl, cid, true,reqSaveFlag, resultSaveFlag, fileSaveFlag, map);
+                        callbackMethod, callbackUrl, cid, true, reqSaveFlag, resultSaveFlag, fileSaveFlag,headers, map);
             }
             Result result = msgVo.getResult();
             InterCoResult coResult;
@@ -173,10 +176,14 @@ public class ReceiveServerImpl implements ReceiveServer {
     public Object msg(String serviceId, int seq, boolean isEnd,
                       String url, boolean bReqFlag, String method,
                       String callbackMethod, String callbackUrl, String cid,
-                      boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> map) throws SQLException {
+                      boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, Map<String, Object> map) throws SQLException {
         String data = "";
         if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
+        }
+        String httpHeaders = "";
+        if (headers != null && !headers.isEmpty()) {
+            httpHeaders = JSONUtil.toJsonStr(headers);
         }
         if (StrUtil.isBlank(cid)) {
             if (!bReqFlag) {
@@ -192,17 +199,20 @@ public class ReceiveServerImpl implements ReceiveServer {
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
         Result result = communicationClient.sendMessage(transEntity);
-        ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
-                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
         Long id = null;
-        if (reqSaveFlag) {
-            PerVo perVo = PerVo.builder().cid(cid).header(header).build();
-            if (resultSaveFlag) {
-                perVo = perVo.toBuilder().result(result).build();
+        ReqAckProof rb = null;
+        if (result.getCode() == 0) {
+            rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
+                    JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+            if (reqSaveFlag) {
+                PerVo perVo = PerVo.builder().cid(cid).header(header).build();
+                if (resultSaveFlag) {
+                    perVo = perVo.toBuilder().result(result).build();
+                }
+                id = (Long) persistence.saveData(perVo);
             }
-            id = (Long) persistence.saveData(perVo);
         }
         return MsgVo.builder().reqAckProof(rb).result(result).saveId(id).build();
     }
@@ -212,7 +222,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                        String url, boolean bReqFlag, String method,
                        String callbackMethod, String callbackUrl, String cid,
                        boolean sync, String filePath, String fileHash, boolean reqSaveFlag,
-                       boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> map) throws SQLException {
+                       boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map) throws SQLException {
         File file = new File(filePath);
         if (!file.exists()) {
             throw new ServiceException("文件不存在，请检查文件路径是否正确！");
@@ -220,6 +230,10 @@ public class ReceiveServerImpl implements ReceiveServer {
         String data = "";
         if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
+        }
+        String httpHeaders = "";
+        if (headers != null && !headers.isEmpty()) {
+            httpHeaders = JSONUtil.toJsonStr(headers);
         }
         if (StrUtil.isBlank(cid)) {
             if (!bReqFlag) {
@@ -236,12 +250,12 @@ public class ReceiveServerImpl implements ReceiveServer {
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
         TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
-                .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+                .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(transFile, file);
         ReqAckProof rb = commit != null ?
                 TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
                 : null;
-        Long id=null;
+        Long id = null;
         if (reqSaveFlag) {
             PerVo perVo = PerVo.builder().cid(cid).header(header).build();
             if (resultSaveFlag) {
@@ -258,7 +272,7 @@ public class ReceiveServerImpl implements ReceiveServer {
     public Object fileAsync(String serviceId, int seq, boolean isEnd,
                             String url, boolean bReqFlag, String method,
                             String callbackMethod, String callbackUrl, String cid,
-                            boolean sync, String filePath, String fileHash, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> map, HttpServerResponse res) throws SQLException {
+                            boolean sync, String filePath, String fileHash, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map, HttpServerResponse res) throws SQLException {
         File file = new File(filePath);
         if (!file.exists()) {
             throw new ServiceException("文件不存在，请检查文件路径是否正确！");
@@ -266,6 +280,10 @@ public class ReceiveServerImpl implements ReceiveServer {
         String data = "";
         if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
+        }
+        String httpHeaders = "";
+        if (headers != null && !headers.isEmpty()) {
+            httpHeaders = JSONUtil.toJsonStr(headers);
         }
         if (StrUtil.isBlank(cid)) {
             if (!bReqFlag) {
@@ -281,7 +299,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
         TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true)
-                .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+                .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
         ReqAckProof rb = TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
         InterCoResult coResult;
@@ -296,7 +314,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         }
         if (result.getCode() == 0) {
             TransFile transFile = TransFile.newBuilder().setSha256(fileHash)
-                    .setFileName(file.getName()).setPort(port).setHost(host).setHeader(JSONUtil.toJsonStr(header)).build();
+                    .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
             result = communicationClient.sendFile(transFile, file);
             rb = result.getCode() == 0 ?
                     TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
@@ -318,10 +336,14 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     public MsgVo downloadFile(String serviceId, int seq, boolean isEnd, String url, boolean bReqFlag,
                               String method, String callbackMethod, String callbackUrl, String cid,
-                              boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> map) throws SQLException {
+                              boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, Map<String, Object> map) throws SQLException {
         String data = "";
         if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
+        }
+        String httpHeaders = "";
+        if (headers != null && !headers.isEmpty()) {
+            httpHeaders = JSONUtil.toJsonStr(headers);
         }
         if (StrUtil.isBlank(cid)) {
             if (!bReqFlag) {
@@ -337,7 +359,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHost(host).setPort(port).build();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
         ResultFile result = communicationClient.downloadFile(transEntity);
         ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
                 JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
