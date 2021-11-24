@@ -67,18 +67,27 @@ public class FileServerObserver implements StreamObserver<TransFile> {
                 try {
                     if (!fileInfo.getBegin()) {
                         if (os == null) {
-                            File file = new File("./tmp/file");
+                            String parentPath = YamlUtils.jarPath + "/file/tmp/upload";
+                            File file = new File(parentPath);
                             if (!file.exists()) {
                                 FileUtil.mkdir(file);
                             }
-                            this.filePath = "./tmp/file/" + SnowIdGenerator.getId()+"/"+fileInfo.getFileName();
+                            String id = SnowIdGenerator.getId();
+                            FileUtil.mkdir(parentPath+"/"+id);
+                            this.filePath = parentPath +"/"+ id+"/"+fileInfo.getFileName();
+                            File tmpFile = new File(this.filePath);
+                            boolean flag = tmpFile.createNewFile();
+                            if (!flag) {
+                                throw new ServiceException("文件创建失败");
+                            }
                             os = new FileOutputStream(this.filePath);
                         }
                         fileInfo.getFile().newInput();
                         fileInfo.getFile().writeTo(os);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
+                    throw new ServiceException(e.getMessage());
                 }
             } else {
                 throw new ServiceException("无权限");
@@ -121,7 +130,7 @@ public class FileServerObserver implements StreamObserver<TransFile> {
         } else {
             Header header = JSONUtil.toBean(this.file.getHeader(), Header.class);
             Map<String, Object> map = JSONUtil.parseObj(header.getData());
-            map.put(this.file.getFileField(), this.file.getFileName());
+            map.put(this.file.getFileField(), tempFile.getAbsolutePath());
             header.setData(JSONUtil.toJsonStr(map));
             TransEntity transEntity = TransEntity
                     .newBuilder()
@@ -132,6 +141,7 @@ public class FileServerObserver implements StreamObserver<TransFile> {
             Result result = this.receiveClient.msg(transEntity);
             responseObserver.onNext(result);
         }
+        logger.info("接收文件完成，文件地址：" + tempFile.getAbsolutePath());
         responseObserver.onCompleted();
     }
 }

@@ -158,7 +158,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                     coResult = InterCoResult.builder().code(resultFile.getCode()).msg(resultFile.getMsg()).build();
                 }
             }
-            if (!(sync && FILE.equals(req.getPath()))) {
+            if (!(!sync && FILE.equals(req.getPath()))) {
                 res.write(JSONUtil.toJsonStr(coResult));
                 if (msgVo.getReqAckProof() != null) {
                     if (commit != null) {

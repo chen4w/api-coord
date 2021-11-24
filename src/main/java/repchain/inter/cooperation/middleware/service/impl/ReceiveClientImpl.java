@@ -20,11 +20,9 @@ import repchain.inter.cooperation.middleware.proto.ResultFile;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
 import repchain.inter.cooperation.middleware.service.AuthFilter;
 import repchain.inter.cooperation.middleware.service.ReceiveClient;
-import repchain.inter.cooperation.middleware.utils.MyCacheManager;
-import repchain.inter.cooperation.middleware.utils.PkUtil;
-import repchain.inter.cooperation.middleware.utils.TransTools;
-import repchain.inter.cooperation.middleware.utils.YamlUtils;
+import repchain.inter.cooperation.middleware.utils.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,17 +134,21 @@ public class ReceiveClientImpl implements ReceiveClient {
                         Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
                                 repchain.getCertName(), "sha256withecdsa");
                         stream.onNext(ResultFile.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
-                        stream.onCompleted();
                     }
                     String data = httpresponse.body();
-                    InputStream is = new FileInputStream(filePath);
-                    ResultFile resultFile = ResultFile.newBuilder().setFilepath(filePath).setData(data).setBegin(true).build();
+                    FileInputStream is = new FileInputStream(filePath);
+                    File downloadFile = new File(filePath);
+                    String hash = GetFileSHA256.getFileSha256(downloadFile);
+                    Signature signature = TransTools.getSignature(privateKey, hash, repchain.getCreditCode(),
+                            repchain.getCertName(), apiDefinition.getAlgo_sign());
+                    ResultFile resultFile = ResultFile.newBuilder().setFileName(downloadFile.getName()).setFilepath(filePath).setSignature(JSONUtil.toJsonStr(signature)).setSha256(hash).setData(data).setBegin(true).build();
                     stream.onNext(resultFile);
                     byte[] buff = new byte[2048];
                     int len;
                     while ((len = is.read(buff)) != -1) {
                         stream.onNext(resultFile.toBuilder().setBegin(false).setFile(ByteString.copyFrom(buff, 0, len)).build());
                     }
+                    is.close();
                 } else {
                     String msg = "无权限";
                     // 对业务请求数据进行hash取值

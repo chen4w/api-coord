@@ -108,8 +108,9 @@ public class CommunicationServerImpl implements CommunicationServer {
                 logger.error(e.getMessage(), e);
                 ResultFile result = ResultFile.newBuilder().setCode(2).setMsg("远程中间件异常：" + e.getMessage()).build();
                 responseObserver.onNext(result);
+                responseObserver.onCompleted();
             }
-            responseObserver.onCompleted();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.pool.grpc;
 
+import cn.hutool.core.io.FileUtil;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
@@ -10,8 +11,11 @@ import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
+import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.proto.*;
+import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
+import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.io.*;
 import java.util.Iterator;
@@ -95,17 +99,17 @@ public class ComClientSingle {
                 requestObserver.onNext(transFile.toBuilder().build());
             } else {
                 FileInputStream is = new FileInputStream(file);
-                byte[] buff = new byte[2048];
+                byte[] buff = new byte[8192];
                 int len;
                 while ((len = is.read(buff)) != -1) {
                     requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(buff, 0, len)).build());
                 }
             }
             requestObserver.onCompleted();
-            if(finishLatch.await(1, TimeUnit.HOURS)){
-                throw new ServiceException("中间件传输超时");
-            }
-//            finishLatch.await(1, TimeUnit.MINUTES);
+//            if(finishLatch.await(1, TimeUnit.HOURS)){
+//                throw new ServiceException("远程服务出错");
+//            }
+            finishLatch.await();
             logger.info("sendFile success");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -123,7 +127,8 @@ public class ComClientSingle {
      **/
     public ResultFile download(TransEntity transEntity) {
         ResultFile functionResult = null;
-        File dir = new File("./tmp/download");
+        String parentPath = YamlUtils.jarPath + "/file/tmp/download";
+        File dir = new File(parentPath);
         String filepath = "";
         if (!dir.exists()) {
             boolean flag = dir.mkdirs();
@@ -137,14 +142,34 @@ public class ComClientSingle {
         while (result.hasNext()) {
             ResultFile file = result.next();
             try {
+                if (file.getCode()!=0) {
+                    functionResult = file;
+                    break;
+                }
                 if (file.getBegin()) {
                     functionResult = file;
-                    filepath = "./tmp/download/" + SnowIdGenerator.getId();
+                    String id = SnowIdGenerator.getId();
+                    FileUtil.mkdir(parentPath+"/" +id);
+                    filepath = parentPath+"/" + id+"/"+file.getFileName();
+                    File temp = new File(filepath);
+                    boolean flag = temp.createNewFile();
+                    if (!flag) {
+                        throw new ServiceException("创建文件失败:"+filepath);
+                    }
                     os = new FileOutputStream(filepath);
                 } else {
                     file.getFile().newInput();
-                    file.writeTo(os);
+                    file.getFile().writeTo(os);
                 }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+                throw new ServiceException("文件下载出错：" + e.getMessage());
+            }
+        }
+        if (os != null) {
+            try {
+                os.flush();
+                os.close();
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
                 throw new ServiceException("文件下载出错：" + e.getMessage());
@@ -152,6 +177,9 @@ public class ComClientSingle {
         }
         if (functionResult == null) {
             throw new ServiceException("文件下载出错");
+        }
+        if (!GetFileSHA256.getFileSha256(new File(filepath)).equals(functionResult.getSha256())) {
+            throw new ServiceException("文件的sha256不一致："+filepath);
         }
         return functionResult.toBuilder().setFilepath(filepath).build();
     }
