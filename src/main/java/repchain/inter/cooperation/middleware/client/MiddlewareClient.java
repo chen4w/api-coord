@@ -40,10 +40,6 @@ public class MiddlewareClient {
         return this;
     }
 
-    public MiddlewareClient setFileField(String fileField) {
-        this.fileField = fileField;
-        return this;
-    }
 
     public MiddlewareClient setHeader(String key, String value) {
         this.headers.put(key, value);
@@ -65,14 +61,14 @@ public class MiddlewareClient {
         return this;
     }
 
-    public MiddlewareClient setFilepath(String filepath) {
-        this.filepath = filepath;
-        return this;
-    }
-
     public MiddlewareClient setFile(File file) {
         this.file = file;
         this.filepath = file.getAbsolutePath();
+        return this;
+    }
+
+    public MiddlewareClient setFileField(String fileField) {
+        this.fileField = fileField;
         return this;
     }
 
@@ -84,10 +80,10 @@ public class MiddlewareClient {
 
     public InterCoResult msg() {
         ReqOption reqOption = new ReqOption();
-        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg",headers);
+        return getInterCoResult(serviceId, url, httpType, form, reqOption, "/msg", headers);
     }
 
-    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption,String middleUrl,Map<String,Object> headers) {
+    private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption, String middleUrl, Map<String, Object> headers) {
         if (serviceId == null) {
             throw new NullPointerException("serviceId can not be null");
         }
@@ -104,9 +100,6 @@ public class MiddlewareClient {
             map = new HashMap<>(1);
         }
 
-        if (this.fileField != null) {
-            reqOption.setFileField(this.fileField);
-        }
         if (!headers.isEmpty()) {
             reqOption.setHeaders(JSONUtil.toJsonStr(headers));
         }
@@ -122,40 +115,42 @@ public class MiddlewareClient {
 
 
     public InterCoResult msg(ReqOption reqOption) {
-        return getInterCoResult(serviceId, url, httpType, form, reqOption,"/msg",headers);
+        return getInterCoResult(serviceId, url, httpType, form, reqOption, "/msg", headers);
     }
 
     public InterCoResult sendFile() {
-        if (this.file==null) {
+        if (this.file == null) {
             throw new ServiceException("file can not be null");
         }
-        if (this.fileField==null) {
+        if (this.fileField == null) {
             throw new ServiceException("fileField can not be null");
         }
         ReqOption reqOption = new ReqOption();
         reqOption.setFilepath(this.filepath);
+        reqOption.setFileField(this.fileField);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file",headers);
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption, "/file", headers);
     }
 
     public InterCoResult sendFile(ReqOption reqOption) {
-        if (this.fileField==null) {
+        if (this.fileField == null) {
             throw new ServiceException("fileField can not be null");
         }
-        if (this.file==null) {
+        if (this.file == null) {
             throw new ServiceException("file can not be null");
         }
+        reqOption.setFileField(this.fileField);
         reqOption.setFilepath(this.filepath);
         reqOption.setFileHash(GetFileSHA256.getFileSha256(this.file));
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/file",headers);
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption, "/file", headers);
     }
 
     public InterCoResult download() {
         ReqOption reqOption = new ReqOption();
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download",headers);
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption, "/download", headers);
     }
 
     public InterCoResult download(ReqOption reqOption) {
-        return getInterCoResult(serviceId, url, httpType, this.form, reqOption,"/download",headers);
+        return getInterCoResult(serviceId, url, httpType, this.form, reqOption, "/download", headers);
     }
 }

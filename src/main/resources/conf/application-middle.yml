@@ -7,26 +7,26 @@ repchain:
   # 出块时间 (分钟）
   blockTime: 5
   # 用户唯一标识
-  creditCode: CGZL7XOwwa
+  creditCode: CZBIKwIVCE
   # 证书名称
-  certName: test
+  certName: lhc
   # 证书
   cert: -----BEGIN CERTIFICATE-----
-    MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
-    IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
-    VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
-    E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
-    DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
-    ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
-    zZXMcw==
+    MIIBHjCBxaADAgECAgQimh/AMAoGCCqGSM49BAMCMA4xDDAKBgNVBAMMA2xoYzAi
+    GA8yMDIxMTEyMzAzMTIwNVoYDzk5OTkxMjMxMjM1OTU5WjAOMQwwCgYDVQQDDANs
+    aGMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQuOTBhmuWl5cTI+w2apLboHEgJ
+    fiKYtoe7KTltmvMgKtDhvcG4v0TEZlnEfMidFsR985dZczVmPnoSw3jOSzFeow0w
+    CzAJBgNVHSMEAjAAMAoGCCqGSM49BAMCA0gAMEUCICcx+P4IoHwfYEmqU6eU7D7W
+    7N5p83onIbkJt9+9+WhdAiEA4EoS3QoLIjLe+SkR3ixVsNg4faefkvZ4cQwwGCoH
+    DSw=
     -----END CERTIFICATE-----
   # 加密私钥
   privateKey: -----BEGIN ENCRYPTED PRIVATE KEY-----
-    MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAi0q5jmLN61vAIBZDAU
-    BggqhkiG9w0DBwQITUCFquFjnwEEgZAbZouweJPtR6zRaDhULbyzF3uaOnMErtx3
-    kIguDP/qeb3wVoTW8kFuOw1jdrY5WyHGCngfpM5br6AUaEqIlBnA7rS3KZfhsxxq
-    yLQcaySsfUowUE61oStDJtDgHMJE0dbxuYXjnzSQrnp9AnnX65uwUeDE6c+i7DnW
-    pWoroVTXK/dQb4vWNmxmacQ6G8jmW0s=
+    MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAiLIOkyPHJArwIBZDAU
+    BggqhkiG9w0DBwQI9LBkh5VxRrsEgZAv+UM6aNsXyCn9ZmqYQzJC2fmAyozddShz
+    JFQYlo1r1lZT8ldSr3RyDXz6qW+KIMiZOwUU77wWCAWspiXxMDEM34gkzcGXWjql
+    4Q8V1Nu3zwZW0e38mhZaRBCma7pCP3nEoZjZJUEi8RChgOmgPquyRnhlrcbIn00d
+    +tg18OOWXap6LicSRTt/IounD3AYjVs=
     -----END ENCRYPTED PRIVATE KEY-----
   # 私钥设置的密码
   password: 123456
@@ -34,21 +34,21 @@ repchain:
   services:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
-      # 服务调用方ID
-      e_from: bb743c821635920387678
-      # 调用方证书
+      # 提供方证书
+      e_from: ac62feb61637638831946
+      # 服务方证书
       from_cert: -----BEGIN CERTIFICATE-----
-        MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
-        IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
-        VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
-        E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
-        DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
-        ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
-        zZXMcw==
+        MIIBHjCBxaADAgECAgQimh/AMAoGCCqGSM49BAMCMA4xDDAKBgNVBAMMA2xoYzAi
+        GA8yMDIxMTEyMzAzMTIwNVoYDzk5OTkxMjMxMjM1OTU5WjAOMQwwCgYDVQQDDANs
+        aGMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQuOTBhmuWl5cTI+w2apLboHEgJ
+        fiKYtoe7KTltmvMgKtDhvcG4v0TEZlnEfMidFsR985dZczVmPnoSw3jOSzFeow0w
+        CzAJBgNVHSMEAjAAMAoGCCqGSM49BAMCA0gAMEUCICcx+P4IoHwfYEmqU6eU7D7W
+        7N5p83onIbkJt9+9+WhdAiEA4EoS3QoLIjLe+SkR3ixVsNg4faefkvZ4cQwwGCoH
+        DSw=
         -----END CERTIFICATE-----
       # 服务提供方id
-      e_to: 7b5c66df1635920342945
-      # 提供方方证书
+      e_to: 4f4efafd1637638043202
+      # 调用方证书
       to_cert: -----BEGIN CERTIFICATE-----
         MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
         IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
@@ -66,17 +66,17 @@ middleware:
     temp: /file/tmp
     # 文件备份地址配置
     backupPath: /data/backup
-  # 日志配置
-#  log:
+    # 日志配置
+    #  log:
     # 日志保存路径
-#    path: /data/logs
+  #    path: /data/logs
   # 持久化
   persistence:
     # 接收的请求数据是否持久化，此处会持久化所配置的数据库
     receiveSave: false
   # 用来访问服务方提供的接口的客户端
   recClient:
-    host: 42.193.105.24
+    host: localhost
     port: 80
     # http
     protocol: http
@@ -113,7 +113,7 @@ middleware:
   # 中间件之间通信的服务器
   comServer:
     # 端口
-    port: 8080
+    port: 8669
     # 初始线程池大小
     corePoolSize: 50
     # 最大线程池大小
@@ -122,10 +122,10 @@ middleware:
     workQueue: 100
 # 数据源配置，用于数据持久化，当前版本支持sqlite，mysql
 datasource:
-#  url: jdbc:sqlite:data/repchain_mid.db
-#  pass: root
-#  user: root
-#  driver: org.sqlite.JDBC
+  #  url: jdbc:sqlite:data/repchain_mid.db
+  #  pass: root
+  #  user: root
+  #  driver: org.sqlite.JDBC
   url: jdbc:mysql://192.168.2.76:3306/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
   pass: root
   user: root
