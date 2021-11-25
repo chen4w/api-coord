@@ -12,19 +12,9 @@ repositories {
 }
 
 
-//test.enabled(false)
+test.enabled(false)
 
 
-task clearJar(type: Delete) {
-    delete 'build/libs'
-}
-
-task copyJar(type: Copy) {
-    from configurations.compileClasspath
-    into('build/libs')
-}
-
-assemble.dependsOn(copyJar)
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
