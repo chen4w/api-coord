@@ -138,10 +138,7 @@ public class ComClientSingle {
         File dir = new File(parentPath);
         String filepath = "";
         if (!dir.exists()) {
-            boolean flag = dir.mkdirs();
-            if (!flag) {
-                throw new ServiceException("无法创建下载文件夹");
-            }
+            FileUtil.mkdir(dir);
         }
         OutputStream os = null;
         TransformGrpc.TransformBlockingStub blockingStub = TransformGrpc.newBlockingStub(channel);

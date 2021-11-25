@@ -185,6 +185,9 @@ public class ReceiveClientImpl implements ReceiveClient {
         } else {
             ApiDefinition apiDefinition = MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id(), ApiDefinition.class);
             if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(), header.getB_req())) {
+                if (!header.getSync()) {
+                    MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
+                }
                 Map<String, Object> map;
                 if (header.getData() != null && header.getData().contains("{")) {
                     map = JSONUtil.parseObj(header.getData());
@@ -199,6 +202,7 @@ public class ReceiveClientImpl implements ReceiveClient {
                     subUrl = "/" + header.getUrl();
                 }
                 String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
+
                 String type = header.getHttpType();
                 String result = "";
                 Map<String, String> httpHeaders = new HashMap<>();
@@ -245,9 +249,7 @@ public class ReceiveClientImpl implements ReceiveClient {
                             .timeout(recClient.getTimeout())
                             .execute().body();
                 }
-                if (!header.getSync()) {
-                    MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
-                }
+
                 String contentHash = DigestUtil.sha256Hex(result);
                 Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
                         repchain.getCertName(), apiDefinition.getAlgo_sign());

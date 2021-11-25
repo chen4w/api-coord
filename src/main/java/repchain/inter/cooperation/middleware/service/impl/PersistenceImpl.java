@@ -10,6 +10,7 @@ import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.PerVo;
 import repchain.inter.cooperation.middleware.model.yml.FileYml;
 import repchain.inter.cooperation.middleware.service.Persistence;
+import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
@@ -53,7 +54,7 @@ public class PersistenceImpl implements Persistence {
             if (!file.exists()) {
                 throw new ServiceException("需要保存的文件不存在");
             }
-            File fileDir = new File(parentPath);
+            File fileDir = new File(parentPath+"/"+ SnowIdGenerator.getId());
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }
@@ -62,7 +63,7 @@ public class PersistenceImpl implements Persistence {
         }
         if (perVo.getDownloadFile() != null) {
             File file = new File(perVo.getDownloadFile());
-            File fileDir = new File(parentPath);
+            File fileDir = new File(parentPath+"/"+ SnowIdGenerator.getId());
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }

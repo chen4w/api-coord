@@ -52,6 +52,7 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.32.3.2'
     implementation 'com.alibaba:druid:1.2.8'
     implementation 'org.fusesource.jansi:jansi:1.17.1'
+    implementation 'repchain.interface.cooperation:Interface-Cooperation-Client:1.0-SNAPSHOT'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

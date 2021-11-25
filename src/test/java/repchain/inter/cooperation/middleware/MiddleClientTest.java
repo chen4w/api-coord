@@ -215,6 +215,9 @@ public class MiddleClientTest {
     public void download() {
         Map<String, Object> map = new HashMap<>(1);
         map.put("username", "Jack");
+        ReqOption reqOption = new ReqOption();
+        reqOption.setReqSave(ReqOption.TRUE);
+        reqOption.setFileSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -228,7 +231,34 @@ public class MiddleClientTest {
                 // 设置传输的数据
                 .setForm(map)
                 // 发送数据
-                .download();
+                .download(reqOption);
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test()
+    public void async() {
+        // 构建请求参数
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("pageSize", 1);
+        map.put("pageNo", 10);
+        ReqOption option = new ReqOption();
+        option.setSync(ReqOption.FALSE);
+        option.setCallbackUrl("/test");
+        option.setCallbackMethod(HttpType.GET.toString());
+        // 发送请求，并获取返回结果
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.GET)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/test/async")
+                // 设置传输的数据
+                .setForm(map)
+                // 发送数据
+                .msg(option);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 }

@@ -90,7 +90,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .addAction("/msg", this::parentMsg)
                 .addAction("/file", this::parentMsg)
                 .addAction("/download", this::parentMsg)
-                .addAction("/testFile", this::testFile)
+                .addAction("/test", this::test)
                 .start();
         logger.info("Http Server started, listening on " + port);
     }
@@ -185,6 +185,14 @@ public class ReceiveServerImpl implements ReceiveServer {
         if (headers != null && !headers.isEmpty()) {
             httpHeaders = JSONUtil.toJsonStr(headers);
         }
+        if (bReqFlag && !sync) {
+            if (StrUtil.isBlank(callbackMethod)) {
+                throw new ServiceException("异步请求下callbackMethod不能为空！");
+            }
+            if (StrUtil.isBlank(callbackUrl)) {
+                throw new ServiceException("异步请求下callbackUrl不能为空");
+            }
+        }
         if (StrUtil.isBlank(cid)) {
             if (!bReqFlag) {
                 throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
@@ -196,6 +204,10 @@ public class ReceiveServerImpl implements ReceiveServer {
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(data);
         Signature signature = getSign(contentHash, ackObj);
+        if(!bReqFlag){
+            url = ackObj.getHeader().getCallback_url();
+            method = ackObj.getHeader().getCallback_method();
+        }
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
@@ -377,18 +389,9 @@ public class ReceiveServerImpl implements ReceiveServer {
         return MsgVo.builder().reqAckProof(rb).resultFile(result).saveId(id).build();
     }
 
-    private void testFile(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
-        InputStream in = httpServerRequest.getBodyStream();
-        int size;
-        byte[] buffer = new byte[1024];
-        try {
-            FileOutputStream fos = new FileOutputStream("/Volumes/DATA/test");
-            while ((size = in.read(buffer, 0, 1024)) != -1) {
-                fos.write(buffer, 0, size);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void test(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
+        String result = httpServerRequest.getParam("data");
+        logger.info(result);
         httpServerResponse.write("ok");
     }
 
