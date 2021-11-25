@@ -84,15 +84,18 @@ public class MiddlewareClient {
     }
 
     private InterCoResult getInterCoResult(String serviceId, String url, HttpType httpType, Map<String, Object> map, ReqOption reqOption, String middleUrl, Map<String, Object> headers) {
-        if (serviceId == null) {
-            throw new NullPointerException("serviceId can not be null");
+        if (reqOption.getBReq() == ReqOption.TRUE) {
+            if (serviceId == null) {
+                throw new NullPointerException("serviceId can not be null");
+            }
+            if (url == null) {
+                throw new NullPointerException("url can not be null");
+            }
+            if (httpType == null) {
+                throw new NullPointerException("httpType can not be null");
+            }
         }
-        if (url == null) {
-            throw new NullPointerException("url can not be null");
-        }
-        if (httpType == null) {
-            throw new NullPointerException("httpType can not be null");
-        }
+
         reqOption.setServiceId(serviceId);
         reqOption.setUrl(url);
         reqOption.setMethod(httpType.toString());

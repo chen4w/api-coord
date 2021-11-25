@@ -29,8 +29,8 @@ public class ReqOption implements Serializable {
     private int seq = 1;
     private int isEnd = TRUE;
     private int bReq = TRUE;
-    private String callbackMethod = GET;
-    private String callbackUrl = "/";
+    private String callbackMethod;
+    private String callbackUrl;
     private String cid = SnowIdGenerator.getId();
     private String data;
     private String serviceId;

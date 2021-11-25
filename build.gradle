@@ -41,11 +41,18 @@ publishing {
     }
 }
 
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-
 jar {
     manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'App'
+    }
+    from {
+        (configurations.runtimeClasspath).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 
