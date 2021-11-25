@@ -8,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.PerVo;
+import repchain.inter.cooperation.middleware.model.yml.FileYml;
 import repchain.inter.cooperation.middleware.service.Persistence;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
@@ -40,13 +41,19 @@ public class PersistenceImpl implements Persistence {
         if (perVo.getResult() != null) {
             entity = entity.set("result", JSONUtil.toJsonStr(perVo.getResult()));
         }
+        String parentPath = YamlUtils.jarPath + "/file/backup";
+        if (YamlUtils.middleConfig.getMiddleware().getFile() != null) {
+            FileYml fileYml = YamlUtils.middleConfig.getMiddleware().getFile();
+            if (fileYml.getBackupPath()!=null) {
+                parentPath = fileYml.getTemp()+"/backup";
+            }
+        }
         if (perVo.getSendFile() != null) {
-            String dir = YamlUtils.jarPath + "/file/send/"+perVo.getCid()+"/"+System.currentTimeMillis();
             File file = new File(perVo.getSendFile());
             if (!file.exists()) {
                 throw new ServiceException("需要保存的文件不存在");
             }
-            File fileDir = new File(dir);
+            File fileDir = new File(parentPath);
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }
@@ -55,8 +62,7 @@ public class PersistenceImpl implements Persistence {
         }
         if (perVo.getDownloadFile() != null) {
             File file = new File(perVo.getDownloadFile());
-            String dir = YamlUtils.jarPath + "/file/download/"+perVo.getCid()+"/"+System.currentTimeMillis();
-            File fileDir = new File(dir);
+            File fileDir = new File(parentPath);
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }

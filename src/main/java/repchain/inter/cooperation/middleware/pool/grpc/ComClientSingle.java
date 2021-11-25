@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.tran.Signature;
+import repchain.inter.cooperation.middleware.model.yml.FileYml;
 import repchain.inter.cooperation.middleware.proto.*;
 import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
@@ -128,6 +129,12 @@ public class ComClientSingle {
     public ResultFile download(TransEntity transEntity) {
         ResultFile functionResult = null;
         String parentPath = YamlUtils.jarPath + "/file/tmp/download";
+        if (YamlUtils.middleConfig.getMiddleware().getFile() != null) {
+            FileYml fileYml = YamlUtils.middleConfig.getMiddleware().getFile();
+            if (fileYml.getTemp()!=null) {
+                parentPath = fileYml.getTemp()+"/download";
+            }
+        }
         File dir = new File(parentPath);
         String filepath = "";
         if (!dir.exists()) {

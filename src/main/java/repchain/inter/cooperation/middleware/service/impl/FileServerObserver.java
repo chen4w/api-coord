@@ -12,6 +12,7 @@ import repchain.inter.cooperation.middleware.model.Header;
 import repchain.inter.cooperation.middleware.model.tran.ApiDefinition;
 import repchain.inter.cooperation.middleware.model.tran.ApiServAndAck;
 import repchain.inter.cooperation.middleware.model.tran.Signature;
+import repchain.inter.cooperation.middleware.model.yml.FileYml;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.proto.Result;
 import repchain.inter.cooperation.middleware.proto.TransEntity;
@@ -68,6 +69,12 @@ public class FileServerObserver implements StreamObserver<TransFile> {
                     if (!fileInfo.getBegin()) {
                         if (os == null) {
                             String parentPath = YamlUtils.jarPath + "/file/tmp/upload";
+                            if (YamlUtils.middleConfig.getMiddleware().getFile() != null) {
+                                FileYml fileYml = YamlUtils.middleConfig.getMiddleware().getFile();
+                                if (fileYml.getTemp()!=null) {
+                                    parentPath = fileYml.getTemp()+"/upload";
+                                }
+                            }
                             File file = new File(parentPath);
                             if (!file.exists()) {
                                 FileUtil.mkdir(file);
