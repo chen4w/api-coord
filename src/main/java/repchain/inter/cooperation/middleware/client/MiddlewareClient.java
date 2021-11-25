@@ -98,7 +98,9 @@ public class MiddlewareClient {
 
         reqOption.setServiceId(serviceId);
         reqOption.setUrl(url);
-        reqOption.setMethod(httpType.toString());
+        if (httpType != null) {
+            reqOption.setMethod(httpType.toString());
+        }
         if (map == null) {
             map = new HashMap<>(1);
         }
