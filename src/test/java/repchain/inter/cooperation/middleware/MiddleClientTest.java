@@ -241,9 +241,13 @@ public class MiddleClientTest {
         Map<String, Object> map = new HashMap<>(1);
         map.put("pageSize", 1);
         map.put("pageNo", 10);
+        // 设置请求配置对象
         ReqOption option = new ReqOption();
+        // 设置为异步请求
         option.setSync(ReqOption.FALSE);
+        // 设置异步请求应答接口地址
         option.setCallbackUrl("/test");
+        // 设置异步请求接口应答地址请求类型
         option.setCallbackMethod(HttpType.GET.toString());
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
