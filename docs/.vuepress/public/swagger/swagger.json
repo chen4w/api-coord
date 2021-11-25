@@ -69,9 +69,16 @@
                 ],
                 "parameters": [
                     {
-                        "name": "commonAlias",
+                        "name": "editor",
                         "in": "query",
-                        "description": "数据库key(数据库别名)",
+                        "description": "编辑人",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "文件路径",
                         "required": false,
                         "type": "string"
                     }
