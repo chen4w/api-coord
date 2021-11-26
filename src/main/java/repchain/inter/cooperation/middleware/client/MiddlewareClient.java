@@ -29,6 +29,7 @@ public class MiddlewareClient {
     private String filepath;
     private File file;
     private String fileField;
+    private String callbackId;
     private Map<String, Object> headers = new HashMap<>();
 
     public static MiddlewareClient create(String host, int timeout) {
@@ -40,6 +41,10 @@ public class MiddlewareClient {
         return this;
     }
 
+    public MiddlewareClient setCallBackId(String callBackId) {
+        this.callbackId = callBackId;
+        return this;
+    }
 
     public MiddlewareClient setHeader(String key, String value) {
         this.headers.put(key, value);
@@ -104,7 +109,9 @@ public class MiddlewareClient {
         if (map == null) {
             map = new HashMap<>(1);
         }
-
+        if (this.callbackId != null) {
+            reqOption.setCallbackId(this.callbackId);
+        }
         if (!headers.isEmpty()) {
             reqOption.setHeaders(JSONUtil.toJsonStr(headers));
         }

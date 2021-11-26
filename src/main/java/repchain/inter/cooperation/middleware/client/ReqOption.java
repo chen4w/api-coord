@@ -44,4 +44,5 @@ public class ReqOption implements Serializable {
     private int fileSave = FALSE;
     private String headers;
     private String fileField;
+    private String callbackId;
 }
