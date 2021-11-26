@@ -14,3 +14,5 @@ postList: none
 # <center> [RepChain 1.1 合约开发](http://btajl.gitee.io/repchain-tpldevelop/#/) </center>
 
 # <center> [RepChain 1.1 Dashboard](https://linkel_1.gitee.io/repchain-dashboard-client/1.1/) </center>
+
+# <center>[RepChain 1.0 使用说明 ](https://btajl.gitee.io/rcdevelop-docs/#/v1.0.0/) </center>
