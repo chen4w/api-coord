@@ -15,7 +15,7 @@ export default {
   },
   mounted() {
     const ui = SwaggerUIBundle({
-      url: "/swagger/swagger.json",
+      url: "swagger/swagger.json",
       dom_id: '#swagger-ui',
       presets: [
         SwaggerUIBundle.presets.apis,
