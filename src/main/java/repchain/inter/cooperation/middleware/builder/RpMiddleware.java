@@ -3,6 +3,7 @@ package repchain.inter.cooperation.middleware.builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.pool.grpc.ComClientPool;
+import repchain.inter.cooperation.middleware.quartz.QuartzConfig;
 import repchain.inter.cooperation.middleware.service.*;
 
 /**
@@ -72,6 +73,7 @@ public class RpMiddleware {
         this.receiveServer.start();
         this.communicationServer.start();
         this.blockSync.start();
+        QuartzConfig.run();
     }
 
     public static class RpMiddlewareBuilder {

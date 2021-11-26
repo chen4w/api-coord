@@ -125,7 +125,10 @@ public class FileServerObserver implements StreamObserver<TransFile> {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-        File tempFile = new File(this.filePath);
+        File tempFile = null;
+        if (!this.file.getBegin()) {
+            tempFile = new File(this.filePath);
+        }
         if (this.file.getBegin()) {
             String msg = "开始接收文件";
             Signature signature = TransTools.getSignature(privateKey, this.file.getSha256(), repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
@@ -148,7 +151,9 @@ public class FileServerObserver implements StreamObserver<TransFile> {
             Result result = this.receiveClient.msg(transEntity);
             responseObserver.onNext(result);
         }
-        logger.info("接收文件完成，文件地址：" + tempFile.getAbsolutePath());
+        if (tempFile != null) {
+            logger.info("接收文件完成，文件地址：" + tempFile.getAbsolutePath());
+        }
         responseObserver.onCompleted();
     }
 }

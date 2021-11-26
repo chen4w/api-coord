@@ -10,5 +10,6 @@ import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
  * @description 描述
  */
 public interface TransactionCommit {
+
     void saveProof(ReqAckProof reqAckProof);
 }

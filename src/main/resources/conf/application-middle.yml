@@ -70,10 +70,6 @@ middleware:
     #  log:
     # 日志保存路径
   #    path: /data/logs
-  # 持久化
-  persistence:
-    # 接收的请求数据是否持久化，此处会持久化所配置的数据库
-    receiveSave: false
   # 用来访问服务方提供的接口的客户端
   recClient:
     host: localhost

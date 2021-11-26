@@ -57,6 +57,7 @@ public class TransTools {
                 .build();
         // 将header请求头中内容copy到reqAckProof中，构建交易对象
         BeanUtil.copyProperties(header, reqAckProof);
+        reqAckProof.setTm_create(System.currentTimeMillis());
         return reqAckProof;
     }
 

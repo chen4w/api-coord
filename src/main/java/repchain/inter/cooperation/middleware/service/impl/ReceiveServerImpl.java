@@ -49,7 +49,7 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     private static final String MSG = "/msg";
     private static final String FILE = "/file";
-//    private static final String DOWNLOAD = "/download";
+    private static final String DOWNLOAD = "/download";
 
     private static final Logger logger = LoggerFactory.getLogger(ReceiveServerImpl.class);
 
@@ -127,20 +127,25 @@ public class ReceiveServerImpl implements ReceiveServer {
             res.setContentType("text/html;charset=utf-8");
             MsgVo msgVo;
             if (MSG.equals(req.getPath())) {
-                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, headers,callbackId, map);
+                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, headers, callbackId, map);
             } else if (FILE.equals(req.getPath())) {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
                 if (sync) {
                     msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method,
-                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag,headers,fileField, map);
+                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, fileField,callbackId, map);
                 } else {
                     msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
-                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers,fileField,map, res,callbackId);
+                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, fileField, map, res, callbackId);
                 }
             } else {
-                msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
-                        callbackMethod, callbackUrl, cid, true, reqSaveFlag, resultSaveFlag, fileSaveFlag,headers, map);
+                if (sync) {
+                    msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
+                            callbackMethod, callbackUrl, cid, true, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, map);
+                } else {
+                    msgVo = downloadFileAsync(id, seq, endFlag, url, bReqFlag, method,
+                            callbackMethod, callbackUrl, cid, true, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, map, res);
+                }
             }
             Result result = msgVo.getResult();
             InterCoResult coResult;
@@ -159,7 +164,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                     coResult = InterCoResult.builder().code(resultFile.getCode()).msg(resultFile.getMsg()).build();
                 }
             }
-            if (!(!sync && FILE.equals(req.getPath()))) {
+            if ((!(!sync && FILE.equals(req.getPath()))) && (!(!sync && DOWNLOAD.equals(req.getPath())))) {
                 res.write(JSONUtil.toJsonStr(coResult));
                 if (msgVo.getReqAckProof() != null) {
                     if (commit != null) {
@@ -174,6 +179,67 @@ public class ReceiveServerImpl implements ReceiveServer {
             logger.error(e.getMessage(), e);
             res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(2).msg(e.getMessage()).build()));
         }
+    }
+
+    private MsgVo downloadFileAsync(String serviceId, int seq, boolean isEnd, String url, boolean bReqFlag,
+                                    String method, String callbackMethod, String callbackUrl, String cid,
+                                    boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, Map<String, Object> map, HttpServerResponse res) throws SQLException {
+        String data = "";
+        if (map != null && !map.isEmpty()) {
+            data = JSONUtil.toJsonStr(map);
+        }
+        String httpHeaders = "";
+        if (headers != null && !headers.isEmpty()) {
+            httpHeaders = JSONUtil.toJsonStr(headers);
+        }
+        if (StrUtil.isBlank(cid)) {
+            if (!bReqFlag) {
+                throw new ServiceException("应答请求参数必须携带cid，cid不能为空！！");
+            }
+            // 创建交易id
+            cid = SnowIdGenerator.getId();
+        }
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        // 对业务请求数据进行hash取值
+        String contentHash = DigestUtil.sha256Hex(data);
+        Signature signature = getSign(contentHash, ackObj);
+        Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
+        String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
+        int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setBegin(true).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
+//
+        ResultFile result = communicationClient.downloadFile(transEntity);
+        ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
+                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+        InterCoResult coResult;
+        if (result.getCode() == 0) {
+            coResult = InterCoResult.builder().cid(rb.getCid()).code(0).msg("Action OK").data(result.getData()).build();
+        } else {
+            coResult = InterCoResult.builder().code(result.getCode()).msg(result.getMsg()).build();
+        }
+        res.write(JSONUtil.toJsonStr(coResult));
+        if (commit != null) {
+            commit.saveProof(rb);
+        }
+        if (result.getCode() == 0) {
+            transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setBegin(false).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
+            result = communicationClient.downloadFile(transEntity);
+            rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature,
+                    JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+
+        }
+        Long id = null;
+        if (reqSaveFlag) {
+            PerVo perVo = PerVo.builder().cid(cid).header(header).build();
+            if (resultSaveFlag) {
+                perVo = perVo.toBuilder().result(result).build();
+            }
+            if (fileSaveFlag) {
+                perVo = perVo.toBuilder().sendFile(result.getFilepath()).build();
+            }
+            id = (Long) persistence.saveData(perVo);
+        }
+        return MsgVo.builder().reqAckProof(rb).resultFile(result).saveId(id).build();
     }
 
     @Override
@@ -208,7 +274,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(data);
         Signature signature = getSign(contentHash, ackObj);
-        if(!bReqFlag){
+        if (!bReqFlag) {
             url = ackObj.getHeader().getCallback_url();
             method = ackObj.getHeader().getCallback_method();
         }
@@ -238,7 +304,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                        String url, boolean bReqFlag, String method,
                        String callbackMethod, String callbackUrl, String cid,
                        boolean sync, String filePath, String fileHash, boolean reqSaveFlag,
-                       boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map) throws SQLException {
+                       boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, String callbackId, Map<String, Object> map) throws SQLException {
         File file = new File(filePath);
         if (!file.exists()) {
             throw new ServiceException("文件不存在，请检查文件路径是否正确！");
@@ -258,7 +324,11 @@ public class ReceiveServerImpl implements ReceiveServer {
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
-        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, callbackId);
+        if (!bReqFlag) {
+            url = ackObj.getHeader().getCallback_url();
+            method = ackObj.getHeader().getCallback_method();
+        }
         Signature signature = getSign(fileHash, ackObj);
         // 创建请求头
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl,
@@ -317,10 +387,10 @@ public class ReceiveServerImpl implements ReceiveServer {
         TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true)
                 .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
-        ReqAckProof rb = TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
+        ReqAckProof rb = commit == null ? null : TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
         InterCoResult coResult;
         if (result.getCode() == 0) {
-            coResult = InterCoResult.builder().cid(rb.getCid()).code(0).msg("Action OK").data(result.getData()).build();
+            coResult = InterCoResult.builder().cid(header.getCid()).code(0).msg("Action OK").data(result.getData()).build();
         } else {
             coResult = InterCoResult.builder().code(result.getCode()).msg(result.getMsg()).build();
         }
@@ -375,7 +445,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
         String host = bReqFlag ? ackObj.getTo().getAddr() : ackObj.getFrom().getAddr();
         int port = bReqFlag ? ackObj.getTo().getPort() : ackObj.getFrom().getPort();
-        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
+        TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setBegin(false).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
         ResultFile result = communicationClient.downloadFile(transEntity);
         ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
                 JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
@@ -395,7 +465,9 @@ public class ReceiveServerImpl implements ReceiveServer {
 
     private void test(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
         String result = httpServerRequest.getParam("data");
-        logger.info(result);
+        String file = httpServerRequest.getParam("file");
+        logger.info("result:"+result);
+        logger.info("file:"+file);
         httpServerResponse.write("ok");
     }
 

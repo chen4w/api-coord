@@ -25,7 +25,7 @@ public interface ReceiveServer {
                 String url, boolean bReqFlag, String method,
                 String callbackMethod, String callbackUrl, String cid,
                 boolean sync, String filePath, String fileHash, boolean reqSaveFlag,
-                boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map) throws SQLException;
+                boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, String callbackId, Map<String, Object> map) throws SQLException;
 
     void setTransactionCommit(TransactionCommit commit);
 

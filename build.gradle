@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.alibaba:druid:1.2.8'
     implementation 'org.fusesource.jansi:jansi:1.17.1'
     implementation 'repchain.interface.cooperation:Interface-Cooperation-Client:1.0-SNAPSHOT'
+    implementation 'org.quartz-scheduler:quartz:2.3.2'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

@@ -66,89 +66,96 @@ public class ReceiveClientImpl implements ReceiveClient {
             } else {
                 ApiDefinition apiDefinition = MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id(), ApiDefinition.class);
                 if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(), header.getB_req())) {
-                    Map<String, Object> map;
-                    if (header.getData() != null && header.getData().contains("{")) {
-                        map = JSONUtil.parseObj(header.getData());
+                    if (request.getBegin()) {
+                        Signature signature = TransTools.getSignature(privateKey, "开始下载", repchain.getCreditCode(),
+                                repchain.getCertName(), apiDefinition.getAlgo_sign());
+                        ResultFile resultFile = ResultFile.newBuilder().setSignature(JSONUtil.toJsonStr(signature)).setData("开始下载").setBegin(true).build();
+                        stream.onNext(resultFile);
                     } else {
-                        map = new HashMap<>(1);
-                    }
-                    RecClient recClient = YamlUtils.middleConfig.getMiddleware().getRecClient();
-                    String subUrl;
-                    if (header.getUrl().startsWith("/")) {
-                        subUrl = header.getUrl();
-                    } else {
-                        subUrl = "/" + header.getUrl();
-                    }
-                    Map<String, String> httpHeaders = new HashMap<>();
-                    if (request.getHttpHeader().contains("{")) {
-                        Map<String, Object> httpHeaderMap = JSONUtil.parseObj(request.getHttpHeader());
-                        for (Map.Entry<String, Object> entry : httpHeaderMap.entrySet()) {
-                            httpHeaders.put(entry.getKey(), String.valueOf(entry.getValue()));
+                        Map<String, Object> map;
+                        if (header.getData() != null && header.getData().contains("{")) {
+                            map = JSONUtil.parseObj(header.getData());
+                        } else {
+                            map = new HashMap<>(1);
                         }
-                    } else {
-                        httpHeaders = new HashMap<>(1);
+                        RecClient recClient = YamlUtils.middleConfig.getMiddleware().getRecClient();
+                        String subUrl;
+                        if (header.getUrl().startsWith("/")) {
+                            subUrl = header.getUrl();
+                        } else {
+                            subUrl = "/" + header.getUrl();
+                        }
+                        Map<String, String> httpHeaders = new HashMap<>();
+                        if (request.getHttpHeader().contains("{")) {
+                            Map<String, Object> httpHeaderMap = JSONUtil.parseObj(request.getHttpHeader());
+                            for (Map.Entry<String, Object> entry : httpHeaderMap.entrySet()) {
+                                httpHeaders.put(entry.getKey(), String.valueOf(entry.getValue()));
+                            }
+                        } else {
+                            httpHeaders = new HashMap<>(1);
+                        }
+                        String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
+                        String type = header.getHttpType();
+                        HttpResponse httpresponse = null;
+                        if ("GET".equals(type)) {
+                            httpresponse = HttpRequest.get(url)
+                                    .form(map)
+                                    .headerMap(httpHeaders,true)
+                                    .timeout(recClient.getTimeout())
+                                    .execute();
+                        }
+                        if ("POST".equals(type)) {
+                            httpresponse = HttpRequest.post(url)
+                                    .form(map)
+                                    .headerMap(httpHeaders,true)
+                                    .timeout(recClient.getTimeout())
+                                    .execute();
+                        }
+                        if ("PUT".equals(type)) {
+                            httpresponse = HttpRequest.put(url)
+                                    .form(map)
+                                    .headerMap(httpHeaders,true)
+                                    .timeout(recClient.getTimeout())
+                                    .execute();
+                        }
+                        if ("PATCH".equals(type)) {
+                            httpresponse = HttpRequest.patch(url)
+                                    .form(map)
+                                    .timeout(recClient.getTimeout())
+                                    .headerMap(httpHeaders,true)
+                                    .execute();
+                        }
+                        if ("DELETE".equals(type)) {
+                            httpresponse = HttpRequest.delete(url)
+                                    .form(map)
+                                    .timeout(recClient.getTimeout())
+                                    .headerMap(httpHeaders,true)
+                                    .execute();
+                        }
+                        String filePath = httpresponse.header("filePath");
+                        if (filePath == null) {
+                            String msg = "无法从服务方获取文件";
+                            // 对业务请求数据进行hash取值
+                            String contentHash = DigestUtil.sha256Hex(msg);
+                            Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
+                                    repchain.getCertName(), "sha256withecdsa");
+                            stream.onNext(ResultFile.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
+                        }
+                        String data = httpresponse.body();
+                        FileInputStream is = new FileInputStream(filePath);
+                        File downloadFile = new File(filePath);
+                        String hash = GetFileSHA256.getFileSha256(downloadFile);
+                        Signature signature = TransTools.getSignature(privateKey, hash, repchain.getCreditCode(),
+                                repchain.getCertName(), apiDefinition.getAlgo_sign());
+                        ResultFile resultFile = ResultFile.newBuilder().setFileName(downloadFile.getName()).setFilepath(filePath).setSignature(JSONUtil.toJsonStr(signature)).setSha256(hash).setData(data).setBegin(true).build();
+                        stream.onNext(resultFile);
+                        byte[] buff = new byte[2048];
+                        int len;
+                        while ((len = is.read(buff)) != -1) {
+                            stream.onNext(resultFile.toBuilder().setBegin(false).setFile(ByteString.copyFrom(buff, 0, len)).build());
+                        }
+                        is.close();
                     }
-                    String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
-                    String type = header.getHttpType();
-                    HttpResponse httpresponse = null;
-                    if ("GET".equals(type)) {
-                        httpresponse = HttpRequest.get(url)
-                                .form(map)
-                                .headerMap(httpHeaders,true)
-                                .timeout(recClient.getTimeout())
-                                .execute();
-                    }
-                    if ("POST".equals(type)) {
-                        httpresponse = HttpRequest.post(url)
-                                .form(map)
-                                .headerMap(httpHeaders,true)
-                                .timeout(recClient.getTimeout())
-                                .execute();
-                    }
-                    if ("PUT".equals(type)) {
-                        httpresponse = HttpRequest.put(url)
-                                .form(map)
-                                .headerMap(httpHeaders,true)
-                                .timeout(recClient.getTimeout())
-                                .execute();
-                    }
-                    if ("PATCH".equals(type)) {
-                        httpresponse = HttpRequest.patch(url)
-                                .form(map)
-                                .timeout(recClient.getTimeout())
-                                .headerMap(httpHeaders,true)
-                                .execute();
-                    }
-                    if ("DELETE".equals(type)) {
-                        httpresponse = HttpRequest.delete(url)
-                                .form(map)
-                                .timeout(recClient.getTimeout())
-                                .headerMap(httpHeaders,true)
-                                .execute();
-                    }
-                    String filePath = httpresponse.header("filePath");
-                    if (filePath == null) {
-                        String msg = "无法从服务方获取文件";
-                        // 对业务请求数据进行hash取值
-                        String contentHash = DigestUtil.sha256Hex(msg);
-                        Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(),
-                                repchain.getCertName(), "sha256withecdsa");
-                        stream.onNext(ResultFile.newBuilder().setCode(1).setMsg(msg).setSignature(JSONUtil.toJsonStr(signature)).setBegin(true).build());
-                    }
-                    String data = httpresponse.body();
-                    FileInputStream is = new FileInputStream(filePath);
-                    File downloadFile = new File(filePath);
-                    String hash = GetFileSHA256.getFileSha256(downloadFile);
-                    Signature signature = TransTools.getSignature(privateKey, hash, repchain.getCreditCode(),
-                            repchain.getCertName(), apiDefinition.getAlgo_sign());
-                    ResultFile resultFile = ResultFile.newBuilder().setFileName(downloadFile.getName()).setFilepath(filePath).setSignature(JSONUtil.toJsonStr(signature)).setSha256(hash).setData(data).setBegin(true).build();
-                    stream.onNext(resultFile);
-                    byte[] buff = new byte[2048];
-                    int len;
-                    while ((len = is.read(buff)) != -1) {
-                        stream.onNext(resultFile.toBuilder().setBegin(false).setFile(ByteString.copyFrom(buff, 0, len)).build());
-                    }
-                    is.close();
                 } else {
                     String msg = "无权限";
                     // 对业务请求数据进行hash取值
