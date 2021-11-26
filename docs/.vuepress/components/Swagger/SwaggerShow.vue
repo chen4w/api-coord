@@ -15,7 +15,7 @@ export default {
   },
   mounted() {
     const ui = SwaggerUIBundle({
-      url: "swagger/swagger.json",
+      url: "https://btajl.gitee.io/api-coord/swagger/swagger.json",
       dom_id: '#swagger-ui',
       presets: [
         SwaggerUIBundle.presets.apis,
