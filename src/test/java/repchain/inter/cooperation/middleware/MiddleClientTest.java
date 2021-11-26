@@ -237,6 +237,29 @@ public class MiddleClientTest {
 
     @Test()
     public void async() {
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("editor", "Jack");
+        // 发送请求，并获取返回结果
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 500000)
+                // 请求类型，根据接口定义设置
+                .setHttpType(HttpType.POST)
+                // 中间件中的服务id，根据yml文件配置填写
+                .setServiceId("1")
+                // 设置访问的url
+                .setUrl("/user/test/upload")
+                // 设置传输的数据
+                .setForm(map)
+                .setFileField("file")
+                .setFile(new File("/Users/lhc/Downloads/apache-tomcat-9.0.55.tar.gz"))
+                // 发送数据
+                .sendFile();
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test()
+    public void asyncUpload() {
         // 构建请求参数
         Map<String, Object> map = new HashMap<>(1);
         map.put("pageSize", 1);

@@ -109,6 +109,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             int fileSave = Integer.parseInt(req.getParam("fileSave"));
             String headersStr = req.getParam("headers");
             String fileField = req.getParam("fileField");
+            String callbackId = req.getParam("callbackId");
             Map<String, Object> headers = JSONUtil.parseObj(headersStr);
             boolean reqSaveFlag = reqSave == ReqOption.TRUE;
             boolean resultSaveFlag = resultSave == ReqOption.TRUE;
@@ -126,7 +127,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             res.setContentType("text/html;charset=utf-8");
             MsgVo msgVo;
             if (MSG.equals(req.getPath())) {
-                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, headers, map);
+                msgVo = (MsgVo) msg(id, seq, endFlag, url, bReqFlag, method, callbackMethod, callbackUrl, cid, sync, reqSaveFlag, resultSaveFlag, headers,callbackId, map);
             } else if (FILE.equals(req.getPath())) {
                 String filepath = req.getParam("filepath");
                 String fileHash = req.getParam("fileHash");
@@ -135,7 +136,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                             callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag,headers,fileField, map);
                 } else {
                     msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
-                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers,fileField,map, res);
+                            callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers,fileField,map, res,callbackId);
                 }
             } else {
                 msgVo = downloadFile(id, seq, endFlag, url, bReqFlag, method,
@@ -166,6 +167,9 @@ public class ReceiveServerImpl implements ReceiveServer {
                     }
                 }
             }
+            if (callbackId != null) {
+                MyCacheManager.delete(EhCacheConstant.ASYNC_HEADER, callbackId);
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(2).msg(e.getMessage()).build()));
@@ -176,7 +180,7 @@ public class ReceiveServerImpl implements ReceiveServer {
     public Object msg(String serviceId, int seq, boolean isEnd,
                       String url, boolean bReqFlag, String method,
                       String callbackMethod, String callbackUrl, String cid,
-                      boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, Map<String, Object> map) throws SQLException {
+                      boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, String callbackId, Map<String, Object> map) throws SQLException {
         String data = "";
         if (map != null && !map.isEmpty()) {
             data = JSONUtil.toJsonStr(map);
@@ -200,7 +204,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
-        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, callbackId);
         // 对业务请求数据进行hash取值
         String contentHash = DigestUtil.sha256Hex(data);
         Signature signature = getSign(contentHash, ackObj);
@@ -284,7 +288,7 @@ public class ReceiveServerImpl implements ReceiveServer {
     public Object fileAsync(String serviceId, int seq, boolean isEnd,
                             String url, boolean bReqFlag, String method,
                             String callbackMethod, String callbackUrl, String cid,
-                            boolean sync, String filePath, String fileHash, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map, HttpServerResponse res) throws SQLException {
+                            boolean sync, String filePath, String fileHash, boolean reqSaveFlag, boolean resultSaveFlag, boolean fileSaveFlag, Map<String, Object> headers, String fileField, Map<String, Object> map, HttpServerResponse res, String callbackId) throws SQLException {
         File file = new File(filePath);
         if (!file.exists()) {
             throw new ServiceException("文件不存在，请检查文件路径是否正确！");
@@ -304,7 +308,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             // 创建交易id
             cid = SnowIdGenerator.getId();
         }
-        AckObj ackObj = getAckObj(serviceId, bReqFlag, cid);
+        AckObj ackObj = getAckObj(serviceId, bReqFlag, callbackId);
         Signature signature = getSign(fileHash, ackObj);
         // 创建请求头
         Header header = getHeader(ackObj, cid, method, url, bReqFlag, isEnd, seq, callbackUrl, callbackMethod, data, sync, signature);
@@ -395,7 +399,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         httpServerResponse.write("ok");
     }
 
-    private AckObj getAckObj(String serviceId, boolean bReq, String cid) {
+    private AckObj getAckObj(String serviceId, boolean bReq, String callbackId) {
         ApiServAndAck to;
         ApiServAndAck from;
         ApiDefinition apiDefinition;
@@ -405,9 +409,9 @@ public class ReceiveServerImpl implements ReceiveServer {
             to = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_to(), ApiServAndAck.class);
             from = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, service.getE_from(), ApiServAndAck.class);
         } else {
-            header = MyCacheManager.getValue(EhCacheConstant.ASYNC_HEADER, cid, Header.class);
+            header = MyCacheManager.getValue(EhCacheConstant.ASYNC_HEADER, callbackId, Header.class);
             if (header == null) {
-                throw new ServiceException("无法从缓存中获取请求头信息，缓存id:" + cid);
+                throw new ServiceException("无法从缓存中获取请求头信息，缓存id:" + callbackId);
             }
             to = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_to(), ApiServAndAck.class);
             from = MyCacheManager.getValue(EhCacheConstant.API_SERV_AND_ACK, header.getE_from(), ApiServAndAck.class);

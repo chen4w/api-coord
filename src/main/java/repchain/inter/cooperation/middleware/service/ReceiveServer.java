@@ -19,7 +19,7 @@ public interface ReceiveServer {
     Object msg(String serviceId, int seq, boolean isEnd,
                String url, boolean bReqFlag, String method,
                String callbackMethod, String callbackUrl, String cid,
-               boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, Map<String, Object> map) throws SQLException;
+               boolean sync, boolean reqSaveFlag, boolean resultSaveFlag, Map<String, Object> headers, String callbackId, Map<String, Object> map) throws SQLException;
 
     Object file(String serviceId, int seq, boolean isEnd,
                 String url, boolean bReqFlag, String method,

@@ -185,14 +185,18 @@ public class ReceiveClientImpl implements ReceiveClient {
         } else {
             ApiDefinition apiDefinition = MyCacheManager.getValue(EhCacheConstant.API_DEFINITION, from.getD_id(), ApiDefinition.class);
             if (authFilter.validAuth(header, apiDefinition.getAlgo_sign(), header.getB_req())) {
-                if (!header.getSync()) {
-                    MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, header.getCid(), header);
-                }
+
                 Map<String, Object> map;
                 if (header.getData() != null && header.getData().contains("{")) {
                     map = JSONUtil.parseObj(header.getData());
                 } else {
                     map = new HashMap<>(1);
+                }
+
+                if (!header.getSync()) {
+                    String id = SnowIdGenerator.getId() + "_" + header.getCid()+"_"+header.getE_from();
+                    MyCacheManager.put(EhCacheConstant.ASYNC_HEADER, id, header);
+                    map.put("callbackId",id);
                 }
                 RecClient recClient = YamlUtils.middleConfig.getMiddleware().getRecClient();
                 String subUrl;
@@ -202,7 +206,6 @@ public class ReceiveClientImpl implements ReceiveClient {
                     subUrl = "/" + header.getUrl();
                 }
                 String url = recClient.getProtocol() + "://" + recClient.getHost() + ":" + recClient.getPort() + subUrl;
-
                 String type = header.getHttpType();
                 String result = "";
                 Map<String, String> httpHeaders = new HashMap<>();
