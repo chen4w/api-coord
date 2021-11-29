@@ -1,0 +1,334 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "异步接口描述示例，用于描述下面请求示例中的接口",
+        "version": "1.0",
+        "title": "异步请求接口描述"
+    },
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "异步单次/多次请求",
+            "description": "在一次调用中只发送一次同步请求数据"
+        }
+    ],
+    "paths": {
+        "/user/async": {
+            "get": {
+                "tags": [
+                    "异步单次/多次请求"
+                ],
+                "summary": "获取数据列表（服务方）",
+                "operationId": "getMenuResultUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "pageSize",
+                        "in": "query",
+                        "description": "每页数量",
+                        "required": true,
+                        "type": "int"
+                    },
+                    {
+                        "name": "pageNo",
+                        "in": "query",
+                        "description": "页码",
+                        "required": true,
+                        "type": "int"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        },
+        "/user/callback": {
+            "post": {
+                "tags": [
+                    "异步单次/多次请求"
+                ],
+                "summary": "数据列表应答接口（调用方）",
+                "operationId": "calllbackUsingGET",
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "应答返回列表数据",
+                        "required": true,
+                        "type": "Object"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        },
+        "/user/asyncUpload": {
+            "post": {
+                "tags": [
+                    "异步文件上传"
+                ],
+                "summary": "文件上传（服务方）",
+                "operationId": "updateUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "editor",
+                        "in": "query",
+                        "description": "编辑人",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "文件路径",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        },
+        "/callbackUpload": {
+            "get": {
+                "tags": [
+                    "异步文件上传"
+                ],
+                "summary": "异步文件应答接口（调用方）",
+                "operationId": "callbackUpdateUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "应答状态数据",
+                        "required": true,
+                        "type": "Object"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        },
+        "/user/download": {
+            "get": {
+                "tags": [
+                    "异步文件下载"
+                ],
+                "summary": "文件下载（服务方）",
+                "operationId": "updateUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "editor",
+                        "in": "query",
+                        "description": "编辑人",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "需要下载的文件",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        },
+        "/user/callbackDownload": {
+            "post": {
+                "tags": [
+                    "异步文件下载"
+                ],
+                "summary": "文件下载应答接口（调用方）",
+                "operationId": "updateUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "query",
+                        "description": "应答状态数据",
+                        "required": true,
+                        "type": "Object"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ResultVO",
+                            "originalRef": "ResultVO"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false,
+                "x-order": "2147483647"
+            }
+        }
+    },
+    "definitions": {
+        "Map«string,object»": {
+            "type": "object",
+            "title": "Map«string,object»",
+            "additionalProperties": {
+                "type": "object"
+            }
+        },
+        "ResultVO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "data": {
+                    "type": "object"
+                },
+                "msg": {
+                    "type": "string",
+                    "example": "ActionOK"
+                }
+            },
+            "title": "ResultVO"
+        }
+    }
+}
