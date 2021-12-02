@@ -165,4 +165,22 @@ public class MiddlewareClient {
     public InterCoResult download(ReqOption reqOption) {
         return getInterCoResult(serviceId, url, httpType, this.form, reqOption, "/download", headers);
     }
+
+    public InterCoResult data(PerReq perReq) {
+        Map<String, Object> reqForm = new HashMap<>();
+        if (perReq.getPageNo() != null) {
+            reqForm.put("pageNo",perReq.getPageNo());
+        }
+        if (perReq.getPageSize() != null) {
+            reqForm.put("pageSize",perReq.getPageSize());
+        }
+        if (perReq.getCid() != null) {
+            reqForm.put("cid",perReq.getCid());
+        }
+        String resultStr = HttpRequest.get(host + "/data")
+                .form(form)
+                .timeout(this.timeout)
+                .execute().body();
+        return JSONUtil.toBean(resultStr, InterCoResult.class);
+    }
 }
