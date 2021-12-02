@@ -71,7 +71,7 @@ module.exports = [
         ],
     },
     {
-        text: '代码',
+        text: 'gitee',
         link: 'https://gitee.com/BTAJL/api-coord/tree/http-lhc/'
     }
 ]
