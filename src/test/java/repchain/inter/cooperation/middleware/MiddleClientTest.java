@@ -199,7 +199,7 @@ public class MiddleClientTest {
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
-                .create("http://localhost:8888", 500000)
+                .create("http://localhost:8888", 5000000)
                 // 请求类型，根据接口定义设置
                 .setHttpType(HttpType.POST)
                 // 中间件中的服务id，根据yml文件配置填写
@@ -209,7 +209,7 @@ public class MiddleClientTest {
                 // 设置传输的数据
                 .setForm(map)
                 .setFileField("file")
-                .setFile(new File("/Users/lhc/Downloads/apache-tomcat-9.0.55.tar.gz"))
+                .setFile(new File("/Users/lhc/Downloads/Docker.dmg"))
                 // 发送数据
                 .sendFile(reqOption);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
@@ -251,6 +251,8 @@ public class MiddleClientTest {
         option.setSync(ReqOption.FALSE);
         // 设置异步请求应答接口地址
         option.setCallbackUrl("/test");
+        // 异步请求结束标志设置为false
+        option.setIsEnd(ReqOption.FALSE);
         // 设置异步请求接口应答地址请求类型
         option.setCallbackMethod(HttpType.GET.toString());
         // 发送请求，并获取返回结果

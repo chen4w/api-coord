@@ -44,18 +44,33 @@ public class TransTools {
                 .build();
     }
 
-    public static ReqAckProof getReqAckProof(Header header, String contentHash, Signature signature, Signature toBean) {
-        // 构建提交给区块链的交易对象
-        ReqAckProof reqAckProof = ReqAckProof
-                .builder()
-                // 将内容进行hash取值，hash算法请遵循服务定义的内容hash算法，默认为SHA256withECDSA
-                .hash(contentHash)
-                // 设置请求方签名对象
-                .sign_r(signature)
-                // 设置服务方签名对象
-                .sign_c(toBean)
-                .build();
-        // 将header请求头中内容copy到reqAckProof中，构建交易对象
+    public static ReqAckProof getReqAckProof(Header header, String contentHash, Signature signature, Signature toBean,boolean isReq) {
+        ReqAckProof reqAckProof;
+        if (isReq) {
+// 构建提交给区块链的交易对象
+            reqAckProof = ReqAckProof
+                    .builder()
+                    // 将内容进行hash取值，hash算法请遵循服务定义的内容hash算法，默认为SHA256withECDSA
+                    .hash(contentHash)
+                    // 设置请求方签名对象
+                    .sign_r(signature)
+                    // 设置服务方签名对象
+                    .sign_c(toBean)
+                    .build();
+            // 将header请求头中内容copy到reqAckProof中，构建交易对象
+        } else {
+            // 构建提交给区块链的交易对象
+            reqAckProof = ReqAckProof
+                    .builder()
+                    // 将内容进行hash取值，hash算法请遵循服务定义的内容hash算法，默认为SHA256withECDSA
+                    .hash(contentHash)
+                    // 设置请求方签名对象
+                    .sign_r(toBean)
+                    // 设置服务方签名对象
+                    .sign_c(signature)
+                    .build();
+            // 将header请求头中内容copy到reqAckProof中，构建交易对象
+        }
         BeanUtil.copyProperties(header, reqAckProof);
         reqAckProof.setTm_create(System.currentTimeMillis());
         return reqAckProof;

@@ -236,7 +236,7 @@ public class ReceiveServerImpl implements ReceiveServer {
 //
         ResultFile result = communicationClient.downloadFile(transEntity);
         ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
-                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+                JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag) : null;
         InterCoResult coResult;
         if (result.getCode() == 0) {
             coResult = InterCoResult.builder().cid(rb.getCid()).code(0).msg("Action OK").data(result.getData()).build();
@@ -251,7 +251,7 @@ public class ReceiveServerImpl implements ReceiveServer {
             transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setBegin(false).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
             result = communicationClient.downloadFile(transEntity);
             rb = result.getCode() == 0 ? TransTools.getReqAckProof(header, contentHash, signature,
-                    JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+                    JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag) : null;
 
         }
         Long id = null;
@@ -313,7 +313,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         ReqAckProof rb = null;
         if (result.getCode() == 0) {
             rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
-                    JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+                    JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag) : null;
             if (reqSaveFlag) {
                 PerVo perVo = PerVo.builder().cid(cid).header(header).build();
                 if (resultSaveFlag) {
@@ -365,7 +365,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(transFile, file);
         ReqAckProof rb = commit != null ?
-                TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
+                TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag)
                 : null;
         Long id = null;
         if (reqSaveFlag) {
@@ -413,7 +413,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         TransFile beginTrans = TransFile.newBuilder().setSha256(fileHash).setBegin(true)
                 .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
         Result result = communicationClient.sendFile(beginTrans, file);
-        ReqAckProof rb = commit == null ? null : TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class));
+        ReqAckProof rb = commit == null ? null : TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag);
         InterCoResult coResult;
         if (result.getCode() == 0) {
             coResult = InterCoResult.builder().cid(header.getCid()).code(0).msg("Action OK").data(result.getData()).build();
@@ -429,7 +429,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                     .setFileName(file.getName()).setPort(port).setHost(host).setFileField(fileField).setHttpHeader(httpHeaders).setHeader(JSONUtil.toJsonStr(header)).build();
             result = communicationClient.sendFile(transFile, file);
             rb = result.getCode() == 0 ?
-                    TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class))
+                    TransTools.getReqAckProof(header, fileHash, signature, JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag)
                     : null;
         }
         Long id = null;
@@ -474,7 +474,7 @@ public class ReceiveServerImpl implements ReceiveServer {
         TransEntity transEntity = TransEntity.newBuilder().setHeader(JSONUtil.toJsonStr(header)).setBegin(false).setHttpHeader(httpHeaders).setHost(host).setPort(port).build();
         ResultFile result = communicationClient.downloadFile(transEntity);
         ReqAckProof rb = commit != null ? TransTools.getReqAckProof(header, contentHash, signature,
-                JSONUtil.toBean(result.getSignature(), Signature.class)) : null;
+                JSONUtil.toBean(result.getSignature(), Signature.class),bReqFlag) : null;
         Long id = null;
         if (reqSaveFlag) {
             PerVo perVo = PerVo.builder().cid(cid).header(header).build();
