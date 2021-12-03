@@ -72,6 +72,6 @@ module.exports = [
     },
     {
         text: 'gitee',
-        link: 'https://gitee.com/BTAJL/api-coord/tree/http-lhc/'
+        link: 'https://gitee.com/BTAJL/api-coord'
     }
 ]
