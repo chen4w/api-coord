@@ -4,6 +4,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
+import cn.hutool.db.Page;
+import cn.hutool.db.PageResult;
 import cn.hutool.json.JSONUtil;
 import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
@@ -45,8 +47,8 @@ public class PersistenceImpl implements Persistence {
         String parentPath = YamlUtils.jarPath + "/file/backup";
         if (YamlUtils.middleConfig.getMiddleware().getFile() != null) {
             FileYml fileYml = YamlUtils.middleConfig.getMiddleware().getFile();
-            if (fileYml.getBackupPath()!=null) {
-                parentPath = fileYml.getTemp()+"/backup";
+            if (fileYml.getBackupPath() != null) {
+                parentPath = fileYml.getTemp() + "/backup";
             }
         }
         if (perVo.getSendFile() != null) {
@@ -54,21 +56,21 @@ public class PersistenceImpl implements Persistence {
             if (!file.exists()) {
                 throw new ServiceException("需要保存的文件不存在");
             }
-            File fileDir = new File(parentPath+"/"+ SnowIdGenerator.getId());
+            File fileDir = new File(parentPath + "/" + SnowIdGenerator.getId());
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }
-            FileUtil.copy(file, fileDir, false);
-            entity = entity.set("send_file", file.getAbsolutePath());
+            File newFile = FileUtil.copy(file, fileDir, false);
+            entity = entity.set("send_file", newFile.getAbsolutePath() + "/" + file.getName());
         }
         if (perVo.getDownloadFile() != null) {
             File file = new File(perVo.getDownloadFile());
-            File fileDir = new File(parentPath+"/"+ SnowIdGenerator.getId());
+            File fileDir = new File(parentPath + "/" + SnowIdGenerator.getId());
             if (!fileDir.exists()) {
                 FileUtil.mkdir(fileDir);
             }
-            file = FileUtil.copy(file, fileDir, false);
-            entity = entity.set("download_file", file.getAbsolutePath());
+            File newFile = FileUtil.copy(file, fileDir, false);
+            entity = entity.set("download_file", newFile.getAbsolutePath() + "/" + file.getName());
         }
         return db.insertForGeneratedKey(
                 entity
@@ -76,11 +78,21 @@ public class PersistenceImpl implements Persistence {
     }
 
     @Override
-    public List<Entity> get(String cid) throws SQLException {
-        List<Entity> entity = db.query("SELECT obj FROM " + EhCacheConstant.PERSISTENCE + " where cid = ?", cid);
-        if (entity == null || entity.isEmpty()) {
+    public List<Entity> get(String cid, Integer pageSize, Integer pageNo) throws SQLException {
+        Entity entity = Entity.create(EhCacheConstant.PERSISTENCE);
+        if (!StrUtil.isBlank(cid)) {
+            entity.set("cid", cid);
+        }
+        if (pageSize == null) {
+            pageSize = 10;
+        }
+        if (pageNo == null) {
+            pageNo = 0;
+        }
+        PageResult<Entity> result = db.page(entity, new Page(pageNo, pageSize));
+        if (result.isEmpty()) {
             return null;
         }
-        return entity;
+        return result;
     }
 }

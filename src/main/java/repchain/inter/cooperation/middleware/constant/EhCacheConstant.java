@@ -15,5 +15,5 @@ public class EhCacheConstant {
     public static final String API_SERV_AND_ACK= "api_serv_and_ack";
     public static final String ASYNC_HEADER = "async_header";
     public static final String BLOCK = "block";
-    public static final String PERSISTENCE = "PERSISTENCE";
+    public static final String PERSISTENCE = "persistence";
 }

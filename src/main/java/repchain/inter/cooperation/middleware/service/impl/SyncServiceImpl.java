@@ -48,6 +48,6 @@ public class SyncServiceImpl implements SyncService {
     @Override
     public void ackProof(Peer.OperLog ol) {
         ReqAckProof reqAckProof = BlockResultUtil.toBean(ol, ReqAckProof.class);
-        MyCacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+reqAckProof.getHash()+reqAckProof.getTm_create());
+        MyCacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+"_"+reqAckProof.getHash()+"_"+reqAckProof.getTm_create());
     }
 }

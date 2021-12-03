@@ -27,7 +27,7 @@ public class TransactionCommitImpl implements TransactionCommit {
 
     @Override
     public void saveProof(ReqAckProof rb) {
-        MyCacheManager.put(EhCacheConstant.REQ_ACK_PROOF, rb.getCid() + rb.getHash() + rb.getTm_create(), rb);
+        MyCacheManager.put(EhCacheConstant.REQ_ACK_PROOF, rb.getCid() +"_"+ rb.getHash() +"_"+ rb.getTm_create(), rb);
         // 创建请求实例，若用Spring 此处可以创建javabean
         RepChain repchain = YamlUtils.getRepchain();
         RequestAck requestAck = new RequestAck(repchain.getHost());

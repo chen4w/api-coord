@@ -20,5 +20,5 @@ public interface Persistence {
 
     Object saveData(PerVo perVo) throws SQLException;
 
-    List<Entity> get(String key) throws SQLException;
+    List<Entity> get(String cid,Integer pageSize,Integer pageNo) throws SQLException;
 }

@@ -36,9 +36,9 @@ public class CommitJob implements Job {
 
 
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
         try {
-            int i = 1;
+            int i = 0;
             while (true) {
                 PageResult<Entity> result = db.page(Entity.create(EhCacheConstant.REQ_ACK_PROOF), new Page(i, 10));
                 for (Entity entity : result) {
@@ -49,7 +49,7 @@ public class CommitJob implements Job {
                     String key = (String) entity.get("id");
                     String[] keys = key.split("_");
                     Long now = System.currentTimeMillis();
-                    Long saveTime = Long.parseLong(keys[2]) + repchain.getBlockTime() * 60 * 1000;
+                    Long saveTime = Long.parseLong(keys[2]) + repchain.getBlockTime() * 60 * 1000+10000;
                     if (saveTime > now) {
                         String value = (String) entity.get("obj");
                         JSONObject jsonObject = requestAck.rb(JSONUtil.toBean(value, ReqAckProof.class), sysCert);
@@ -59,9 +59,10 @@ public class CommitJob implements Job {
                         }
                     }
                 }
-                if (result.isLast()) {
+                if (result.isEmpty()||result.isLast()) {
                     break;
                 }
+                i++;
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

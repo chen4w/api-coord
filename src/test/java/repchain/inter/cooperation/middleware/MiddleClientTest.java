@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import repchain.inter.cooperation.middleware.client.HttpType;
 import repchain.inter.cooperation.middleware.client.MiddlewareClient;
+import repchain.inter.cooperation.middleware.client.PerReq;
 import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
 import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
@@ -121,7 +122,7 @@ public class MiddleClientTest {
     }
 
     @Test
-    public void file(){
+    public void file() {
         Map<String, Object> map = new HashMap<>(1);
         map.put("loginName", "12110107bi45jh675g");
         InterCoResult result = MiddlewareClient
@@ -155,7 +156,7 @@ public class MiddleClientTest {
     }
 
     @Test
-    public void test256(){
+    public void test256() {
         File file1 = new File("/Volumes/DATA/ideaProject/api-coord/tmp/file/c4139f94cc794b9390d8662c7c9a4b811458354018019553280");
         File file2 = new File("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz");
         boolean flag = GetFileSHA256.getFileSha256(file1).equals(GetFileSHA256.getFileSha256(file2));
@@ -181,7 +182,7 @@ public class MiddleClientTest {
                 .setUrl("/user/atmo/now")
                 // 设置传输的数据
 //                .setForm(map)
-                .setHeader("X-Access-Token","ZZNau4dNSIzVLKxMRVLFlw")
+                .setHeader("X-Access-Token", "ZZNau4dNSIzVLKxMRVLFlw")
                 // 发送数据
                 .msg(option);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
@@ -192,6 +193,9 @@ public class MiddleClientTest {
     public void upload() {
         Map<String, Object> map = new HashMap<>(1);
         map.put("editor", "Jack");
+        ReqOption reqOption = new ReqOption();
+        reqOption.setReqSave(ReqOption.TRUE);
+        reqOption.setFileSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -207,7 +211,7 @@ public class MiddleClientTest {
                 .setFileField("file")
                 .setFile(new File("/Users/lhc/Downloads/apache-tomcat-9.0.55.tar.gz"))
                 // 发送数据
-                .sendFile();
+                .sendFile(reqOption);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 
@@ -324,6 +328,15 @@ public class MiddleClientTest {
                 .setForm(map)
                 // 发送数据
                 .msg(option);
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test()
+    public void getData() {
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                .data(PerReq.builder().cid("xxx").pageNo(0).pageSize(10).build());
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 }

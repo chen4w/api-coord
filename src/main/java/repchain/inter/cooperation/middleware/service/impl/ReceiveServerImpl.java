@@ -3,6 +3,7 @@ package repchain.inter.cooperation.middleware.service.impl;
 import cn.hutool.core.thread.ExecutorBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.db.Entity;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.http.server.HttpServerRequest;
 import cn.hutool.http.server.HttpServerResponse;
@@ -34,6 +35,7 @@ import repchain.inter.cooperation.middleware.utils.*;
 import java.io.*;
 import java.security.PrivateKey;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -91,8 +93,32 @@ public class ReceiveServerImpl implements ReceiveServer {
                 .addAction("/file", this::parentMsg)
                 .addAction("/download", this::parentMsg)
                 .addAction("/test", this::test)
+                .addAction("/data", this::data)
                 .start();
         logger.info("Http Server started, listening on " + port);
+    }
+
+    private void data(HttpServerRequest req, HttpServerResponse res) {
+        try {
+            String cid = req.getParam("cid");
+            Integer pageNo = null;
+            Integer pageSize = null;
+            if (req.getParam("pageNo") != null) {
+                pageNo = Integer.valueOf(req.getParam("pageNo"));
+            }
+            if (req.getParam("pageSize") != null) {
+                pageSize = Integer.valueOf(req.getParam("pageSize"));
+            }
+            List<Entity> list = persistence.get(cid, pageSize, pageNo);
+            if (list == null) {
+                res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(0).data("").msg("ok").build()));
+            } else {
+                res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(0).data(list).msg("ok").build()));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            res.write(JSONUtil.toJsonStr(InterCoResult.builder().code(2).msg(e.getMessage()).build()));
+        }
     }
 
 
@@ -133,7 +159,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 String fileHash = req.getParam("fileHash");
                 if (sync) {
                     msgVo = (MsgVo) file(id, seq, endFlag, url, bReqFlag, method,
-                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, fileField,callbackId, map);
+                            callbackMethod, callbackUrl, cid, true, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, fileField, callbackId, map);
                 } else {
                     msgVo = (MsgVo) fileAsync(id, seq, endFlag, url, bReqFlag, method, callbackMethod,
                             callbackUrl, cid, false, filepath, fileHash, reqSaveFlag, resultSaveFlag, fileSaveFlag, headers, fileField, map, res, callbackId);
@@ -456,7 +482,7 @@ public class ReceiveServerImpl implements ReceiveServer {
                 perVo = perVo.toBuilder().result(result).build();
             }
             if (fileSaveFlag) {
-                perVo = perVo.toBuilder().sendFile(result.getFilepath()).build();
+                perVo = perVo.toBuilder().downloadFile(result.getFilepath()).build();
             }
             id = (Long) persistence.saveData(perVo);
         }
@@ -466,8 +492,8 @@ public class ReceiveServerImpl implements ReceiveServer {
     private void test(HttpServerRequest httpServerRequest, HttpServerResponse httpServerResponse) {
         String result = httpServerRequest.getParam("data");
         String file = httpServerRequest.getParam("file");
-        logger.info("result:"+result);
-        logger.info("file:"+file);
+        logger.info("result:" + result);
+        logger.info("file:" + file);
         httpServerResponse.write("ok");
     }
 
