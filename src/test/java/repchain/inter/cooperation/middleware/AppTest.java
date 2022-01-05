@@ -17,6 +17,7 @@ import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
 import repchain.inter.cooperation.middleware.utils.SqliteUtil;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 /**
@@ -35,7 +36,7 @@ public class AppTest {
      * 测试yml读取
      */
     @Test
-    public void testYaml() {
+    public void testYaml() throws UnsupportedEncodingException {
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
         YamlUtils yamlUtils = new YamlUtils();
         String path = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));

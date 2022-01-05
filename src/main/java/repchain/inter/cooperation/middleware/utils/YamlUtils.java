@@ -9,6 +9,8 @@ import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.model.yml.Service;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,12 +26,17 @@ public class YamlUtils {
     public static MiddleConfig middleConfig;
     public static String jarPath;
 
-    public String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+    public String path = URLDecoder.decode(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile(), "utf-8");
 
     static {
         String ymlPath = "/conf/application-middle.yml";
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
-        YamlUtils yamlUtils = new YamlUtils();
+        YamlUtils yamlUtils = null;
+        try {
+            yamlUtils = new YamlUtils();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         jarPath = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
         String prodPath = yamlUtils.path.substring(0, jarPath.lastIndexOf("/"));
         File file = new File(prodPath + ymlPath);
@@ -42,7 +49,10 @@ public class YamlUtils {
         middleConfig = yaml.load(fileReader.getInputStream());
     }
 
-    public static MiddleConfig getYamlNowTime() {
+    public YamlUtils() throws UnsupportedEncodingException {
+    }
+
+    public static MiddleConfig getYamlNowTime() throws UnsupportedEncodingException {
         Yaml yaml = new Yaml(new Constructor(MiddleConfig.class));
         YamlUtils yamlUtils = new YamlUtils();
         String path = yamlUtils.path.substring(0, yamlUtils.path.lastIndexOf("/"));
