@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.rcjava.client.TranPostClient;
 import com.rcjava.protos.Peer;
+import org.apache.commons.codec.binary.Hex;
 import repchain.inter.cooperation.middleware.model.SysCert;
 import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 
@@ -78,6 +79,6 @@ public class RequestAck {
         Peer.Transaction tran = userClient
                 .getTranCreator()
                 .createInvokeTran(tranId, userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof));
-        return tranPostClient.postSignedTran(tran);
+        return tranPostClient.postSignedTran(Hex.encodeHexString(tran.toByteArray()));
     }
 }

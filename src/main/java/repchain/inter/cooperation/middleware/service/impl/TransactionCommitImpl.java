@@ -33,9 +33,14 @@ public class TransactionCommitImpl implements TransactionCommit {
         RequestAck requestAck = new RequestAck(repchain.getHost());
         SysCert sysCert = PkUtil.getSysCert(repchain);
         JSONObject jsonObject = requestAck.rb(rb, sysCert);
-        // 若果有错误信息，则提交存证数据失败
-        if (!StrUtil.isBlankIfStr(jsonObject.get("err"))) {
-            logger.error("提交区块链数据失败：" + jsonObject);
+        if (jsonObject != null) {
+            // 若果有错误信息，则提交存证数据失败
+            if (!StrUtil.isBlankIfStr(jsonObject.get("err"))) {
+                logger.error("提交区块链数据失败：" + jsonObject);
+            }
+        } else {
+            logger.error("异步存证返回结果为空");
         }
+
     }
 }
