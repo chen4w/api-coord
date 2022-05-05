@@ -1,0 +1,67 @@
+site_name: RepChain Interface Cooperation
+
+nav: 
+  - 首页: index.md
+  - 开始: 
+    - 引言: 01.开始/01.引言.md
+    - 准备工作: 01.开始/02.准备工作.md
+    - 代码结构: 01.开始/03.代码结构.md
+  - 接口声明: 
+    - 服务定义:
+      - 基本信息: 02.接口声明/01.服务定义/01.基本信息.md
+      - 使用说明定义: 02.接口声明/01.服务定义/02.使用说明定义.md
+      - 接口定义: 02.接口声明/01.服务定义/03.接口定义.md
+    - 服务登记: 02.接口声明/02.服务登记.md
+    - 发布公告: 02.接口声明/03.发布公告.md
+  - 接口存证:
+    - 前言: 03.接口存证/01.前言.md
+    - HTTP请求存证:
+      - 配置文件: 03.接口存证/02.HTTP请求存证/01.HTTP配置文件.md
+      - 同步请求: 
+        - HTTP单次同步请求: 03.接口存证/02.HTTP请求存证/02.同步请求/01.单次同步请求.md
+        - HTTP多次同步请求: 03.接口存证/02.HTTP请求存证/02.同步请求/02.多次同步请求.md
+      - 异步请求: 
+        - HTTP单次异步请求: 03.接口存证/02.HTTP请求存证/03.异步请求/01.单次异步请求.md
+        - HTTP多次异步请求: 03.接口存证/02.HTTP请求存证/03.异步请求/02.多次异步请求.md
+      - API: 03.接口存证/02.HTTP请求存证/04.API.md
+    - gRPC请求存证: 03.接口存证/03.GRPC请求存证.md
+    - 查看存证: 03.接口存证/04.查看存证.md
+  - 接入中间件: 
+    - 1.0: 
+      - 前言: 04.接入中间件/01.1.0/01.前言.md 
+      - 快速开始: 04.接入中间件/01.1.0/02.快速开始.md
+      - 用户指南: 
+        - 前期准备: 04.接入中间件/01.1.0/03.用户指南/01.前期准备.md
+        - 目录结构: 04.接入中间件/01.1.0/03.用户指南/02.目录结构.md
+        - 启动停止重启: 04.接入中间件/01.1.0/03.用户指南/03.启动停止重启.md
+        - 配置文件: 04.接入中间件/01.1.0/03.用户指南/04.配置文件.md
+      - 中间件客户端: 
+        - 开始使用: 04.接入中间件/01.1.0/04.中间件客户端/01.开始使用.md
+        - 同步请求: 04.接入中间件/01.1.0/04.中间件客户端/02.同步请求.md
+        - 异步请求: 04.接入中间件/01.1.0/04.中间件客户端/03.异步请求.md
+        - API: 04.接入中间件/01.1.0/04.中间件客户端/04.API.md
+      - 迁移: 04.接入中间件/01.1.0/05.迁移.md
+      - 持久化: 04.接入中间件/01.1.0/06.持久化.md
+
+theme:
+  name: material
+  palette:
+    primary: green
+  favicon: img/favicon.ico
+  logo: img/favicon.ico
+  language: zh
+  features:
+    - content.code.annotate
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - attr_list
+
+
+copyright: Copyright &copy; 2021-2022 RepChain Interface Cooperation
