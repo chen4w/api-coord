@@ -62,6 +62,7 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - attr_list
+  - tables
 
 
 copyright: Copyright &copy; 2021-2022 RepChain Interface Cooperation
