@@ -64,5 +64,8 @@ markdown_extensions:
   - attr_list
   - tables
 
+extra:
+  version: 
+    provider: mike
 
 copyright: Copyright &copy; 2021-2022 RepChain Interface Cooperation
