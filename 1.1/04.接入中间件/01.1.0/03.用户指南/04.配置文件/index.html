@@ -1,0 +1,2034 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.10">
+    
+    
+      
+        <title>配置文件 - RepChain Interface Cooperation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.df45aa19.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.9647289d.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4cae4f">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="green" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-component="outdated" hidden>
+        <aside class="md-banner md-banner--warning">
+          
+        </aside>
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../../.." title="RepChain Interface Cooperation" class="md-header__button md-logo" aria-label="RepChain Interface Cooperation" data-md-component="logo">
+      
+  <img src="../../../../img/favicon.ico" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RepChain Interface Cooperation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              配置文件
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="RepChain Interface Cooperation" class="md-nav__button md-logo" aria-label="RepChain Interface Cooperation" data-md-component="logo">
+      
+  <img src="../../../../img/favicon.ico" alt="logo">
+
+    </a>
+    RepChain Interface Cooperation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        首页
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          开始
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开始" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          开始
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../01.%E5%BC%80%E5%A7%8B/01.%E5%BC%95%E8%A8%80/" class="md-nav__link">
+        引言
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../01.%E5%BC%80%E5%A7%8B/02.%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" class="md-nav__link">
+        准备工作
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../01.%E5%BC%80%E5%A7%8B/03.%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        代码结构
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          接口声明
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="接口声明" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          接口声明
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_1">
+          服务定义
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="服务定义" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          服务定义
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../02.%E6%8E%A5%E5%8F%A3%E5%A3%B0%E6%98%8E/01.%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/01.%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF/" class="md-nav__link">
+        基本信息
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../02.%E6%8E%A5%E5%8F%A3%E5%A3%B0%E6%98%8E/01.%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/02.%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E5%AE%9A%E4%B9%89/" class="md-nav__link">
+        使用说明定义
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../02.%E6%8E%A5%E5%8F%A3%E5%A3%B0%E6%98%8E/01.%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%B9%89/03.%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89/" class="md-nav__link">
+        接口定义
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../02.%E6%8E%A5%E5%8F%A3%E5%A3%B0%E6%98%8E/02.%E6%9C%8D%E5%8A%A1%E7%99%BB%E8%AE%B0/" class="md-nav__link">
+        服务登记
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../02.%E6%8E%A5%E5%8F%A3%E5%A3%B0%E6%98%8E/03.%E5%8F%91%E5%B8%83%E5%85%AC%E5%91%8A/" class="md-nav__link">
+        发布公告
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          接口存证
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="接口存证" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          接口存证
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/01.%E5%89%8D%E8%A8%80/" class="md-nav__link">
+        前言
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2">
+          HTTP请求存证
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="HTTP请求存证" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          HTTP请求存证
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/01.HTTP%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-nav__link">
+        配置文件
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_2" type="checkbox" id="__nav_4_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2_2">
+          同步请求
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="同步请求" data-md-level="3">
+        <label class="md-nav__title" for="__nav_4_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          同步请求
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/02.%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82/01.%E5%8D%95%E6%AC%A1%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        HTTP单次同步请求
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/02.%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82/02.%E5%A4%9A%E6%AC%A1%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        HTTP多次同步请求
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_3" type="checkbox" id="__nav_4_2_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2_3">
+          异步请求
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="异步请求" data-md-level="3">
+        <label class="md-nav__title" for="__nav_4_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          异步请求
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/03.%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/01.%E5%8D%95%E6%AC%A1%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        HTTP单次异步请求
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/03.%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/02.%E5%A4%9A%E6%AC%A1%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        HTTP多次异步请求
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/02.HTTP%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/04.API/" class="md-nav__link">
+        API
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/03.GRPC%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/" class="md-nav__link">
+        gRPC请求存证
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../03.%E6%8E%A5%E5%8F%A3%E5%AD%98%E8%AF%81/04.%E6%9F%A5%E7%9C%8B%E5%AD%98%E8%AF%81/" class="md-nav__link">
+        查看存证
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          接入中间件
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="接入中间件" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          接入中间件
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1">
+          1.0
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="1.0" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          1.0
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../01.%E5%89%8D%E8%A8%80/" class="md-nav__link">
+        前言
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02.%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/" class="md-nav__link">
+        快速开始
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_3" type="checkbox" id="__nav_5_1_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1_3">
+          用户指南
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="用户指南" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          用户指南
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01.%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87/" class="md-nav__link">
+        前期准备
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02.%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        目录结构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03.%E5%90%AF%E5%8A%A8%E5%81%9C%E6%AD%A2%E9%87%8D%E5%90%AF/" class="md-nav__link">
+        启动停止重启
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          配置文件
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        配置文件
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、说明
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    二、配置说明
+  </a>
+  
+    <nav class="md-nav" aria-label="二、配置说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-repchain" class="md-nav__link">
+    1. repchain
+  </a>
+  
+    <nav class="md-nav" aria-label="1. repchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#host" class="md-nav__link">
+    host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#height" class="md-nav__link">
+    height
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creditcode" class="md-nav__link">
+    creditCode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certname" class="md-nav__link">
+    certName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cert" class="md-nav__link">
+    cert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privatekey" class="md-nav__link">
+    privateKey
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password" class="md-nav__link">
+    password
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    services
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-middleware" class="md-nav__link">
+    2. middleware
+  </a>
+  
+    <nav class="md-nav" aria-label="2. middleware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file" class="md-nav__link">
+    file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log" class="md-nav__link">
+    log
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recclient" class="md-nav__link">
+    recClient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recserver" class="md-nav__link">
+    recServer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comclient" class="md-nav__link">
+    comClient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comserver" class="md-nav__link">
+    comServer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-datasource" class="md-nav__link">
+    3. datasource
+  </a>
+  
+    <nav class="md-nav" aria-label="3. datasource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#url" class="md-nav__link">
+    url
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    user
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass" class="md-nav__link">
+    pass
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#driver" class="md-nav__link">
+    driver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showsql" class="md-nav__link">
+    showSql
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatsql" class="md-nav__link">
+    formatSql
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showparams" class="md-nav__link">
+    showParams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqllevel" class="md-nav__link">
+    sqlLevel
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1_4" type="checkbox" id="__nav_5_1_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1_4">
+          中间件客户端
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="中间件客户端" data-md-level="3">
+        <label class="md-nav__title" for="__nav_5_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          中间件客户端
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/01.%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8/" class="md-nav__link">
+        开始使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/02.%E5%90%8C%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        同步请求
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/03.%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/" class="md-nav__link">
+        异步请求
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/04.API/" class="md-nav__link">
+        API
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05.%E8%BF%81%E7%A7%BB/" class="md-nav__link">
+        迁移
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06.%E6%8C%81%E4%B9%85%E5%8C%96/" class="md-nav__link">
+        持久化
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、说明
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    二、配置说明
+  </a>
+  
+    <nav class="md-nav" aria-label="二、配置说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-repchain" class="md-nav__link">
+    1. repchain
+  </a>
+  
+    <nav class="md-nav" aria-label="1. repchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#host" class="md-nav__link">
+    host
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#height" class="md-nav__link">
+    height
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creditcode" class="md-nav__link">
+    creditCode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certname" class="md-nav__link">
+    certName
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cert" class="md-nav__link">
+    cert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privatekey" class="md-nav__link">
+    privateKey
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password" class="md-nav__link">
+    password
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    services
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-middleware" class="md-nav__link">
+    2. middleware
+  </a>
+  
+    <nav class="md-nav" aria-label="2. middleware">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#file" class="md-nav__link">
+    file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log" class="md-nav__link">
+    log
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recclient" class="md-nav__link">
+    recClient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recserver" class="md-nav__link">
+    recServer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comclient" class="md-nav__link">
+    comClient
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comserver" class="md-nav__link">
+    comServer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-datasource" class="md-nav__link">
+    3. datasource
+  </a>
+  
+    <nav class="md-nav" aria-label="3. datasource">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#url" class="md-nav__link">
+    url
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user" class="md-nav__link">
+    user
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pass" class="md-nav__link">
+    pass
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#driver" class="md-nav__link">
+    driver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showsql" class="md-nav__link">
+    showSql
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatsql" class="md-nav__link">
+    formatSql
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#showparams" class="md-nav__link">
+    showParams
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqllevel" class="md-nav__link">
+    sqlLevel
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="_1">配置文件</h1>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>以下所有数据均为示例数据，请用户不要在生产环境中使用以下数据。</p>
+<p>特别注意，一定 <strong>不要</strong> 使用示例数据中的证书及私钥！！！</p>
+</div>
+<h2 id="_2">一、说明</h2>
+<blockquote>
+<p>配置文件位于中间件 <code>conf</code> 目录下 <code>application-middle.yml</code> 。</p>
+</blockquote>
+<h2 id="_3">二、配置说明</h2>
+<h3 id="1-repchain">1. repchain</h3>
+<blockquote>
+<p>repchain及接口存证相关配置</p>
+</blockquote>
+<h4 id="host">host</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：配置中间件连接RepChain的地址</li>
+<li><strong>示例</strong>：192.168.2.76:8081</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="height">height</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：0</li>
+<li><strong>描述</strong>：初始同步的区块高度，与已经持久化的区块高度做对比，取最大值。例：如果此处配置0，已经持久化的区块高度为2，则从2开始同步区块。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="creditcode">creditCode</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：CGZL7XOwwa</li>
+<li><strong>描述</strong>：用户在区块链上的唯一标识。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="certname">certName</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：cert</li>
+<li><strong>描述</strong>：用户用于接口存证的证书名称。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="cert">cert</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span>
+<span class="normal"><a href="#__codelineno-0-3">3</a></span>
+<span class="normal"><a href="#__codelineno-0-4">4</a></span>
+<span class="normal"><a href="#__codelineno-0-5">5</a></span>
+<span class="normal"><a href="#__codelineno-0-6">6</a></span>
+<span class="normal"><a href="#__codelineno-0-7">7</a></span>
+<span class="normal"><a href="#__codelineno-0-8">8</a></span>
+<span class="normal"><a href="#__codelineno-0-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>  -----BEGIN CERTIFICATE-----
+<a id="__codelineno-0-2" name="__codelineno-0-2"></a>  MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+<a id="__codelineno-0-3" name="__codelineno-0-3"></a>  IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+<a id="__codelineno-0-4" name="__codelineno-0-4"></a>  VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+<a id="__codelineno-0-5" name="__codelineno-0-5"></a>  E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+<a id="__codelineno-0-6" name="__codelineno-0-6"></a>  DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+<a id="__codelineno-0-7" name="__codelineno-0-7"></a>  ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+<a id="__codelineno-0-8" name="__codelineno-0-8"></a>  zZXMcw==
+<a id="__codelineno-0-9" name="__codelineno-0-9"></a>  -----END CERTIFICATE-----
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>描述</strong>：用户用于接口存证的证书。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="privatekey">privateKey</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<span class="normal"><a href="#__codelineno-1-2">2</a></span>
+<span class="normal"><a href="#__codelineno-1-3">3</a></span>
+<span class="normal"><a href="#__codelineno-1-4">4</a></span>
+<span class="normal"><a href="#__codelineno-1-5">5</a></span>
+<span class="normal"><a href="#__codelineno-1-6">6</a></span>
+<span class="normal"><a href="#__codelineno-1-7">7</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a> -----BEGIN ENCRYPTED PRIVATE KEY-----
+<a id="__codelineno-1-2" name="__codelineno-1-2"></a>MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAi0q5jmLN61vAIBZDAU
+<a id="__codelineno-1-3" name="__codelineno-1-3"></a>BggqhkiG9w0DBwQITUCFquFjnwEEgZAbZouweJPtR6zRaDhULbyzF3uaOnMErtx3
+<a id="__codelineno-1-4" name="__codelineno-1-4"></a>kIguDP/qeb3wVoTW8kFuOw1jdrY5WyHGCngfpM5br6AUaEqIlBnA7rS3KZfhsxxq
+<a id="__codelineno-1-5" name="__codelineno-1-5"></a>yLQcaySsfUowUE61oStDJtDgHMJE0dbxuYXjnzSQrnp9AnnX65uwUeDE6c+i7DnW
+<a id="__codelineno-1-6" name="__codelineno-1-6"></a>pWoroVTXK/dQb4vWNmxmacQ6G8jmW0s=
+<a id="__codelineno-1-7" name="__codelineno-1-7"></a>-----END ENCRYPTED PRIVATE KEY-----
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>描述</strong>：用户用于接口存证的私钥，用户的私钥请保存好，不要泄露给任何人。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="password">password</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：123456</li>
+<li><strong>描述</strong>：用户设置的私钥的密码</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="services">services</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：用户用来设置请求方或应答方证书的配置，可设置多个，每个请求方对应的应答方都需要再此配置。</li>
+</ul>
+<p><strong>serviceId</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：1</li>
+<li><strong>描述</strong>：用户自定义ID，使用客户端请求中间件时需要提供此ID来定位需要请求的服务。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>e_from</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：bb743c821635920387678</li>
+<li><strong>描述</strong>：服务调用方ID，可在RepChain管理控制台-链外协同-服务调用中Id列中获取。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>from_cert</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
+<span class="normal"><a href="#__codelineno-2-2">2</a></span>
+<span class="normal"><a href="#__codelineno-2-3">3</a></span>
+<span class="normal"><a href="#__codelineno-2-4">4</a></span>
+<span class="normal"><a href="#__codelineno-2-5">5</a></span>
+<span class="normal"><a href="#__codelineno-2-6">6</a></span>
+<span class="normal"><a href="#__codelineno-2-7">7</a></span>
+<span class="normal"><a href="#__codelineno-2-8">8</a></span>
+<span class="normal"><a href="#__codelineno-2-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>-----BEGIN CERTIFICATE----- 
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>   MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>   IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>   VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a>   E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>   DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>   ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>   zZXMcw==
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a>-----END CERTIFICATE-----
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>描述</strong>： 服务调用方证书，用于请求接口校验身份时使用。需要调用方提供。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>e_to</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：7b5c66df1635920342945</li>
+<li><strong>描述</strong>：服务提供方Id，可在RepChain管理控制台-链外协同-服务登记中Id列中获取。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>to_cert</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：</li>
+</ul>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
+<span class="normal"><a href="#__codelineno-3-2">2</a></span>
+<span class="normal"><a href="#__codelineno-3-3">3</a></span>
+<span class="normal"><a href="#__codelineno-3-4">4</a></span>
+<span class="normal"><a href="#__codelineno-3-5">5</a></span>
+<span class="normal"><a href="#__codelineno-3-6">6</a></span>
+<span class="normal"><a href="#__codelineno-3-7">7</a></span>
+<span class="normal"><a href="#__codelineno-3-8">8</a></span>
+<span class="normal"><a href="#__codelineno-3-9">9</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a> -----BEGIN CERTIFICATE-----
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>   MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>   IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>   VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>   E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>   DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a>   ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>   zZXMcw==
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a> -----END CERTIFICATE-----
+</code></pre></div></td></tr></table></div>
+<ul>
+<li><strong>描述</strong>：服务提供方证书，用于异步请求应答接口时校验身份使用。需要服务提供方提供。</li>
+<li><strong>约束</strong>： 必填
+</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="2-middleware">2. middleware</h3>
+<blockquote>
+<p>中间件相关配置。</p>
+</blockquote>
+<h4 id="file">file</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：文件配置</li>
+</ul>
+<p><strong>temp</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：/file/tmp</li>
+<li><strong>描述</strong>：临时文件目录，此处必须填写绝对路径，默认路径为中间目录下 <code>file/tmp</code></li>
+<li><strong>约束</strong>： 非必填</li>
+</ul>
+</blockquote>
+<p><strong>backupPath</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：/file/backup</li>
+<li><strong>描述</strong>：持久化备份文件目录，此处必须填写绝对路径，默认路径为中间目录下 <code>file/backup</code></li>
+<li><strong>约束</strong>： 非必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="log">log</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>： 日志相关配置</li>
+</ul>
+<p><strong>path</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：/data/logs</li>
+<li><strong>描述</strong>：日志保存路径</li>
+<li><strong>约束</strong>： 非必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="recclient">recClient</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：中间件访问用户的服务的客户端</li>
+</ul>
+<p><strong>host</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：127.0.0.1</li>
+<li><strong>描述</strong>：提供服务或应答的地址，由于和宿主服务部署在同一个服务器上此处填写127.0.0.1</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>port</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：80</li>
+<li><strong>描述</strong>：提供服务或应答的端口</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>protocol</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：http</li>
+<li><strong>描述</strong>：协议，当前版本暂时只支持http</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>timeout</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：5000</li>
+<li><strong>描述</strong>：访问服务的超时时间，单位为毫秒</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="recserver">recServer</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：宿主服务调用中间件服务的相关配置，此处提供的为http服务。</li>
+</ul>
+<p><strong>port</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：8888</li>
+<li><strong>描述</strong>：提供的http服务的端口</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>corePoolSize</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：50</li>
+<li><strong>描述</strong>：初始线程池大小</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>maxPoolSize</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：200</li>
+<li><strong>描述</strong>：最大线程池大小</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>workQueue</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：100</li>
+<li><strong>描述</strong>：队列，用来存储未执行的线程</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="comclient">comClient</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：中间件访问其他中间件的客户端。</li>
+</ul>
+<p><strong>timeout</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：5000</li>
+<li><strong>描述</strong>：超时时间（毫秒）</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>maxTotal</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：8</li>
+<li><strong>描述</strong>：池中最大连接数</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>minIdle</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：1</li>
+<li><strong>描述</strong>：最少的空闲连接数</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>maxIdle</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：8</li>
+<li><strong>描述</strong>：最多的空闲连接数</li>
+<li><strong>约束</strong>：必填</li>
+</ul>
+</blockquote>
+<p><strong>maxWaitMillis</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：-1</li>
+<li><strong>描述</strong>：当连接池资源耗尽时,调用者最大阻塞的时间,超时时抛出异常 单位:毫秒数</li>
+<li><strong>约束</strong>：必填</li>
+</ul>
+</blockquote>
+<p><strong>lifo</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：true</li>
+<li><strong>描述</strong>：连接池存放池化对象方式,true放在空闲队列最前面,false放在空闲队列最后</li>
+<li><strong>约束</strong>：必填</li>
+</ul>
+</blockquote>
+<p><strong>minEvictableIdleTimeMillis</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：1800000</li>
+<li><strong>描述</strong>：连接空闲的最小时间,达到此值后空闲连接可能会被移除,默认即为30分钟</li>
+<li><strong>约束</strong>：必填</li>
+</ul>
+</blockquote>
+<p><strong>blockWhenExhausted</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：true</li>
+<li><strong>描述</strong>：连接耗尽时是否阻塞,默认为true</li>
+<li><strong>约束</strong>：必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="comserver">comServer</h4>
+<blockquote>
+<ul>
+<li><strong>描述</strong>：中间件提供其他中间件访问的服务，默认使用Grpc协议。</li>
+</ul>
+<p><strong>port</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：8888</li>
+<li><strong>描述</strong>：提供的http服务的端口</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>corePoolSize</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：50</li>
+<li><strong>描述</strong>：初始线程池大小</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>maxPoolSize</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：200</li>
+<li><strong>描述</strong>：最大线程池大小</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<p><strong>workQueue</strong></p>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：100</li>
+<li><strong>描述</strong>：队列，用来存储未执行的线程</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="3-datasource">3. datasource</h3>
+<h4 id="url">url</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：jdbc:sqlite:data/repchain_mid.db</li>
+<li><strong>描述</strong>：此处可以填写sqlite或mysql，其他数据库暂未支持，sqlite默认填写为中间件文件夹相对路径。</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="user">user</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：test</li>
+<li><strong>描述</strong>：数据库连接用户名</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="pass">pass</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：123456</li>
+<li><strong>描述</strong>：数据库连接密码</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="driver">driver</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：org.sqlite.JDBC</li>
+<li><strong>描述</strong>：数据库驱动</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="showsql">showSql</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：true</li>
+<li><strong>描述</strong>：是否在日志中显示执行的SQL</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="formatsql">formatSql</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：true</li>
+<li><strong>描述</strong>：是否格式化显示的SQL</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="showparams">showParams</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：true</li>
+<li><strong>描述</strong>：是否显示SQL参数</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+<h4 id="sqllevel">sqlLevel</h4>
+<blockquote>
+<ul>
+<li><strong>示例</strong>：debug</li>
+<li><strong>描述</strong>：打印SQL的日志等级，默认debug，可以是info、warn、error</li>
+<li><strong>约束</strong>： 必填</li>
+</ul>
+</blockquote>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="页脚">
+      
+        
+        <a href="../03.%E5%90%AF%E5%8A%A8%E5%81%9C%E6%AD%A2%E9%87%8D%E5%90%AF/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 启动停止重启" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              启动停止重启
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/01.%E5%BC%80%E5%A7%8B%E4%BD%BF%E7%94%A8/" class="md-footer__link md-footer__link--next" aria-label="下一页: 开始使用" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              开始使用
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2021-2022 RepChain Interface Cooperation
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.748e2769.min.js"></script>
+      
+    
+  </body>
+</html>
