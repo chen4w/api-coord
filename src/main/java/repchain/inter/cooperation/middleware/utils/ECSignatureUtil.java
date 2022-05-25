@@ -117,7 +117,7 @@ public class ECSignatureUtil {
                 "W45jFOzme6y8lhbVpefg0GU7mU/AITL5gOV7iJcQG0iyvplHP4TEjVFj3zM+ow4b\n" +
                 "cBuNWzA6z01Mq4DJCwJwPNxi9H2yc0U=\n" +
                 "-----END ENCRYPTED PRIVATE KEY-----"));
-        PrivateKey privateKey = KeyUtil.generatePrivateKey(parser, false, "123456");
+        PrivateKey privateKey = KeyUtil.generatePrivateKey(parser,  "123456");
         System.out.println(privateKey);
         X509Certificate x509Certificate = CertUtil.generateX509Cert("-----BEGIN CERTIFICATE-----\n" +
                 "MIIBYzCCAQigAwIBAgIEXe8B6zAKBggqhkjOPQQDAjA5MREwDwYDVQQKDAhyZXBj\n" +

@@ -1,7 +1,9 @@
 # repchain配置文件
 repchain:
+  # 组网Id
+  chainNetworkId: net1
   # repchain 地址
-  host: 192.168.2.76:8081
+  host: 192.168.4.46:9081
   # 同步区块高度
   height: 0
   # 出块时间 (分钟）
@@ -118,11 +120,11 @@ middleware:
     workQueue: 100
 # 数据源配置，用于数据持久化，当前版本支持sqlite，mysql
 datasource:
-  #  url: jdbc:sqlite:data/repchain_mid.db
-  #  pass: root
-  #  user: root
-  #  driver: org.sqlite.JDBC
-  url: jdbc:mysql://192.168.2.76:3306/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+#  url: jdbc:sqlite:data/repchain_mid.db
+#  pass: root
+#  user: root
+#  driver: org.sqlite.JDBC
+  url: jdbc:mysql://192.168.4.12:49159/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
   pass: root
   user: root
   driver: com.mysql.jdbc.Driver

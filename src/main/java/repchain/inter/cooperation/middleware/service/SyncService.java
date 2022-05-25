@@ -13,9 +13,9 @@ public interface SyncService {
 
     void saveBlock(Peer.Block block);
 
-    void defInterface(Peer.OperLog ol);
-
-    void register(Peer.OperLog ol);
-
-    void ackProof(Peer.OperLog ol);
+//    void defInterface(Peer.OperLog ol);
+//
+//    void register(Peer.OperLog ol);
+//
+//    void ackProof(Peer.OperLog ol);
 }

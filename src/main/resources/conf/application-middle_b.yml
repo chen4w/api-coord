@@ -1,5 +1,7 @@
 # repchain配置文件
 repchain:
+  # 组网Id
+  chainNetworkId: net1
   # repchain 地址
   host: 192.168.2.76:8081
   # 同步区块高度

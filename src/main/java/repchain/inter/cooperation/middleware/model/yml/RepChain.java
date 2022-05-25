@@ -23,6 +23,7 @@ public class RepChain {
     private Long height;
     private String creditCode;
     private String certName;
+    private String chainNetworkId;
     private String cert;
     private String privateKey;
     private String password;

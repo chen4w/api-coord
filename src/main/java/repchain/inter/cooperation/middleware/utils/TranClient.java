@@ -32,7 +32,7 @@ public class TranClient {
         certId = Peer.CertId.newBuilder().setCreditCode(creditCode).setCertName(certName).build();
         PEMParser parser = new PEMParser(new StringReader(privateKeyPem));
         try {
-            PrivateKey privateKey = KeyUtil.generatePrivateKey(parser, false, password);
+            PrivateKey privateKey = KeyUtil.generatePrivateKey(parser,  password);
             tranCreator = TranCreator.newBuilder().setPrivateKey(privateKey).setSignAlgorithm("sha1withecdsa").build();
         }catch (Exception e){
             e.printStackTrace();

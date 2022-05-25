@@ -24,7 +24,7 @@ public class PkUtil {
         PEMParser parser = new PEMParser(new StringReader(privateKeyPem));
         PrivateKey privateKey = null;
         try {
-            privateKey = KeyUtil.generatePrivateKey(parser, false, password);
+            privateKey = KeyUtil.generatePrivateKey(parser,  password);
         } catch (IOException | OperatorCreationException | PKCSException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service.impl;
 
+import com.google.protobuf.ByteString;
 import com.rcjava.client.ChainInfoClient;
 import com.rcjava.exception.SyncBlockException;
 import com.rcjava.protos.Peer;
@@ -18,6 +19,7 @@ import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -54,7 +56,7 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
         if (tempLocHeight == 0) {
             syncInfo = new SyncInfo(0, "");
         } else if (tempLocHeight > 0) {
-            String locBlkHash = new ChainInfoClient(host).getBlockByHeight(tempLocHeight).getHashOfBlock().toStringUtf8();
+            String locBlkHash = new ChainInfoClient(host).getBlockByHeight(tempLocHeight).getHeader().getHashPresent().toStringUtf8();
             syncInfo = new SyncInfo(tempLocHeight, locBlkHash);
         } else {
             logger.error("本地设置区块高度不能小于0");
@@ -76,9 +78,8 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
             AtomicInteger i = new AtomicInteger();
             block.getTransactionResultsList().forEach(result -> {
                 String chainCodeName = list.get(i.get());
-                result.getOlList().forEach(ol -> {
-                    String key = ol.getKey();
-                    // 接口协同合约
+                Map<String, ByteString> stringMap = result.getStatesSetMap();
+                for (Map.Entry<String, ByteString> entry : stringMap.entrySet()) {
                     if (InterfaceConstant.NAME.equals(chainCodeName)) {
                         // 接口定义
                         if (KeyUtils.startsWith(key, InterfaceConstant.DEF)) {
@@ -93,7 +94,25 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
                             syncService.ackProof(ol);
                         }
                     }
-                });
+                }
+//                result.getOlList().forEach(ol -> {
+//                    String key = ol.getKey();
+//                    // 接口协同合约
+//                    if (InterfaceConstant.NAME.equals(chainCodeName)) {
+//                        // 接口定义
+//                        if (KeyUtils.startsWith(key, InterfaceConstant.DEF)) {
+//                            syncService.defInterface(ol);
+//                        }
+//                        // 接口登记
+//                        if (KeyUtils.startsWith(key, InterfaceConstant.REGISTER) || KeyUtils.startsWith(key, InterfaceConstant.INVOKE_REGISTER)) {
+//                            syncService.register(ol);
+//                        }
+//                        // 接口存证
+//                        if (KeyUtils.startsWith(key, InterfaceConstant.ACK_PROOF)) {
+//                            syncService.ackProof(ol);
+//                        }
+//                    }
+//                });
                 i.getAndIncrement();
             });
         } catch (Exception ex) {

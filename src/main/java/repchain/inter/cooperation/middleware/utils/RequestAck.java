@@ -1,6 +1,7 @@
 package repchain.inter.cooperation.middleware.utils;
 
 import cn.hutool.json.JSONUtil;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.rcjava.client.TranPostClient;
 import com.rcjava.protos.Peer;
@@ -78,7 +79,7 @@ public class RequestAck {
         TranClient userClient = TranClient.getClient(sysCert.getCreditCode(), sysCert.getCertName(), sysCert.getPrivateKey(), chainCodeName, sysCert.getPassword());
         Peer.Transaction tran = userClient
                 .getTranCreator()
-                .createInvokeTran(tranId, userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof));
+                .createInvokeTran( tranId,userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof),0,"");
         return tranPostClient.postSignedTran(Hex.encodeHexString(tran.toByteArray()));
     }
 }

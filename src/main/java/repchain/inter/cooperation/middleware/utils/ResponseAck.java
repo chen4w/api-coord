@@ -58,7 +58,7 @@ public class ResponseAck {
         TranClient userClient = TranClient.getClient(sysCert.getCreditCode(), sysCert.getCertName(), sysCert.getPrivateKey(), chainCodeName, sysCert.getPassword());
         Peer.Transaction tran = userClient
                 .getTranCreator()
-                .createInvokeTran(tranId, userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof));
+                .createInvokeTran(tranId, userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof),0,"");
         return tranPostClient.postSignedTran(tran);
     }
 }
