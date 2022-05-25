@@ -10,6 +10,7 @@ import repchain.inter.cooperation.middleware.model.tran.ReqAckProof;
 import repchain.inter.cooperation.middleware.service.SyncService;
 import repchain.inter.cooperation.middleware.utils.BlockResultUtil;
 import repchain.inter.cooperation.middleware.utils.MyCacheManager;
+import com.google.protobuf.ByteString;
 
 
 
@@ -31,24 +32,24 @@ public class SyncServiceImpl implements SyncService {
         MyCacheManager.putHeight(height);
         logger.info("区块：{} 保存成功", height);
     }
-//
-//    @Override
-//    public void defInterface(Peer.OperLog ol) {
-//        ApiDefinition apiDefinition = BlockResultUtil.toBean(ol, ApiDefinition.class);
-//        String id = apiDefinition.getId();
-//        MyCacheManager.put(EhCacheConstant.API_DEFINITION, id, apiDefinition);
-//    }
-//
-//    @Override
-//    public void register(Peer.OperLog ol) {
-//        ApiServAndAck apiServAndAck = BlockResultUtil.toBean(ol, ApiServAndAck.class);
-//        String id = apiServAndAck.getId();
-//        MyCacheManager.put(EhCacheConstant.API_SERV_AND_ACK, id, apiServAndAck);
-//    }
-//
-//    @Override
-//    public void ackProof(Peer.OperLog ol) {
-//        ReqAckProof reqAckProof = BlockResultUtil.toBean(ol, ReqAckProof.class);
-//        MyCacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+"_"+reqAckProof.getHash()+"_"+reqAckProof.getTm_create());
-//    }
+
+    @Override
+    public void defInterface(ByteString ol) {
+        ApiDefinition apiDefinition = BlockResultUtil.toBean(ol, ApiDefinition.class);
+        String id = apiDefinition.getId();
+        MyCacheManager.put(EhCacheConstant.API_DEFINITION, id, apiDefinition);
+    }
+
+    @Override
+    public void register(ByteString ol) {
+        ApiServAndAck apiServAndAck = BlockResultUtil.toBean(ol, ApiServAndAck.class);
+        String id = apiServAndAck.getId();
+        MyCacheManager.put(EhCacheConstant.API_SERV_AND_ACK, id, apiServAndAck);
+    }
+
+    @Override
+    public void ackProof(ByteString ol) {
+        ReqAckProof reqAckProof = BlockResultUtil.toBean(ol, ReqAckProof.class);
+        MyCacheManager.delete(EhCacheConstant.REQ_ACK_PROOF, reqAckProof.getCid()+"_"+reqAckProof.getHash()+"_"+reqAckProof.getTm_create());
+    }
 }

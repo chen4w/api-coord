@@ -18,7 +18,30 @@ git clone https://gitee.com/BTAJL/api-coord.git -b mid-client
 ./gradlew publishToMavenLocal
 ```
 
+* windows开发如果抛出异常请修改`resources/logback.xml`文件
+
+将
+
+```xml
+        <withJansi>true</withJansi>
+```
+
+修改为
+
+```xml
+        <withJansi>false</withJansi>
+```
+
+
 ## Build(打包)
+
+
+
+* 修改`resources/logback.xml`文件中Jansi内容,改为`true`
+* 
+```xml
+        <withJansi>true</withJansi>
+```
 
 * 打包
 

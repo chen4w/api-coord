@@ -17,6 +17,7 @@ import repchain.inter.cooperation.middleware.utils.MyCacheManager;
 import repchain.inter.cooperation.middleware.utils.KeyUtils;
 import repchain.inter.cooperation.middleware.utils.YamlUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -77,22 +78,29 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
             // 合约数据同步操作
             AtomicInteger i = new AtomicInteger();
             block.getTransactionResultsList().forEach(result -> {
-                String chainCodeName = list.get(i.get());
                 Map<String, ByteString> stringMap = result.getStatesSetMap();
                 for (Map.Entry<String, ByteString> entry : stringMap.entrySet()) {
-                    if (InterfaceConstant.NAME.equals(chainCodeName)) {
+                    String key = entry.getKey();
+                    ByteString value = entry.getValue();
+                    if (InterfaceConstant.NAME.equals(KeyUtils.getChainCode(key))) {
                         // 接口定义
                         if (KeyUtils.startsWith(key, InterfaceConstant.DEF)) {
-                            syncService.defInterface(ol);
+                            syncService.defInterface(value);
                         }
                         // 接口登记
                         if (KeyUtils.startsWith(key, InterfaceConstant.REGISTER) || KeyUtils.startsWith(key, InterfaceConstant.INVOKE_REGISTER)) {
-                            syncService.register(ol);
+                            syncService.register(value);
                         }
                         // 接口存证
                         if (KeyUtils.startsWith(key, InterfaceConstant.ACK_PROOF)) {
-                            syncService.ackProof(ol);
+                            syncService.ackProof(value);
                         }
+                    }
+                    logger.info("key:"+entry.getKey());
+                    try {
+                        logger.info("value:"+entry.getValue().toString("utf-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        throw new RuntimeException(e);
                     }
                 }
 //                result.getOlList().forEach(ol -> {

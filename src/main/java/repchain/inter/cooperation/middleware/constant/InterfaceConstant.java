@@ -14,10 +14,10 @@ public class InterfaceConstant {
     /**
      * 生成订单
      */
-    public final static String DEF = "api_def_main";
+    public final static String DEF = "api-def-main";
 
-    public final static String REGISTER = "api_service_main";
-    public final static String INVOKE_REGISTER = "ack_receive_main";
-    public final static String ACK_PROOF = "req_ack_proof";
+    public final static String REGISTER = "api-service-main";
+    public final static String INVOKE_REGISTER = "ack-receive-main";
+    public final static String ACK_PROOF = "req-ack-proof";
 
 }

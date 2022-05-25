@@ -14,10 +14,6 @@ import repchain.inter.cooperation.middleware.service.*;
  * @description 中间件建造者，用于建造集成中间件各个模块组件
  */
 public class RpMiddleware {
-
-    private static final Logger logger = LoggerFactory.getLogger(RpMiddleware.class);
-
-
     private AuthFilter authFilter;
     private BlockSync blockSync;
     private CommunicationClient communicationClient;

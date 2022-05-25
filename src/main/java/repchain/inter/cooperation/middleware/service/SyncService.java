@@ -1,5 +1,6 @@
 package repchain.inter.cooperation.middleware.service;
 
+import com.google.protobuf.ByteString;
 import com.rcjava.protos.Peer;
 
 /**
@@ -13,9 +14,9 @@ public interface SyncService {
 
     void saveBlock(Peer.Block block);
 
-//    void defInterface(Peer.OperLog ol);
-//
-//    void register(Peer.OperLog ol);
-//
-//    void ackProof(Peer.OperLog ol);
+    void defInterface(ByteString ol);
+
+    void register(ByteString ol);
+
+    void ackProof(ByteString ol);
 }

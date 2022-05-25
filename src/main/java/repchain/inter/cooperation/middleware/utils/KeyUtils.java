@@ -14,9 +14,10 @@ public class KeyUtils {
         return arr[1];
     }
 
-    public static boolean startsWith(String key,String prefix) {
+    public static boolean startsWith(String key, String prefix) {
+        String chainNetCode = YamlUtils.getRepchain().getChainNetworkId();
         String[] arr = key.split("_");
-        String chainCode = arr[0] + "_" + arr[1] + "_";
+        String chainCode = arr[0] + "_" + arr[1] + "_" + arr[2] + "_";
         String prefixStr = key.replace(chainCode, "");
         return prefixStr.startsWith(prefix);
     }

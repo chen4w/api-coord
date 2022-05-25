@@ -16,7 +16,6 @@ import repchain.inter.cooperation.middleware.model.yml.MyDatasource;
  */
 public class SqliteUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(MyCacheManager.class);
 
     private static class ManagerHolder {
         public final static Db DB = getInstance();
