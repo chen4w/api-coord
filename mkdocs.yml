@@ -64,6 +64,15 @@ markdown_extensions:
   - attr_list
   - tables
 
+plugins:
+    - with-pdf:
+        author: RepChain DEV Team 
+        toc_title: 目录
+        toc_level: 3
+        cover_subtitle: 基于RepChain 1.3 的链外接口协同组件
+      
+
+
 extra:
   version: 
     provider: mike
