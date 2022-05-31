@@ -29,4 +29,29 @@ mkdocs serve
 ```
 mkdocs build
 ```
++ 通过配置[mike插件扩展](https://github.com/jimporter/mike)，可以使用Git管理MkDocs生成文档的多个版本。在mkdocs.yml配置文件中进行如下设置：
+```
+extra:
+  version: 
+    provider: mike
+```
+使用pip安装mike插件：
+```
+pip install mike
+```
+要部署当前版本的文档，只需运行：
+```
+mike deploy [version]
+```
+关于mike插件的使用方法，请访问[官方文档](https://github.com/jimporter/mike)。
++ 通过配置[mkdocs-with-pdf插件扩展](https://github.com/orzih/mkdocs-with-pdf)，可以将MkDocs生成文档导出为PDF文件。在mkdocs.yml配置文件中进行如下设置：
+```
+plugins:
+    - with-pdf
+```
+使用pip安装mkdocs-with-pdf插件：
+```
+pip install mkdocs-with-pdf
+```
+关于mkdocs-with-pdf插件的使用方法，请访问[官方文档](https://github.com/orzih/mkdocs-with-pdf)。
 + 基于RepChain 1.3的链外接口协同组件的原理说明、安装配置、使用规范以及演示示例等，请访问[接口协同官方文档](https://btajl.gitee.io/api-coord/)。
