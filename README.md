@@ -23,13 +23,13 @@ git clone https://gitee.com/BTAJL/api-coord.git -b mid-client
 将
 
 ```xml
-        <withJansi>true</withJansi>
+<withJansi>true</withJansi>
 ```
 
 修改为
 
 ```xml
-        <withJansi>false</withJansi>
+<withJansi>false</withJansi>
 ```
 
 
@@ -40,7 +40,7 @@ git clone https://gitee.com/BTAJL/api-coord.git -b mid-client
 * 修改`resources/logback.xml`文件中Jansi内容,改为`true`
 * 
 ```xml
-        <withJansi>true</withJansi>
+<withJansi>true</withJansi>
 ```
 
 * 打包

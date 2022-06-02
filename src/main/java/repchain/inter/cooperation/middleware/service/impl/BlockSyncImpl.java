@@ -9,7 +9,6 @@ import com.rcjava.sync.SyncListener;
 import com.rcjava.sync.SyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import repchain.inter.cooperation.middleware.constant.EhCacheConstant;
 import repchain.inter.cooperation.middleware.constant.InterfaceConstant;
 import repchain.inter.cooperation.middleware.model.yml.RepChain;
 import repchain.inter.cooperation.middleware.service.BlockSync;
@@ -73,10 +72,7 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
         try {
             // 将区块高度持久化
             syncService.saveBlock(block);
-            List<String> list = new LinkedList<>();
-            block.getTransactionsList().forEach(result -> list.add(result.getCid().getChaincodeName()));
             // 合约数据同步操作
-            AtomicInteger i = new AtomicInteger();
             block.getTransactionResultsList().forEach(result -> {
                 Map<String, ByteString> stringMap = result.getStatesSetMap();
                 for (Map.Entry<String, ByteString> entry : stringMap.entrySet()) {
@@ -103,25 +99,6 @@ public class BlockSyncImpl implements BlockSync, SyncListener {
                         throw new RuntimeException(e);
                     }
                 }
-//                result.getOlList().forEach(ol -> {
-//                    String key = ol.getKey();
-//                    // 接口协同合约
-//                    if (InterfaceConstant.NAME.equals(chainCodeName)) {
-//                        // 接口定义
-//                        if (KeyUtils.startsWith(key, InterfaceConstant.DEF)) {
-//                            syncService.defInterface(ol);
-//                        }
-//                        // 接口登记
-//                        if (KeyUtils.startsWith(key, InterfaceConstant.REGISTER) || KeyUtils.startsWith(key, InterfaceConstant.INVOKE_REGISTER)) {
-//                            syncService.register(ol);
-//                        }
-//                        // 接口存证
-//                        if (KeyUtils.startsWith(key, InterfaceConstant.ACK_PROOF)) {
-//                            syncService.ackProof(ol);
-//                        }
-//                    }
-//                });
-                i.getAndIncrement();
             });
         } catch (Exception ex) {
             throw new SyncBlockException(ex);
