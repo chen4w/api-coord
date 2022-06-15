@@ -19,13 +19,13 @@ import java.util.Map;
 public class BlockResultUtil {
 
     public static Map<String, Object> toMap(ByteString ol) {
-        String order = ol.toStringUtf8();
-        return JSONUtil.parseObj(order);
+        String str = (String) OperLogUtil.toInstance(ol.toByteArray());
+        return JSONUtil.parseObj(str);
     }
 
     public static <T> T toBean(ByteString ol, Class<T> clazz) {
-        String order =  ol.toStringUtf8();
-        return JSONUtil.toBean(order, clazz);
+        String str = (String) OperLogUtil.toInstance(ol.toByteArray());
+        return JSONUtil.toBean(str, clazz);
     }
 
     public static Double toDouble(ByteString ol) {

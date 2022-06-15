@@ -3,32 +3,32 @@ repchain:
   # 组网Id
   chainNetworkId: net1
   # repchain 地址
-  host: 192.168.4.46:9081
+  host: 192.168.1.167:9081
   # 同步区块高度
   height: 0
   # 出块时间 (分钟）
   blockTime: 5
   # 用户唯一标识
-  creditCode: CZBIKwIVCE
+  creditCode: yDC05XiV29
   # 证书名称
-  certName: lhc
+  certName: diaoyong
   # 证书
   cert: -----BEGIN CERTIFICATE-----
-    MIIBHjCBxaADAgECAgQimh/AMAoGCCqGSM49BAMCMA4xDDAKBgNVBAMMA2xoYzAi
-    GA8yMDIxMTEyMzAzMTIwNVoYDzk5OTkxMjMxMjM1OTU5WjAOMQwwCgYDVQQDDANs
-    aGMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQuOTBhmuWl5cTI+w2apLboHEgJ
-    fiKYtoe7KTltmvMgKtDhvcG4v0TEZlnEfMidFsR985dZczVmPnoSw3jOSzFeow0w
-    CzAJBgNVHSMEAjAAMAoGCCqGSM49BAMCA0gAMEUCICcx+P4IoHwfYEmqU6eU7D7W
-    7N5p83onIbkJt9+9+WhdAiEA4EoS3QoLIjLe+SkR3ixVsNg4faefkvZ4cQwwGCoH
-    DSw=
+    MIIBSTCB8aADAgECAgQHtnBwMAoGCCqGSM49BAMCMBMxETAPBgNVBAMMCERJQU9Z
+    T05HMCIYDzIwMjIwNjE1MDUzNTU2WhgPOTk5OTEyMzEyMzU5NTlaMBMxETAPBgNV
+    BAMMCERJQU9ZT05HMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEj8WFs3RmepyF
+    mXMUZS1QLfTL8EUnB2SV5VGo2qlfqxY2F1LzHwLSPXJpviN8Mpl7mlzW6VzSiQH+
+    HO7xubhb5KMvMC0wKwYDVR0jBCQwIoAg+/o+yzVvnIp6qH4JMJRQQHYvHX3u26d4
+    lnQVWXkdH3EwCgYIKoZIzj0EAwIDRwAwRAIgDslUkkhKNh3RCrhSXbWbHlkVg7SH
+    /yuZYyu0523OoEICIA5HyA8Z6gXd4JsGdJsmwT3+fLGqnG5lM/gv7Djg7fin
     -----END CERTIFICATE-----
   # 加密私钥
   privateKey: -----BEGIN ENCRYPTED PRIVATE KEY-----
-    MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAiLIOkyPHJArwIBZDAU
-    BggqhkiG9w0DBwQI9LBkh5VxRrsEgZAv+UM6aNsXyCn9ZmqYQzJC2fmAyozddShz
-    JFQYlo1r1lZT8ldSr3RyDXz6qW+KIMiZOwUU77wWCAWspiXxMDEM34gkzcGXWjql
-    4Q8V1Nu3zwZW0e38mhZaRBCma7pCP3nEoZjZJUEi8RChgOmgPquyRnhlrcbIn00d
-    +tg18OOWXap6LicSRTt/IounD3AYjVs=
+    MIHUMD8GCSqGSIb3DQEFDTAyMBoGCSqGSIb3DQEFDDANBAg2Xue/BAHwRgIBZDAU
+    BggqhkiG9w0DBwQI7QhxvgSKm9sEgZBvKQF5qRDXVHSxvhxwPbSr6X66xSKNmB04
+    idei9BrczwSbHWUqj6Pr139B+pw2SoqtZf0v/3OUbYWv5sOrtWJk32zVTL2zGlhn
+    y5Ig1s6++HKdkXYSRH5+At4kuYVAQfcyLk8xlm1yK+HmFVOkXjz3Ta9zqaeeu9BW
+    310n5pULGujrNXiVc3sJH45coJ7/Q5k=
     -----END ENCRYPTED PRIVATE KEY-----
   # 私钥设置的密码
   password: 123456
@@ -36,10 +36,22 @@ repchain:
   services:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
-      # 提供方证书
-      e_from: ac62feb61637638831946
-      # 服务方证书
+      # 调用方ID
+      e_from: bcee496d1655279982601
+      # 调用方证书
       from_cert: -----BEGIN CERTIFICATE-----
+        MIIBSTCB8aADAgECAgQHtnBwMAoGCCqGSM49BAMCMBMxETAPBgNVBAMMCERJQU9Z
+        T05HMCIYDzIwMjIwNjE1MDUzNTU2WhgPOTk5OTEyMzEyMzU5NTlaMBMxETAPBgNV
+        BAMMCERJQU9ZT05HMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEj8WFs3RmepyF
+        mXMUZS1QLfTL8EUnB2SV5VGo2qlfqxY2F1LzHwLSPXJpviN8Mpl7mlzW6VzSiQH+
+        HO7xubhb5KMvMC0wKwYDVR0jBCQwIoAg+/o+yzVvnIp6qH4JMJRQQHYvHX3u26d4
+        lnQVWXkdH3EwCgYIKoZIzj0EAwIDRwAwRAIgDslUkkhKNh3RCrhSXbWbHlkVg7SH
+        /yuZYyu0523OoEICIA5HyA8Z6gXd4JsGdJsmwT3+fLGqnG5lM/gv7Djg7fin
+        -----END CERTIFICATE-----
+      # 服务提供方id
+      e_to: c2fa49fb1655279918453
+      # 提供方证书
+      to_cert: -----BEGIN CERTIFICATE-----
         MIIBHjCBxaADAgECAgQimh/AMAoGCCqGSM49BAMCMA4xDDAKBgNVBAMMA2xoYzAi
         GA8yMDIxMTEyMzAzMTIwNVoYDzk5OTkxMjMxMjM1OTU5WjAOMQwwCgYDVQQDDANs
         aGMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQuOTBhmuWl5cTI+w2apLboHEgJ
@@ -48,29 +60,17 @@ repchain:
         7N5p83onIbkJt9+9+WhdAiEA4EoS3QoLIjLe+SkR3ixVsNg4faefkvZ4cQwwGCoH
         DSw=
         -----END CERTIFICATE-----
-      # 服务提供方id
-      e_to: 4f4efafd1637638043202
-      # 调用方证书
-      to_cert: -----BEGIN CERTIFICATE-----
-        MIIBIDCBx6ADAgECAgQDNHtwMAoGCCqGSM49BAMCMA8xDTALBgNVBAMMBFRFU1Qw
-        IhgPMjAyMTEwMjYwMTE0MDVaGA85OTk5MTIzMTIzNTk1OVowDzENMAsGA1UEAwwE
-        VEVTVDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABO3voNU9OV4EoDyBHQcD+az/
-        E5TB1i5fRf+tTaNgjCWr6jErt/Ce21b18uwTuZXx38nvA5l26S1MEpCAuuJSFymj
-        DTALMAkGA1UdIwQCMAAwCgYIKoZIzj0EAwIDSAAwRQIhANjTlEKVu0O5lgEloHrh
-        ZLcNMHH9S2sVzasTK5OJuXwGAiBGi2GL4W4XlWzjl94swApuv2bb7rbo2huBIzhc
-        zZXMcw==
-        -----END CERTIFICATE-----
 ## 中间件配置
 middleware:
-#  # 文件配置
-#  file:
-#    # 文件持久化配置
-#    temp: /file/tmp
-#    # 文件备份地址配置
-#    backupPath: /data/backup
-    # 日志配置
-    #  log:
-    # 日志保存路径
+  #  # 文件配置
+  #  file:
+  #    # 文件持久化配置
+  #    temp: /file/tmp
+  #    # 文件备份地址配置
+  #    backupPath: /data/backup
+  # 日志配置
+  #  log:
+  # 日志保存路径
   #    path: /data/logs
   # 用来访问服务方提供的接口的客户端
   recClient:
@@ -79,7 +79,7 @@ middleware:
     # http
     protocol: http
     # 超时时间
-    timeout: 5000
+    timeout: 30000
   # 用来让调用方访问的服务器
   recServer:
     # 端口
@@ -111,7 +111,7 @@ middleware:
   # 中间件之间通信的服务器
   comServer:
     # 端口
-    port: 8669
+    port: 9090
     # 初始线程池大小
     corePoolSize: 50
     # 最大线程池大小
@@ -120,11 +120,11 @@ middleware:
     workQueue: 100
 # 数据源配置，用于数据持久化，当前版本支持sqlite，mysql
 datasource:
-#  url: jdbc:sqlite:data/repchain_mid.db
-#  pass: root
-#  user: root
-#  driver: org.sqlite.JDBC
-  url: jdbc:mysql://192.168.4.12:49159/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+  #  url: jdbc:sqlite:data/repchain_mid.db
+  #  pass: root
+  #  user: root
+  #  driver: org.sqlite.JDBC
+  url: jdbc:mysql://192.168.1.111:3306/repchain_mid?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
   pass: root
   user: root
   driver: com.mysql.jdbc.Driver

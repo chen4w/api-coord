@@ -33,7 +33,7 @@ public class TranClient {
         PEMParser parser = new PEMParser(new StringReader(privateKeyPem));
         try {
             PrivateKey privateKey = KeyUtil.generatePrivateKey(parser,  password);
-            tranCreator = TranCreator.newBuilder().setPrivateKey(privateKey).setSignAlgorithm("sha1withecdsa").build();
+            tranCreator = TranCreator.newBuilder().setPrivateKey(privateKey).setSignAlgorithm("SHA256withECDSA").build();
         }catch (Exception e){
             e.printStackTrace();
         }

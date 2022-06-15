@@ -80,6 +80,6 @@ public class RequestAck {
         Peer.Transaction tran = userClient
                 .getTranCreator()
                 .createInvokeTran( tranId,userClient.getCertId(), userClient.getChaincodeId(), functionName, JSONUtil.toJsonStr(reqAckProof),0,"");
-        return tranPostClient.postSignedTran(Hex.encodeHexString(tran.toByteArray()));
+        return tranPostClient.postSignedTran(tran);
     }
 }

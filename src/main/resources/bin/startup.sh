@@ -45,7 +45,7 @@ ADAPTER_OPTS="-DappName=Interface-Cooperation-Middleware"
 #echo "cd to $bin_abs_path for workaround relative path"
 cd $bin_abs_path
 echo "Interface-Cooperation-Middleware is starting..."
-$JAVA $JAVA_OPTS  $ADAPTER_OPTS -jar ../lib/Interface-Cooperation-Middleware-1.0-SNAPSHOT.jar >/dev/null 2>&1 &
+$JAVA $JAVA_OPTS  $ADAPTER_OPTS -jar ../lib/Interface-Cooperation-Middleware-1.0.3-RC2.0.0.jar >/dev/null 2>&1 &
 echo $! > $base/bin/process.pid
 
 #echo "cd to $current_path for continue"

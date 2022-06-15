@@ -1,5 +1,7 @@
 package repchain.inter.cooperation.middleware.utils;
 
+import com.alibaba.druid.util.StringUtils;
+
 /**
  * @author lhc
  * @version 1.0
@@ -15,9 +17,12 @@ public class KeyUtils {
     }
 
     public static boolean startsWith(String key, String prefix) {
-        String chainNetCode = YamlUtils.getRepchain().getChainNetworkId();
         String[] arr = key.split("_");
-        String chainCode = arr[0] + "_" + arr[1] + "_" + arr[2] + "_";
+        String thrid = arr[2];
+        if (StringUtils.isEmpty(arr[2])) {
+            thrid = "_";
+        }
+        String chainCode = arr[0] + "_" + arr[1] + "_" + thrid + "_";
         String prefixStr = key.replace(chainCode, "");
         return prefixStr.startsWith(prefix);
     }

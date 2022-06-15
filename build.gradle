@@ -17,7 +17,7 @@ def grpcVersion = '1.37.0' // CURRENT_GRPC_VERSION
 def protobufVersion = '3.17.2'
 def protocVersion = protobufVersion
 
-test.enabled(false)
+//test.enabled(false)
 
 
 task clearJar(type: Delete) {
@@ -56,6 +56,10 @@ dependencies {
     implementation 'org.fusesource.jansi:jansi:1.17.1'
     implementation 'repchain.interface.cooperation:Interface-Cooperation-Client:1.0-SNAPSHOT'
     implementation 'org.quartz-scheduler:quartz:2.3.2'
+    testImplementation 'commons-io:commons-io:2.6'
+    implementation 'org.json4s:json4s-jackson_2.12:3.6.7'
+    implementation 'com.thesamet.scalapb:scalapb-runtime_2.12:0.10.0-M2'
+    implementation 'com.twitter:chill-bijection_2.12:0.9.4'
 }
 protobuf {
     protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }

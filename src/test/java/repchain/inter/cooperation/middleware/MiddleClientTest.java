@@ -25,8 +25,8 @@ public class MiddleClientTest {
     @Test()
     public void msg() {
         // 构建请求参数
-        Map<String, Object> map = new HashMap<>(1);
-        map.put("loginName", "12110107bi45jh675g");
+//        Map<String, Object> map = new HashMap<>(1);
+//        map.put("loginName", "12110107bi45jh675g");
         ReqOption option = new ReqOption();
         option.setReqSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
@@ -38,9 +38,9 @@ public class MiddleClientTest {
                 // 中间件中的服务id，根据yml文件配置填写
                 .setServiceId("1")
                 // 设置访问的url
-                .setUrl("/user/sgUser/valid")
-                // 设置传输的数据
-                .setForm(map)
+                .setUrl("/block/1")
+//                 设置传输的数据
+//                .setForm(map)
                 // 发送数据
                 .msg(option);
         System.out.println(JSONUtil.toJsonPrettyStr(result));

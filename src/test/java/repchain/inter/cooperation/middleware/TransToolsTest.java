@@ -26,6 +26,11 @@ public class TransToolsTest {
         PrivateKey privateKey = PkUtil.getPrivateKey(repchain.handlePrivateKey(), repchain.getPassword());
         Signature signature = TransTools.getSignature(privateKey, contentHash, repchain.getCreditCode(), repchain.getCertName(), "sha256withecdsa");
         Header header = Header.builder().validStr(contentHash).signData(signature.getSign()).build();
-//        TransTools.validAuth()
+//        TransTools.validAuth();
+    }
+
+    @Test
+    public void validAuth(){
+//        TransTools.validAuth("");
     }
 }

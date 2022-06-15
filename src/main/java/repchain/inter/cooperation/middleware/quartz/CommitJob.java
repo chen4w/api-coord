@@ -50,13 +50,14 @@ public class CommitJob implements Job {
                     String[] keys = key.split("_");
                     Long now = System.currentTimeMillis();
                     Long saveTime = Long.parseLong(keys[2]) + repchain.getBlockTime() * 60 * 1000+10000;
-                    if (saveTime > now) {
+                    if (now > saveTime) {
                         String value = (String) entity.get("obj");
                         JSONObject jsonObject = requestAck.rb(JSONUtil.toBean(value, ReqAckProof.class), sysCert);
                         // 若果有错误信息，则提交存证数据失败
                         if (!StrUtil.isBlankIfStr(jsonObject.get("err"))) {
                             logger.error("提交区块链数据失败：" + jsonObject);
                         }
+                        logger.info("重复提交数据中");
                     }
                 }
                 if (result.isEmpty()||result.isLast()) {

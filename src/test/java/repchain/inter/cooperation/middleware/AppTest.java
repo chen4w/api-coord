@@ -54,4 +54,9 @@ public class AppTest {
         PageResult<Entity> result = db.page(Entity.create("persistence"), new Page(5, 10));
         System.out.println(result.isLast());
     }
+
+
+
+
+
 }
