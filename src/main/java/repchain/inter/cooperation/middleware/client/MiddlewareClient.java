@@ -178,7 +178,7 @@ public class MiddlewareClient {
             reqForm.put("cid",perReq.getCid());
         }
         String resultStr = HttpRequest.get(host + "/data")
-                .form(form)
+                .form(reqForm)
                 .timeout(this.timeout)
                 .execute().body();
         return JSONUtil.toBean(resultStr, InterCoResult.class);

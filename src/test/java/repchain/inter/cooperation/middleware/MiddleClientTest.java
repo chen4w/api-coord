@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import org.junit.jupiter.api.Test;
 import repchain.inter.cooperation.middleware.client.HttpType;
 import repchain.inter.cooperation.middleware.client.MiddlewareClient;
+import repchain.inter.cooperation.middleware.client.PerReq;
 import repchain.inter.cooperation.middleware.client.ReqOption;
 import repchain.inter.cooperation.middleware.model.InterCoResult;
 import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
@@ -229,6 +230,15 @@ public class MiddleClientTest {
                 .setForm(map)
                 // 发送数据
                 .download();
+        System.out.println(JSONUtil.toJsonPrettyStr(result));
+    }
+
+    @Test()
+    public void getData() {
+        InterCoResult result = MiddlewareClient
+                // 填写中间件地址及端口号，及超时时间
+                .create("http://localhost:8888", 50000)
+                .data(PerReq.builder().cid("37062cdda39943dea4241c44aa283a791537315556377612288").pageNo(0).pageSize(10).build());
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 }
