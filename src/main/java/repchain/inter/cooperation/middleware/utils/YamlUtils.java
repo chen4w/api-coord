@@ -3,10 +3,7 @@ package repchain.inter.cooperation.middleware.utils;
 import cn.hutool.core.io.file.FileReader;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import repchain.inter.cooperation.middleware.model.yml.MyDatasource;
-import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
-import repchain.inter.cooperation.middleware.model.yml.RepChain;
-import repchain.inter.cooperation.middleware.model.yml.Service;
+import repchain.inter.cooperation.middleware.model.yml.*;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -93,5 +90,9 @@ public class YamlUtils {
 
     public static RepChain getRepchain() {
         return middleConfig.getRepchain();
+    }
+
+    public static Middleware getMiddleware(){
+        return middleConfig.getMiddleware();
     }
 }

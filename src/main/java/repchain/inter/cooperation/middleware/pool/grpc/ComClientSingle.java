@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import repchain.inter.cooperation.middleware.exception.ServiceException;
 import repchain.inter.cooperation.middleware.model.tran.Signature;
 import repchain.inter.cooperation.middleware.model.yml.FileYml;
+import repchain.inter.cooperation.middleware.model.yml.MiddleConfig;
+import repchain.inter.cooperation.middleware.model.yml.Middleware;
 import repchain.inter.cooperation.middleware.proto.*;
 import repchain.inter.cooperation.middleware.utils.GetFileSHA256;
 import repchain.inter.cooperation.middleware.utils.SnowIdGenerator;
@@ -100,7 +102,8 @@ public class ComClientSingle {
                 requestObserver.onNext(transFile.toBuilder().build());
             } else {
                 FileInputStream is = new FileInputStream(file);
-                byte[] buff = new byte[8192];
+                Middleware middleware= YamlUtils.getMiddleware();
+                byte[] buff = new byte[middleware.getFile().getBufferSize()];
                 int len;
                 while ((len = is.read(buff)) != -1) {
                     requestObserver.onNext(transFile.toBuilder().setFile(ByteString.copyFrom(buff, 0, len)).build());

@@ -42,7 +42,7 @@ public class PersistenceImpl implements Persistence {
         }
         Entity entity = Entity.create(EhCacheConstant.PERSISTENCE).set("cid", perVo.getCid()).set("header", JSONUtil.toJsonStr(perVo.getHeader())).set("time", new Date());
         if (perVo.getResult() != null) {
-            entity = entity.set("result", JSONUtil.toJsonStr(perVo.getResult()));
+            entity = entity.set("result", JSONUtil.toJsonStr("{"+perVo.getResult().toString()+"}"));
         }
         String parentPath = YamlUtils.jarPath + "/file/backup";
         if (YamlUtils.middleConfig.getMiddleware().getFile() != null) {

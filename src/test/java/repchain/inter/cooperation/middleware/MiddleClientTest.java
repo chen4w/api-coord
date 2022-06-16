@@ -25,8 +25,8 @@ public class MiddleClientTest {
     @Test()
     public void msg() {
         // 构建请求参数
-//        Map<String, Object> map = new HashMap<>(1);
-//        map.put("loginName", "12110107bi45jh675g");
+        Map<String, Object> map = new HashMap<>(1);
+        map.put("loginName", "12110107bi45jh675g");
         ReqOption option = new ReqOption();
         option.setReqSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
@@ -38,9 +38,9 @@ public class MiddleClientTest {
                 // 中间件中的服务id，根据yml文件配置填写
                 .setServiceId("1")
                 // 设置访问的url
-                .setUrl("/block/1")
+                .setUrl("/user/sgUser/valid")
 //                 设置传输的数据
-//                .setForm(map)
+                .setForm(map)
                 // 发送数据
                 .msg(option);
         System.out.println(JSONUtil.toJsonPrettyStr(result));
@@ -125,6 +125,10 @@ public class MiddleClientTest {
     public void file() {
         Map<String, Object> map = new HashMap<>(1);
         map.put("loginName", "12110107bi45jh675g");
+        ReqOption option = new ReqOption();
+        option.setReqSave(ReqOption.TRUE);
+        option.setFileSave(ReqOption.TRUE);
+        option.setResultSave(ReqOption.TRUE);
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
                 .create("http://localhost:8888", 50000)
@@ -139,9 +143,9 @@ public class MiddleClientTest {
                 // 设置文件字段
                 .setFileField("file")
                 // file
-                .setFile(new File("/Users/lhc/Downloads/canal.adapter-1.1.5.tar.gz"))
+                .setFile(new File("/Volumes/DATA/功能演示视频.zip"))
                 // 发送数据
-                .sendFile();
+                .sendFile(option);
 //        System.out.println("upload");
 //        HashMap<String, Object> paramMap = new HashMap<>();
 //        paramMap.put("file", FileUtil.file("/Users/lhc/Downloads/scientist_pub.sql"));
@@ -170,6 +174,8 @@ public class MiddleClientTest {
 //        map.put("loginName", "12110107bi45jh675g");
         ReqOption option = new ReqOption();
         option.setReqSave(ReqOption.TRUE);
+        option.setResultSave(ReqOption.TRUE);
+        option.setFileSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -196,6 +202,7 @@ public class MiddleClientTest {
         ReqOption reqOption = new ReqOption();
         reqOption.setReqSave(ReqOption.TRUE);
         reqOption.setFileSave(ReqOption.TRUE);
+        reqOption.setResultSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -222,6 +229,7 @@ public class MiddleClientTest {
         ReqOption reqOption = new ReqOption();
         reqOption.setReqSave(ReqOption.TRUE);
         reqOption.setFileSave(ReqOption.TRUE);
+        reqOption.setResultSave(ReqOption.TRUE);
         // 发送请求，并获取返回结果
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
@@ -338,7 +346,7 @@ public class MiddleClientTest {
         InterCoResult result = MiddlewareClient
                 // 填写中间件地址及端口号，及超时时间
                 .create("http://localhost:8888", 50000)
-                .data(PerReq.builder().cid("xxx").pageNo(0).pageSize(10).build());
+                .data(PerReq.builder().cid("37062cdda39943dea4241c44aa283a791537315556377612288").pageNo(0).pageSize(10).build());
         System.out.println(JSONUtil.toJsonPrettyStr(result));
     }
 }

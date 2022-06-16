@@ -1,7 +1,7 @@
 # repchain配置文件
 repchain:
   # 组网Id
-  chainNetworkId: net1
+  chainNetworkId: identity-net
   # repchain 地址
   host: 192.168.1.167:9081
   # 同步区块高度
@@ -9,7 +9,7 @@ repchain:
   # 出块时间 (分钟）
   blockTime: 5
   # 用户唯一标识
-  creditCode: yDC05XiV29
+  creditCode: identity-net:ZR8WDi2DJ9
   # 证书名称
   certName: diaoyong
   # 证书
@@ -37,7 +37,7 @@ repchain:
     # 用户自定义id，不能重复，必填
     - serviceId: 1
       # 调用方ID
-      e_from: bcee496d1655279982601
+      e_from: fbb561061655349904075
       # 调用方证书
       from_cert: -----BEGIN CERTIFICATE-----
         MIIBSTCB8aADAgECAgQHtnBwMAoGCCqGSM49BAMCMBMxETAPBgNVBAMMCERJQU9Z
@@ -49,7 +49,7 @@ repchain:
         /yuZYyu0523OoEICIA5HyA8Z6gXd4JsGdJsmwT3+fLGqnG5lM/gv7Djg7fin
         -----END CERTIFICATE-----
       # 服务提供方id
-      e_to: c2fa49fb1655279918453
+      e_to: 5d4439241655349362917
       # 提供方证书
       to_cert: -----BEGIN CERTIFICATE-----
         MIIBHjCBxaADAgECAgQimh/AMAoGCCqGSM49BAMCMA4xDDAKBgNVBAMMA2xoYzAi
@@ -62,8 +62,10 @@ repchain:
         -----END CERTIFICATE-----
 ## 中间件配置
 middleware:
-  #  # 文件配置
-  #  file:
+    # 文件配置
+  file:
+    # 文件缓冲大小，如果文件传输速度较慢，可以增大此参数，此参数推荐1024的倍数
+    bufferSize: 8192
   #    # 文件持久化配置
   #    temp: /file/tmp
   #    # 文件备份地址配置
@@ -135,4 +137,4 @@ datasource:
   # 是否显示SQL参数
   showParams: true
   # 打印SQL的日志等级，默认debug，可以是info、warn、error
-  sqlLevel: debug
+  sqlLevel: info

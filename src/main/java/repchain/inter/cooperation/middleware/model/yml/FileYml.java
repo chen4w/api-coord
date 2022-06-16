@@ -19,4 +19,5 @@ import lombok.NoArgsConstructor;
 public class FileYml {
     private String temp;
     private String backupPath;
+    private Integer bufferSize;
 }
