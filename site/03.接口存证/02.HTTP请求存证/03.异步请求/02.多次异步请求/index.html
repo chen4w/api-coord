@@ -216,20 +216,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../01.%E5%BC%80%E5%A7%8B/03.%E4%BB%A3%E7%A0%81%E7%BB%93%E6%9E%84/" class="md-nav__link">
-        代码结构
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -450,36 +436,22 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../01.HTTP%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-nav__link">
-        配置文件
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_2" type="checkbox" id="__nav_4_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_1" type="checkbox" id="__nav_4_2_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_2_2">
+        <label class="md-nav__link" for="__nav_4_2_1">
           同步请求
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="同步请求" data-md-level="3">
-        <label class="md-nav__title" for="__nav_4_2_2">
+        <label class="md-nav__title" for="__nav_4_2_1">
           <span class="md-nav__icon md-icon"></span>
           同步请求
         </label>
@@ -531,18 +503,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_3" type="checkbox" id="__nav_4_2_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2_2" type="checkbox" id="__nav_4_2_2" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_2_3">
+        <label class="md-nav__link" for="__nav_4_2_2">
           异步请求
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="异步请求" data-md-level="3">
-        <label class="md-nav__title" for="__nav_4_2_3">
+        <label class="md-nav__title" for="__nav_4_2_2">
           <span class="md-nav__icon md-icon"></span>
           异步请求
         </label>
@@ -633,28 +605,8 @@
       
         <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
-    三、代码示例
+    三、示例
   </a>
-  
-    <nav class="md-nav" aria-label="三、代码示例">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    请求方
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    服务方
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -674,36 +626,8 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../04.API/" class="md-nav__link">
-        API
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../03.GRPC%E8%AF%B7%E6%B1%82%E5%AD%98%E8%AF%81/" class="md-nav__link">
-        gRPC请求存证
-      </a>
     </li>
   
 
@@ -1090,28 +1014,8 @@
       
         <li class="md-nav__item">
   <a href="#_5" class="md-nav__link">
-    三、代码示例
+    三、示例
   </a>
-  
-    <nav class="md-nav" aria-label="三、代码示例">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
-    请求方
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_7" class="md-nav__link">
-    服务方
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1176,480 +1080,10 @@
 <blockquote>
 <p>执行多次<a href="../01.%E5%8D%95%E6%AC%A1%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/#服务方">单次应答调用</a>步骤，每次应答都进行存证</p>
 </blockquote>
-<h2 id="_5">三、代码示例</h2>
-<h3 id="_6">请求方</h3>
-<p>请求：</p>
-<ol>
-<li>
-<p>调用请求方法进行多次请求</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-0-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-0-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-0-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-0-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-0-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span>
-<span class="normal"><a href="#__codelineno-0-11">11</a></span>
-<span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span>
-<span class="normal"><a href="#__codelineno-0-17">17</a></span>
-<span class="normal"><a href="#__codelineno-0-18">18</a></span>
-<span class="normal"><a href="#__codelineno-0-19">19</a></span>
-<span class="normal"><a href="#__codelineno-0-20">20</a></span>
-<span class="normal"><a href="#__codelineno-0-21">21</a></span>
-<span class="normal"><a href="#__codelineno-0-22">22</a></span>
-<span class="normal"><a href="#__codelineno-0-23">23</a></span>
-<span class="normal"><a href="#__codelineno-0-24">24</a></span>
-<span class="normal"><a href="#__codelineno-0-25">25</a></span>
-<span class="normal"><a href="#__codelineno-0-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="w"> </span><span class="c1">// 生成本次请求的存证id，此id会在本次请求存证中重复使用</span><span class="w"></span>
-<a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">cid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SnowIdGenerator</span><span class="p">.</span><span class="na">getId</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-0-3" name="__codelineno-0-3"></a><span class="w"> </span><span class="c1">// 第一次调用</span><span class="w"></span>
-<a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="w"> </span><span class="c1">// 构建接口调用参数</span><span class="w"></span>
-<a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">paramMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageNo&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w"> </span><span class="n">request</span><span class="p">(</span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="w"> </span><span class="c1">// 第二次调用</span><span class="w"></span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w"> </span><span class="c1">// 构建接口调用参数</span><span class="w"></span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="w"> </span><span class="n">paramMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageNo&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w"> </span><span class="n">request</span><span class="p">(</span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w"> </span><span class="c1">// 第三次调用</span><span class="w"></span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="w"> </span><span class="c1">// 构建接口调用参数</span><span class="w"></span>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w"> </span><span class="n">paramMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageNo&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="w"> </span><span class="n">request</span><span class="p">(</span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w"> </span><span class="c1">// 第四次调用</span><span class="w"></span>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="w"> </span><span class="c1">// 构建接口调用参数</span><span class="w"></span>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="w"> </span><span class="n">paramMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="w"> </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;pageNo&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="w"> </span><span class="n">request</span><span class="p">(</span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>请求方法</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-1-10">10</a></span>
-<span class="normal"><a href="#__codelineno-1-11">11</a></span>
-<span class="normal"><a href="#__codelineno-1-12">12</a></span>
-<span class="normal"><a href="#__codelineno-1-13">13</a></span>
-<span class="normal"><a href="#__codelineno-1-14">14</a></span>
-<span class="normal"><a href="#__codelineno-1-15">15</a></span>
-<span class="normal"><a href="#__codelineno-1-16">16</a></span>
-<span class="normal"><a href="#__codelineno-1-17">17</a></span>
-<span class="normal"><a href="#__codelineno-1-18">18</a></span>
-<span class="normal"><a href="#__codelineno-1-19">19</a></span>
-<span class="normal"><a href="#__codelineno-1-20">20</a></span>
-<span class="normal"><a href="#__codelineno-1-21">21</a></span>
-<span class="normal"><a href="#__codelineno-1-22">22</a></span>
-<span class="normal"><a href="#__codelineno-1-23">23</a></span>
-<span class="normal"><a href="#__codelineno-1-24">24</a></span>
-<span class="normal"><a href="#__codelineno-1-25">25</a></span>
-<span class="normal"><a href="#__codelineno-1-26">26</a></span>
-<span class="normal"><a href="#__codelineno-1-27">27</a></span>
-<span class="normal"><a href="#__codelineno-1-28">28</a></span>
-<span class="normal"><a href="#__codelineno-1-29">29</a></span>
-<span class="normal"><a href="#__codelineno-1-30">30</a></span>
-<span class="normal"><a href="#__codelineno-1-31">31</a></span>
-<span class="normal"><a href="#__codelineno-1-32">32</a></span>
-<span class="normal"><a href="#__codelineno-1-33">33</a></span>
-<span class="normal"><a href="#__codelineno-1-34">34</a></span>
-<span class="normal"><a href="#__codelineno-1-35">35</a></span>
-<span class="normal"><a href="#__codelineno-1-36">36</a></span>
-<span class="normal"><a href="#__codelineno-1-37">37</a></span>
-<span class="normal"><a href="#__codelineno-1-38">38</a></span>
-<span class="normal"><a href="#__codelineno-1-39">39</a></span>
-<span class="normal"><a href="#__codelineno-1-40">40</a></span>
-<span class="normal"><a href="#__codelineno-1-41">41</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="w">   </span><span class="cm">/**</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2"></a><span class="cm">    * @description // 请求数据</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3"></a><span class="cm">    * @date 5:38 下午 2021/10/18</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4"></a><span class="cm">    * @params [paramMap (请求入参), cid（请求id）, req (请求序号，从1开始递增)]</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5"></a><span class="cm">    * @return void</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6"></a><span class="cm">    **/</span><span class="w"></span>
-<a id="__codelineno-1-7" name="__codelineno-1-7"></a><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">req</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-1-8" name="__codelineno-1-8"></a><span class="w">       </span><span class="c1">// 获取yml文件中的信息</span><span class="w"></span>
-<a id="__codelineno-1-9" name="__codelineno-1-9"></a><span class="w">       </span><span class="n">RepchainConfig</span><span class="w"> </span><span class="n">repchainConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YamlUtils</span><span class="p">.</span><span class="na">repchainConfig</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-1-10" name="__codelineno-1-10"></a><span class="w">       </span><span class="n">List</span><span class="o">&lt;</span><span class="n">InterCo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interCoList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repchainConfig</span><span class="p">.</span><span class="na">getRepchain</span><span class="p">().</span><span class="na">getInterCo</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-1-11" name="__codelineno-1-11"></a><span class="w">       </span><span class="n">InterCo</span><span class="w"> </span><span class="n">interCo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interCoList</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-12" name="__codelineno-1-12"></a><span class="w">       </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Service</span><span class="o">&gt;</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interCo</span><span class="p">.</span><span class="na">getServices</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-1-13" name="__codelineno-1-13"></a><span class="w">       </span><span class="n">Service</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">services</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-14" name="__codelineno-1-14"></a><span class="w">       </span><span class="c1">// 对业务请求数据进行hash取值</span><span class="w"></span>
-<a id="__codelineno-1-15" name="__codelineno-1-15"></a><span class="w">       </span><span class="n">String</span><span class="w"> </span><span class="n">contentHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DigestUtil</span><span class="p">.</span><span class="na">sha256Hex</span><span class="p">(</span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toJsonStr</span><span class="p">(</span><span class="n">paramMap</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-1-16" name="__codelineno-1-16"></a><span class="w">       </span><span class="c1">// 使用yml文件中的公钥和证书，对业务请求参数进行数据签名</span><span class="w"></span>
-<a id="__codelineno-1-17" name="__codelineno-1-17"></a><span class="w">       </span><span class="n">Signature</span><span class="w"> </span><span class="n">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSignature</span><span class="p">(</span><span class="n">interCo</span><span class="p">,</span><span class="w"> </span><span class="n">contentHash</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-18" name="__codelineno-1-18"></a><span class="w">       </span><span class="c1">// 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息</span><span class="w"></span>
-<a id="__codelineno-1-19" name="__codelineno-1-19"></a><span class="w">       </span><span class="n">Header</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">customHeader</span><span class="p">(</span><span class="n">service</span><span class="p">,</span><span class="w"> </span><span class="n">cid</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="n">req</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-20" name="__codelineno-1-20"></a><span class="w">       </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;header&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toJsonStr</span><span class="p">(</span><span class="n">header</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-1-21" name="__codelineno-1-21"></a><span class="w">       </span><span class="c1">// 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中</span><span class="w"></span>
-<a id="__codelineno-1-22" name="__codelineno-1-22"></a><span class="w">       </span><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HttpUtil</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;http://&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getTo_host</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;:&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">service</span><span class="p">.</span><span class="na">getTo_port</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/infoList&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">paramMap</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-23" name="__codelineno-1-23"></a><span class="w">       </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-24" name="__codelineno-1-24"></a><span class="w">       </span><span class="c1">// 获取返回结果对象</span><span class="w"></span>
-<a id="__codelineno-1-25" name="__codelineno-1-25"></a><span class="w">       </span><span class="n">InterCoResult</span><span class="w"> </span><span class="n">resultMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toBean</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">InterCoResult</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-26" name="__codelineno-1-26"></a><span class="w">       </span><span class="c1">// 获取服务提供方签名信息</span><span class="w"></span>
-<a id="__codelineno-1-27" name="__codelineno-1-27"></a><span class="w">       </span><span class="n">Signature</span><span class="w"> </span><span class="n">responseSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">resultMap</span><span class="p">.</span><span class="na">getSignature</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-1-28" name="__codelineno-1-28"></a><span class="w">       </span><span class="c1">// 构建证书对象，用于签名数据及校验权限用</span><span class="w"></span>
-<a id="__codelineno-1-29" name="__codelineno-1-29"></a><span class="w">       </span><span class="n">SysCert</span><span class="w"> </span><span class="n">sysCert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PkUtil</span><span class="p">.</span><span class="na">getSysCert</span><span class="p">(</span><span class="n">interCo</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-30" name="__codelineno-1-30"></a><span class="w">       </span><span class="c1">// 获取yml文件中配置的区块链的host地址</span><span class="w"></span>
-<a id="__codelineno-1-31" name="__codelineno-1-31"></a><span class="w">       </span><span class="n">String</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repchainConfig</span><span class="p">.</span><span class="na">getRepchain</span><span class="p">().</span><span class="na">getHost</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-1-32" name="__codelineno-1-32"></a><span class="w">       </span><span class="c1">// 创建请求实例，若用Spring 此处可以创建javabean</span><span class="w"></span>
-<a id="__codelineno-1-33" name="__codelineno-1-33"></a><span class="w">       </span><span class="n">RequestAck</span><span class="w"> </span><span class="n">requestAck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RequestAck</span><span class="p">(</span><span class="n">host</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-34" name="__codelineno-1-34"></a><span class="w">       </span><span class="c1">// 构建存证交易对象，使用证书和私钥对存证信息进行数据签名，提交给区块链进行存证</span><span class="w"></span>
-<a id="__codelineno-1-35" name="__codelineno-1-35"></a><span class="w">       </span><span class="n">ReqAckProof</span><span class="w"> </span><span class="n">rb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getReqAckProof</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">contentHash</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="n">responseSignature</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-36" name="__codelineno-1-36"></a><span class="w">       </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">jsonObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requestAck</span><span class="p">.</span><span class="na">rb</span><span class="p">(</span><span class="n">rb</span><span class="p">,</span><span class="w"> </span><span class="n">sysCert</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-37" name="__codelineno-1-37"></a><span class="w">       </span><span class="c1">// 若果有错误信息，则提交存证数据失败</span><span class="w"></span>
-<a id="__codelineno-1-38" name="__codelineno-1-38"></a><span class="w">       </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">StrUtil</span><span class="p">.</span><span class="na">isBlankIfStr</span><span class="p">(</span><span class="n">jsonObject</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;err&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-1-39" name="__codelineno-1-39"></a><span class="w">           </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;提交区块链数据失败：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-1-40" name="__codelineno-1-40"></a><span class="w">       </span><span class="p">}</span><span class="w"></span>
-<a id="__codelineno-1-41" name="__codelineno-1-41"></a><span class="w">   </span><span class="p">}</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-</ol>
+<h2 id="_5">三、示例</h2>
 <div class="admonition tip">
 <p class="admonition-title">提示</p>
-<p>完整代码可在代码示例中<code>repchian.inter.cooperation.http.async.multi.request.AsyncMultiClient</code>查看或点击 <a href="https://gitee.com/BTAJL/api-coord/blob/http-lhc/src/main/java/repchain/inter/cooperation/http/async/multi/request/AsyncMultiClient.java"><strong><em>此处</em></strong></a> 在线查看</p>
-</div>
-<p>接收应答</p>
-<ol>
-<li>
-<p>获取应答参数及存证请求头信息</p>
-<blockquote>
-<p>此处获取的header为存证的请求头，示例中将请求头放到request的parameter中传递到应答接口的服务端。</p>
-</blockquote>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1">1</a></span>
-<span class="normal"><a href="#__codelineno-2-2">2</a></span>
-<span class="normal"><a href="#__codelineno-2-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="c1">// 获取调用方请求头header信息</span><span class="w"></span>
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="n">String</span><span class="w"> </span><span class="n">headerStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;header&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="n">Header</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toBean</span><span class="p">(</span><span class="n">headerStr</span><span class="p">,</span><span class="w"> </span><span class="n">Header</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p><a href="../../../../01.%E5%BC%80%E5%A7%8B/01.%E5%BC%95%E8%A8%80/#数据验签">数据验签</a>判断权限</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1">1</a></span>
-<span class="normal"><a href="#__codelineno-3-2">2</a></span>
-<span class="normal"><a href="#__codelineno-3-3">3</a></span>
-<span class="normal"><a href="#__codelineno-3-4">4</a></span>
-<span class="normal"><a href="#__codelineno-3-5">5</a></span>
-<span class="normal"><a href="#__codelineno-3-6">6</a></span>
-<span class="normal"><a href="#__codelineno-3-7">7</a></span>
-<span class="normal"><a href="#__codelineno-3-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="c1">// 2.校验请求方权限，校验请求方数据签名</span><span class="w"></span>
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">validAuth</span><span class="p">(</span><span class="w"> </span><span class="n">header</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w"> </span><span class="c1">// 获取请求返回的数据</span><span class="w"></span>
-<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w"> </span><span class="c1">// 编写业务代码</span><span class="w"></span>
-<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w"> </span><span class="c1">// 返回结果没有权限</span><span class="w"></span>
-<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="p">}</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>执行业务操作获取返回数据</p>
-<blockquote>
-<p>此处请根据实际业务进行业务代码的编写，文档中暂时不做代码示例。</p>
-</blockquote>
-</li>
-<li>
-<p>对返回数据进行<a href="../../../../01.%E5%BC%80%E5%A7%8B/01.%E5%BC%95%E8%A8%80/#数据签名">数据签名</a></p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-4-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-4-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-4-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-4-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-4-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-4-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-4-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-4-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-4-10">10</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a><span class="c1">// 构建返回结果数据</span><span class="w"></span>
-<a id="__codelineno-4-2" name="__codelineno-4-2"></a><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="w"></span>
-<a id="__codelineno-4-3" name="__codelineno-4-3"></a><span class="w">                       </span><span class="p">.</span><span class="na">toBuilder</span><span class="p">()</span><span class="w"></span>
-<a id="__codelineno-4-4" name="__codelineno-4-4"></a><span class="w">                        </span><span class="c1">// 状态码</span><span class="w"></span>
-<a id="__codelineno-4-5" name="__codelineno-4-5"></a><span class="w">                       </span><span class="p">.</span><span class="na">code</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-4-6" name="__codelineno-4-6"></a><span class="w">                        </span><span class="c1">// 状态信息</span><span class="w"></span>
-<a id="__codelineno-4-7" name="__codelineno-4-7"></a><span class="w">                       </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="s">&quot;已收到返回数据&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-4-8" name="__codelineno-4-8"></a><span class="w">                        </span><span class="c1">// 签名数据</span><span class="w"></span>
-<a id="__codelineno-4-9" name="__codelineno-4-9"></a><span class="w">                       </span><span class="p">.</span><span class="na">signature</span><span class="p">(</span><span class="n">sign</span><span class="p">(</span><span class="s">&quot;已收到返回数据&quot;</span><span class="p">))</span><span class="w"></span>
-<a id="__codelineno-4-10" name="__codelineno-4-10"></a><span class="w">                       </span><span class="p">.</span><span class="na">build</span><span class="p">();</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>返回数据及签名信息给请求方</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">提示</p>
-<p>完整代码可在代码示例中<code>repchian.inter.cooperation.http.async.single.request.AsyncMultiRequestServer</code>查看或点击 <a href="https://gitee.com/BTAJL/api-coord/blob/http-lhc/src/main/java/repchain/inter/cooperation/http/async/multi/request/AsyncMultiRequestServer.java"><strong><em>此处</em></strong></a> 在线查看。</p>
-</div>
-<h3 id="_7">服务方</h3>
-<p>接收请求：</p>
-<ol>
-<li>
-<p>获取请求参数及存证请求头信息</p>
-<blockquote>
-<p>此处获取的header为存证的请求头，示例中将请求头放到request的parameter中传递到服务端。</p>
-</blockquote>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1">1</a></span>
-<span class="normal"><a href="#__codelineno-6-2">2</a></span>
-<span class="normal"><a href="#__codelineno-6-3">3</a></span>
-<span class="normal"><a href="#__codelineno-6-4">4</a></span>
-<span class="normal"><a href="#__codelineno-6-5">5</a></span>
-<span class="normal"><a href="#__codelineno-6-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="c1">// 获取调用方请求头header信息</span><span class="w"></span>
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="n">String</span><span class="w"> </span><span class="n">headerStr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;header&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">Header</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toBean</span><span class="p">(</span><span class="n">headerStr</span><span class="p">,</span><span class="w"> </span><span class="n">Header</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="c1">// 获取业务请求数据</span><span class="w"></span>
-<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="kt">int</span><span class="w"> </span><span class="n">pageNo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;pageNo&quot;</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="kt">int</span><span class="w"> </span><span class="n">pageSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;pageSize&quot;</span><span class="p">));</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p><a href="../../../../01.%E5%BC%80%E5%A7%8B/01.%E5%BC%95%E8%A8%80/#数据验签">数据验签</a>判断权限，并执行业务代码示例，具体操作请根据自身业务代码进行更改</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-7-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-7-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-7-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-7-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-7-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-7-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-7-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-7-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-7-10">10</a></span>
-<span class="normal"><a href="#__codelineno-7-11">11</a></span>
-<span class="normal"><a href="#__codelineno-7-12">12</a></span>
-<span class="normal"><a href="#__codelineno-7-13">13</a></span>
-<span class="normal"><a href="#__codelineno-7-14">14</a></span>
-<span class="normal"><a href="#__codelineno-7-15">15</a></span>
-<span class="normal"><a href="#__codelineno-7-16">16</a></span>
-<span class="normal"><a href="#__codelineno-7-17">17</a></span>
-<span class="normal"><a href="#__codelineno-7-18">18</a></span>
-<span class="normal"><a href="#__codelineno-7-19">19</a></span>
-<span class="normal"><a href="#__codelineno-7-20">20</a></span>
-<span class="normal"><a href="#__codelineno-7-21">21</a></span>
-<span class="normal"><a href="#__codelineno-7-22">22</a></span>
-<span class="normal"><a href="#__codelineno-7-23">23</a></span>
-<span class="normal"><a href="#__codelineno-7-24">24</a></span>
-<span class="normal"><a href="#__codelineno-7-25">25</a></span>
-<span class="normal"><a href="#__codelineno-7-26">26</a></span>
-<span class="normal"><a href="#__codelineno-7-27">27</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">InterCoResult</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-7-2" name="__codelineno-7-2"></a><span class="c1">// 判断是否拥有访问权限</span><span class="w"></span>
-<a id="__codelineno-7-3" name="__codelineno-7-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">validAuth</span><span class="p">(</span><span class="n">header</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-7-4" name="__codelineno-7-4"></a><span class="w">   </span><span class="c1">// 获取业务数据，将业务数据存入header并持久化到数据库</span><span class="w"></span>
-<a id="__codelineno-7-5" name="__codelineno-7-5"></a><span class="w">   </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">request</span><span class="p">.</span><span class="na">getParam</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-7-6" name="__codelineno-7-6"></a><span class="w">   </span><span class="n">header</span><span class="p">.</span><span class="na">setData</span><span class="p">(</span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toJsonStr</span><span class="p">(</span><span class="n">name</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-7-7" name="__codelineno-7-7"></a><span class="w">   </span><span class="c1">// 将header信息存入数据库或其他持久化地方，方便异步返回数据时调用</span><span class="w"></span>
-<a id="__codelineno-7-8" name="__codelineno-7-8"></a><span class="w">   </span><span class="n">Db</span><span class="p">.</span><span class="na">use</span><span class="p">().</span><span class="na">insert</span><span class="p">(</span><span class="n">Entity</span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;header&quot;</span><span class="p">).</span><span class="na">parseBean</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="kc">true</span><span class="p">,</span><span class="kc">true</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-7-9" name="__codelineno-7-9"></a><span class="w">   </span><span class="c1">// 构建返回结果，并对返回数据进行签名</span><span class="w"></span>
-<a id="__codelineno-7-10" name="__codelineno-7-10"></a><span class="w">   </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="w"></span>
-<a id="__codelineno-7-11" name="__codelineno-7-11"></a><span class="w">           </span><span class="p">.</span><span class="na">toBuilder</span><span class="p">()</span><span class="w"></span>
-<a id="__codelineno-7-12" name="__codelineno-7-12"></a><span class="w">           </span><span class="p">.</span><span class="na">code</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-7-13" name="__codelineno-7-13"></a><span class="w">           </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="s">&quot;数据已收到，待审核通过后返回请求数据！&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-7-14" name="__codelineno-7-14"></a><span class="w">           </span><span class="p">.</span><span class="na">signature</span><span class="p">(</span><span class="n">sign</span><span class="p">(</span><span class="s">&quot;数据已收到，待审核通过后返回请求数据！&quot;</span><span class="p">))</span><span class="w"></span>
-<a id="__codelineno-7-15" name="__codelineno-7-15"></a><span class="w">           </span><span class="p">.</span><span class="na">build</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-7-16" name="__codelineno-7-16"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-7-17" name="__codelineno-7-17"></a><span class="w">   </span><span class="c1">// 3.构建失败返回结果数据</span><span class="w"></span>
-<a id="__codelineno-7-18" name="__codelineno-7-18"></a><span class="w">   </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">result</span><span class="w"></span>
-<a id="__codelineno-7-19" name="__codelineno-7-19"></a><span class="w">           </span><span class="p">.</span><span class="na">toBuilder</span><span class="p">()</span><span class="w"></span>
-<a id="__codelineno-7-20" name="__codelineno-7-20"></a><span class="w">            </span><span class="c1">// 状态码</span><span class="w"></span>
-<a id="__codelineno-7-21" name="__codelineno-7-21"></a><span class="w">           </span><span class="p">.</span><span class="na">code</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-7-22" name="__codelineno-7-22"></a><span class="w">            </span><span class="c1">// 状态信息</span><span class="w"></span>
-<a id="__codelineno-7-23" name="__codelineno-7-23"></a><span class="w">           </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="s">&quot;no auth&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-7-24" name="__codelineno-7-24"></a><span class="w">            </span><span class="c1">// 签名数据</span><span class="w"></span>
-<a id="__codelineno-7-25" name="__codelineno-7-25"></a><span class="w">           </span><span class="p">.</span><span class="na">signature</span><span class="p">(</span><span class="n">sign</span><span class="p">(</span><span class="s">&quot;no auth&quot;</span><span class="p">))</span><span class="w"></span>
-<a id="__codelineno-7-26" name="__codelineno-7-26"></a><span class="w">           </span><span class="p">.</span><span class="na">build</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-7-27" name="__codelineno-7-27"></a><span class="p">}</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>返回数据及签名信息给请求方</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">提示</p>
-<p>完整代码可在代码示例中<code>repchian.inter.cooperation.http.async.single.respones.AsyncMultiServer</code>查看或点击 <a href="https://gitee.com/BTAJL/api-coord/blob/http-lhc/src/main/java/repchain/inter/cooperation/http/async/multi/response/AsyncMultiServer.java"><strong><em>此处</em></strong></a> 在线查看</p>
-</div>
-<p>应答调用方接口：</p>
-<ol>
-<li>
-<p>获取暂存的Header</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="c1">// 从数据库取出，之前请求方发送的数据及请求头，state=0 代表还没有返回的记录，生产环境最好不要用select *</span><span class="w"></span>
-<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">List</span><span class="o">&lt;</span><span class="n">Entity</span><span class="o">&gt;</span><span class="w"> </span><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Db</span><span class="p">.</span><span class="na">use</span><span class="p">().</span><span class="na">query</span><span class="p">(</span><span class="s">&quot;select * from header where state=0 and data like &#39;%pageSize%&#39; order by cid,id&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>根据Header执行多次执行<a href="../01.%E5%8D%95%E6%AC%A1%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/#服务方">应答调用方</a>步骤</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-10-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-10-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-10-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-10-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-10-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-10-10">10</a></span>
-<span class="normal"><a href="#__codelineno-10-11">11</a></span>
-<span class="normal"><a href="#__codelineno-10-12">12</a></span>
-<span class="normal"><a href="#__codelineno-10-13">13</a></span>
-<span class="normal"><a href="#__codelineno-10-14">14</a></span>
-<span class="normal"><a href="#__codelineno-10-15">15</a></span>
-<span class="normal"><a href="#__codelineno-10-16">16</a></span>
-<span class="normal"><a href="#__codelineno-10-17">17</a></span>
-<span class="normal"><a href="#__codelineno-10-18">18</a></span>
-<span class="normal"><a href="#__codelineno-10-19">19</a></span>
-<span class="normal"><a href="#__codelineno-10-20">20</a></span>
-<span class="normal"><a href="#__codelineno-10-21">21</a></span>
-<span class="normal"><a href="#__codelineno-10-22">22</a></span>
-<span class="normal"><a href="#__codelineno-10-23">23</a></span>
-<span class="normal"><a href="#__codelineno-10-24">24</a></span>
-<span class="normal"><a href="#__codelineno-10-25">25</a></span>
-<span class="normal"><a href="#__codelineno-10-26">26</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="c1">// 此处根据业务逻辑自己定义，示例为依次调用已持久化的header的回调接口地址，返回数据</span><span class="w"></span>
-<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">headers</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">headers</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">   </span><span class="n">String</span><span class="w"> </span><span class="n">cid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Entity</span><span class="w"> </span><span class="n">entity</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">headers</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">       </span><span class="c1">// 获取还未返回数据的header信息</span><span class="w"></span>
-<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">       </span><span class="n">Header</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">entity</span><span class="p">.</span><span class="na">toBean</span><span class="p">(</span><span class="n">Header</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">       </span><span class="c1">// 判断请求ID是否相同，相同则seq自增，不同则seq从1开始</span><span class="w"></span>
-<a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">       </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cid</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="na">getCid</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">           </span><span class="n">seq</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">       </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="w">           </span><span class="n">seq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="w">       </span><span class="p">}</span><span class="w"></span>
-<a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="w">       </span><span class="c1">// 获取请求ID</span><span class="w"></span>
-<a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="w">       </span><span class="n">cid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">header</span><span class="p">.</span><span class="na">getCid</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="w">       </span><span class="c1">//业务代码</span><span class="w"></span>
-<a id="__codelineno-10-17" name="__codelineno-10-17"></a><span class="w">       </span><span class="p">.....</span><span class="w"></span>
-<a id="__codelineno-10-18" name="__codelineno-10-18"></a><span class="w">       </span><span class="c1">// 构建请求参数对象</span><span class="w"></span>
-<a id="__codelineno-10-19" name="__codelineno-10-19"></a><span class="w">       </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">requestMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-20" name="__codelineno-10-20"></a><span class="w">       </span><span class="n">requestMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">resultList</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-21" name="__codelineno-10-21"></a><span class="w">       </span><span class="c1">// 设置请求序号</span><span class="w"></span>
-<a id="__codelineno-10-22" name="__codelineno-10-22"></a><span class="w">       </span><span class="n">header</span><span class="p">.</span><span class="na">setSeq</span><span class="p">(</span><span class="n">seq</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-23" name="__codelineno-10-23"></a><span class="w">       </span><span class="c1">// 发送请求，并存证</span><span class="w"></span>
-<a id="__codelineno-10-24" name="__codelineno-10-24"></a><span class="w">       </span><span class="n">request</span><span class="p">(</span><span class="n">requestMap</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-25" name="__codelineno-10-25"></a><span class="w">   </span><span class="p">}</span><span class="w"></span>
-<a id="__codelineno-10-26" name="__codelineno-10-26"></a><span class="p">}</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-<li>
-<p>封装的返回结果及存证方法</p>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-11-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-11-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-11-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-11-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-11-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-11-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-11-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-11-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-11-10">10</a></span>
-<span class="normal"><a href="#__codelineno-11-11">11</a></span>
-<span class="normal"><a href="#__codelineno-11-12">12</a></span>
-<span class="normal"><a href="#__codelineno-11-13">13</a></span>
-<span class="normal"><a href="#__codelineno-11-14">14</a></span>
-<span class="normal"><a href="#__codelineno-11-15">15</a></span>
-<span class="normal"><a href="#__codelineno-11-16">16</a></span>
-<span class="normal"><a href="#__codelineno-11-17">17</a></span>
-<span class="normal"><a href="#__codelineno-11-18">18</a></span>
-<span class="normal"><a href="#__codelineno-11-19">19</a></span>
-<span class="normal"><a href="#__codelineno-11-20">20</a></span>
-<span class="normal"><a href="#__codelineno-11-21">21</a></span>
-<span class="normal"><a href="#__codelineno-11-22">22</a></span>
-<span class="normal"><a href="#__codelineno-11-23">23</a></span>
-<span class="normal"><a href="#__codelineno-11-24">24</a></span>
-<span class="normal"><a href="#__codelineno-11-25">25</a></span>
-<span class="normal"><a href="#__codelineno-11-26">26</a></span>
-<span class="normal"><a href="#__codelineno-11-27">27</a></span>
-<span class="normal"><a href="#__codelineno-11-28">28</a></span>
-<span class="normal"><a href="#__codelineno-11-29">29</a></span>
-<span class="normal"><a href="#__codelineno-11-30">30</a></span>
-<span class="normal"><a href="#__codelineno-11-31">31</a></span>
-<span class="normal"><a href="#__codelineno-11-32">32</a></span>
-<span class="normal"><a href="#__codelineno-11-33">33</a></span>
-<span class="normal"><a href="#__codelineno-11-34">34</a></span>
-<span class="normal"><a href="#__codelineno-11-35">35</a></span>
-<span class="normal"><a href="#__codelineno-11-36">36</a></span>
-<span class="normal"><a href="#__codelineno-11-37">37</a></span>
-<span class="normal"><a href="#__codelineno-11-38">38</a></span>
-<span class="normal"><a href="#__codelineno-11-39">39</a></span>
-<span class="normal"><a href="#__codelineno-11-40">40</a></span>
-<span class="normal"><a href="#__codelineno-11-41">41</a></span>
-<span class="normal"><a href="#__codelineno-11-42">42</a></span>
-<span class="normal"><a href="#__codelineno-11-43">43</a></span>
-<span class="normal"><a href="#__codelineno-11-44">44</a></span>
-<span class="normal"><a href="#__codelineno-11-45">45</a></span>
-<span class="normal"><a href="#__codelineno-11-46">46</a></span>
-<span class="normal"><a href="#__codelineno-11-47">47</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1"></a><span class="w"> </span><span class="cm">/**</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="cm"> * @return void</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="cm"> * @author lhc</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="cm"> * @description // 请求数据</span>
-<a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="cm"> * @date 5:38 下午 2021/10/18</span>
-<a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="cm"> * @params [paramMap (请求入参), cid（请求id）, req (请求序号，从1开始递增)]</span>
-<a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="cm"> **/</span><span class="w"></span>
-<a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w"> </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">request</span><span class="p">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">paramMap</span><span class="p">,</span><span class="w"> </span><span class="n">Header</span><span class="w"> </span><span class="n">dataHeader</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">   </span><span class="c1">// 获取yml文件中的信息</span><span class="w"></span>
-<a id="__codelineno-11-10" name="__codelineno-11-10"></a><span class="w">   </span><span class="n">RepchainConfig</span><span class="w"> </span><span class="n">repchainConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">YamlUtils</span><span class="p">.</span><span class="na">repchainConfig</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-11-11" name="__codelineno-11-11"></a><span class="w">   </span><span class="n">List</span><span class="o">&lt;</span><span class="n">InterCo</span><span class="o">&gt;</span><span class="w"> </span><span class="n">interCoList</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repchainConfig</span><span class="p">.</span><span class="na">getRepchain</span><span class="p">().</span><span class="na">getInterCo</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-11-12" name="__codelineno-11-12"></a><span class="w">   </span><span class="n">InterCo</span><span class="w"> </span><span class="n">interCo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interCoList</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-13" name="__codelineno-11-13"></a><span class="w">   </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Service</span><span class="o">&gt;</span><span class="w"> </span><span class="n">services</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interCo</span><span class="p">.</span><span class="na">getServices</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-11-14" name="__codelineno-11-14"></a><span class="w">   </span><span class="n">Service</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">services</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-15" name="__codelineno-11-15"></a><span class="w">   </span><span class="c1">// 对业务请求数据进行hash取值</span><span class="w"></span>
-<a id="__codelineno-11-16" name="__codelineno-11-16"></a><span class="w">   </span><span class="n">String</span><span class="w"> </span><span class="n">contentHash</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">DigestUtil</span><span class="p">.</span><span class="na">sha256Hex</span><span class="p">(</span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toJsonStr</span><span class="p">(</span><span class="n">paramMap</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-11-17" name="__codelineno-11-17"></a><span class="w">   </span><span class="c1">// 使用yml文件中的公钥和证书，对业务请求参数进行数据签名</span><span class="w"></span>
-<a id="__codelineno-11-18" name="__codelineno-11-18"></a><span class="w">   </span><span class="n">Signature</span><span class="w"> </span><span class="n">signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSignature</span><span class="p">(</span><span class="n">interCo</span><span class="p">,</span><span class="w"> </span><span class="n">contentHash</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-19" name="__codelineno-11-19"></a><span class="w">   </span><span class="c1">// 此处需要将构建的请求头内容传给服务方，此处请求头信息包含了接口协同需要存证的信息，及数据签名需要校验的身份信息</span><span class="w"></span>
-<a id="__codelineno-11-20" name="__codelineno-11-20"></a><span class="w">   </span><span class="n">Header</span><span class="w"> </span><span class="n">header</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">customHeader</span><span class="p">(</span><span class="n">service</span><span class="p">,</span><span class="w">  </span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="n">dataHeader</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-21" name="__codelineno-11-21"></a><span class="w">   </span><span class="n">paramMap</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;header&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toJsonStr</span><span class="p">(</span><span class="n">header</span><span class="p">));</span><span class="w"></span>
-<a id="__codelineno-11-22" name="__codelineno-11-22"></a><span class="w">   </span><span class="n">String</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w"></span>
-<a id="__codelineno-11-23" name="__codelineno-11-23"></a><span class="w">   </span><span class="c1">// 请求业务接口，服务方接口地址及端口号可从dashboard管理平台获取，然后将端口号和地址写入到yml文件中</span><span class="w"></span>
-<a id="__codelineno-11-24" name="__codelineno-11-24"></a><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;GET&quot;</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">dataHeader</span><span class="p">.</span><span class="na">getCallback_method</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-11-25" name="__codelineno-11-25"></a><span class="w">       </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HttpUtil</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">dataHeader</span><span class="p">.</span><span class="na">getCallback_url</span><span class="p">(),</span><span class="w"> </span><span class="n">paramMap</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-26" name="__codelineno-11-26"></a><span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-11-27" name="__codelineno-11-27"></a><span class="w">       </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HttpUtil</span><span class="p">.</span><span class="na">post</span><span class="p">(</span><span class="n">dataHeader</span><span class="p">.</span><span class="na">getCallback_url</span><span class="p">(),</span><span class="w"> </span><span class="n">paramMap</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-28" name="__codelineno-11-28"></a><span class="w">   </span><span class="p">}</span><span class="w"></span>
-<a id="__codelineno-11-29" name="__codelineno-11-29"></a><span class="w">   </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">result</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-30" name="__codelineno-11-30"></a><span class="w">   </span><span class="c1">// 获取返回结果对象</span><span class="w"></span>
-<a id="__codelineno-11-31" name="__codelineno-11-31"></a><span class="w">   </span><span class="n">InterCoResult</span><span class="w"> </span><span class="n">resultMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">JSONUtil</span><span class="p">.</span><span class="na">toBean</span><span class="p">(</span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="n">InterCoResult</span><span class="p">.</span><span class="na">class</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-32" name="__codelineno-11-32"></a><span class="w">   </span><span class="c1">// 获取服务提供方签名信息</span><span class="w"></span>
-<a id="__codelineno-11-33" name="__codelineno-11-33"></a><span class="w">   </span><span class="n">Signature</span><span class="w"> </span><span class="n">responseSignature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">resultMap</span><span class="p">.</span><span class="na">getSignature</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-11-34" name="__codelineno-11-34"></a><span class="w">   </span><span class="c1">// 构建证书对象，用于签名数据及校验权限用</span><span class="w"></span>
-<a id="__codelineno-11-35" name="__codelineno-11-35"></a><span class="w">   </span><span class="n">SysCert</span><span class="w"> </span><span class="n">sysCert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PkUtil</span><span class="p">.</span><span class="na">getSysCert</span><span class="p">(</span><span class="n">interCo</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-36" name="__codelineno-11-36"></a><span class="w">   </span><span class="c1">// 获取yml文件中配置的区块链的host地址</span><span class="w"></span>
-<a id="__codelineno-11-37" name="__codelineno-11-37"></a><span class="w">   </span><span class="n">String</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repchainConfig</span><span class="p">.</span><span class="na">getRepchain</span><span class="p">().</span><span class="na">getHost</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-11-38" name="__codelineno-11-38"></a><span class="w">   </span><span class="c1">// 创建请求实例，若用Spring 此处可以创建javabean</span><span class="w"></span>
-<a id="__codelineno-11-39" name="__codelineno-11-39"></a><span class="w">   </span><span class="n">RequestAck</span><span class="w"> </span><span class="n">requestAck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">RequestAck</span><span class="p">(</span><span class="n">host</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-40" name="__codelineno-11-40"></a><span class="w">   </span><span class="c1">// 构建存证交易对象，使用证书和私钥对存证信息进行数据签名，提交给区块链进行存证</span><span class="w"></span>
-<a id="__codelineno-11-41" name="__codelineno-11-41"></a><span class="w">   </span><span class="n">ReqAckProof</span><span class="w"> </span><span class="n">rb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getReqAckProof</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">contentHash</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="p">,</span><span class="w"> </span><span class="n">responseSignature</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-42" name="__codelineno-11-42"></a><span class="w">   </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">jsonObject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">requestAck</span><span class="p">.</span><span class="na">rb</span><span class="p">(</span><span class="n">rb</span><span class="p">,</span><span class="w"> </span><span class="n">sysCert</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-43" name="__codelineno-11-43"></a><span class="w">   </span><span class="c1">// 若果有错误信息，则提交存证数据失败</span><span class="w"></span>
-<a id="__codelineno-11-44" name="__codelineno-11-44"></a><span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">StrUtil</span><span class="p">.</span><span class="na">isBlankIfStr</span><span class="p">(</span><span class="n">jsonObject</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;err&quot;</span><span class="p">)))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<a id="__codelineno-11-45" name="__codelineno-11-45"></a><span class="w">       </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;提交区块链数据失败：&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-11-46" name="__codelineno-11-46"></a><span class="w">   </span><span class="p">}</span><span class="w"></span>
-<a id="__codelineno-11-47" name="__codelineno-11-47"></a><span class="w"> </span><span class="p">}</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
-</li>
-</ol>
-<div class="admonition tip">
-<p class="admonition-title">提示</p>
-<p>完整代码可在代码示例中<code>repchian.inter.cooperation.http.async.single.respones.AsyncMultiResponseClient</code>查看或点击 <a href="https://gitee.com/BTAJL/api-coord/blob/http-lhc/src/main/java/repchain/inter/cooperation/http/async/multi/response/AsyncMultiResponseClient.java"><strong><em>此处</em></strong></a> 在线查看</p>
+<p>使用接入中间件进行HTTP<a href="../../../../04.%E6%8E%A5%E5%85%A5%E4%B8%AD%E9%97%B4%E4%BB%B6/01.1.0/04.%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF/03.%E5%BC%82%E6%AD%A5%E8%AF%B7%E6%B1%82/">多次异步请求</a>。</p>
 </div>
 
               
@@ -1680,13 +1114,13 @@
       
       
         
-        <a href="../../04.API/" class="md-footer__link md-footer__link--next" aria-label="下一页: API" rel="next">
+        <a href="../../../04.%E6%9F%A5%E7%9C%8B%E5%AD%98%E8%AF%81/" class="md-footer__link md-footer__link--next" aria-label="下一页: 查看存证" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 下一页
               </span>
-              API
+              查看存证
             </div>
           </div>
           <div class="md-footer__button md-icon">

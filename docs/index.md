@@ -1,6 +1,6 @@
 # RepChain Interface Cooperation
 
-基于RepChain 1.3 的链外接口协同组件
+基于RepChain 2.0 的链外接口协同组件
 
 [立刻进入](./01.开始/01.引言.md){ .md-button .md-button--primary }
 
