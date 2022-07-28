@@ -9,7 +9,7 @@
       
       
       <link rel="icon" href="../../../../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.10">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.11">
     
     
       
@@ -17,7 +17,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.df45aa19.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.8c5ef100.min.css">
       
         
         <link rel="stylesheet" href="../../../../assets/stylesheets/palette.9647289d.min.css">
@@ -1233,25 +1233,27 @@
 </blockquote>
 </li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
 <span class="normal"><a href="#__codelineno-0-2">2</a></span>
-<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>{
+<span class="normal"><a href="#__codelineno-0-3">3</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1"></a>{
 <a id="__codelineno-0-2" name="__codelineno-0-2"></a> &quot;loginName&quot;:&quot;XXXXXXXXX&quot;,
 <a id="__codelineno-0-3" name="__codelineno-0-3"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 <ul>
 <li>响应信息</li>
 </ul>
-<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
+<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1">1</a></span>
 <span class="normal"><a href="#__codelineno-1-2">2</a></span>
 <span class="normal"><a href="#__codelineno-1-3">3</a></span>
 <span class="normal"><a href="#__codelineno-1-4">4</a></span>
-<span class="normal"><a href="#__codelineno-1-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>{
+<span class="normal"><a href="#__codelineno-1-5">5</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1"></a>{
 <a id="__codelineno-1-2" name="__codelineno-1-2"></a> &quot;code&quot;: 0,
 <a id="__codelineno-1-3" name="__codelineno-1-3"></a> &quot;data&quot;: {},
 <a id="__codelineno-1-4" name="__codelineno-1-4"></a> &quot;msg&quot;: &quot;ActionOK&quot;
 <a id="__codelineno-1-5" name="__codelineno-1-5"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 检查账号是否可用输出结果如下:</p>
 <table>
 <thead>
@@ -1284,7 +1286,7 @@
 </tbody>
 </table>
 <h3 id="2">2. 代码示例</h3>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
@@ -1300,24 +1302,25 @@
 <span class="normal"><a href="#__codelineno-2-14">14</a></span>
 <span class="normal"><a href="#__codelineno-2-15">15</a></span>
 <span class="normal"><a href="#__codelineno-2-16">16</a></span>
-<span class="normal"><a href="#__codelineno-2-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="w">        </span><span class="c1">// 构建请求参数</span><span class="w"></span>
-<a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="w">        </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Tom&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="w">        </span><span class="c1">// 发送请求，并获取返回结果</span><span class="w"></span>
-<a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="w">        </span><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="w">                </span><span class="c1">// 填写中间件地址及端口号，及超时时间（毫秒），地址及端口号填写配置文件中 middleware-recServer 下的配置</span><span class="w"></span>
-<a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="w">                </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="w">                </span><span class="c1">// 请求类型，根据服务定义设置</span><span class="w"></span>
-<a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">                </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">                </span><span class="c1">// 中间件中的服务id，根据yml文件中 repchain-services-serviceId 配置填写，决定请求哪个服务</span><span class="w"></span>
-<a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">                </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="w">                </span><span class="c1">// 设置服务定义访问的url</span><span class="w"></span>
-<a id="__codelineno-2-13" name="__codelineno-2-13"></a><span class="w">                </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-2-14" name="__codelineno-2-14"></a><span class="w">                </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-2-15" name="__codelineno-2-15"></a><span class="w">                </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-2-16" name="__codelineno-2-16"></a><span class="w">                </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-2-17" name="__codelineno-2-17"></a><span class="w">                </span><span class="p">.</span><span class="na">msg</span><span class="p">();</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
+<span class="normal"><a href="#__codelineno-2-17">17</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1"></a>        <span class="c1">// 构建请求参数</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2"></a>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3"></a>        <span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span> <span class="s">&quot;Tom&quot;</span><span class="p">);</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4"></a>        <span class="c1">// 发送请求，并获取返回结果</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5"></a>        <span class="n">InterCoResult</span> <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6"></a>                <span class="c1">// 填写中间件地址及端口号，及超时时间（毫秒），地址及端口号填写配置文件中 middleware-recServer 下的配置</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7"></a>                <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8"></a>                <span class="c1">// 请求类型，根据服务定义设置</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9"></a>                <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10"></a>                <span class="c1">// 中间件中的服务id，根据yml文件中 repchain-services-serviceId 配置填写，决定请求哪个服务</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11"></a>                <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12"></a>                <span class="c1">// 设置服务定义访问的url</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13"></a>                <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14"></a>                <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15"></a>                <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16"></a>                <span class="c1">// 发送数据</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17"></a>                <span class="p">.</span><span class="na">msg</span><span class="p">();</span>
+</code></pre></div>
+</td></tr></table>
 <h2 id="_3">二、同步多次请求</h2>
 <blockquote>
 <p>同步多次请求，如果多次请求包含在同一个方法中，推荐将存证的请求cid设置成一致。</p>
@@ -1326,7 +1329,7 @@
 <h3 id="1_1">1. 接口描述</h3>
 <p>见同步单次请求中的接口描述。</p>
 <h3 id="2_1">2. 代码示例</h3>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-3-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-3-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-3-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-3-4"> 4</a></span>
@@ -1391,73 +1394,74 @@
 <span class="normal"><a href="#__codelineno-3-63">63</a></span>
 <span class="normal"><a href="#__codelineno-3-64">64</a></span>
 <span class="normal"><a href="#__codelineno-3-65">65</a></span>
-<span class="normal"><a href="#__codelineno-3-66">66</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a><span class="w">        </span><span class="c1">// 1.第一次请求</span><span class="w"></span>
-<a id="__codelineno-3-2" name="__codelineno-3-2"></a><span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-3" name="__codelineno-3-3"></a><span class="w">        </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;12110107bi45jh675g&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-4" name="__codelineno-3-4"></a><span class="w">        </span><span class="c1">// 传输设置</span><span class="w"></span>
-<a id="__codelineno-3-5" name="__codelineno-3-5"></a><span class="w">        </span><span class="n">ReqOption</span><span class="w"> </span><span class="n">reqOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReqOption</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-3-6" name="__codelineno-3-6"></a><span class="w">        </span><span class="c1">// 设置是否为最后一次请求，默认为true</span><span class="w"></span>
-<a id="__codelineno-3-7" name="__codelineno-3-7"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setIsEnd</span><span class="p">(</span><span class="n">ReqOption</span><span class="p">.</span><span class="na">FALSE</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-8" name="__codelineno-3-8"></a><span class="w">        </span><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-3-9" name="__codelineno-3-9"></a><span class="w">                </span><span class="c1">// 填写中间件地址及端口号，及超时时间</span><span class="w"></span>
-<a id="__codelineno-3-10" name="__codelineno-3-10"></a><span class="w">                </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-11" name="__codelineno-3-11"></a><span class="w">                </span><span class="c1">// 请求类型，根据接口定义设置</span><span class="w"></span>
-<a id="__codelineno-3-12" name="__codelineno-3-12"></a><span class="w">                </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-13" name="__codelineno-3-13"></a><span class="w">                </span><span class="c1">// 中间件中的服务id，根据yml文件配置填写</span><span class="w"></span>
-<a id="__codelineno-3-14" name="__codelineno-3-14"></a><span class="w">                </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-15" name="__codelineno-3-15"></a><span class="w">                </span><span class="c1">// 设置访问的url</span><span class="w"></span>
-<a id="__codelineno-3-16" name="__codelineno-3-16"></a><span class="w">                </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-17" name="__codelineno-3-17"></a><span class="w">                </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-3-18" name="__codelineno-3-18"></a><span class="w">                </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-19" name="__codelineno-3-19"></a><span class="w">                </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-3-20" name="__codelineno-3-20"></a><span class="w">                </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-21" name="__codelineno-3-21"></a><span class="w">        </span><span class="c1">// 2. 第二次请求</span><span class="w"></span>
-<a id="__codelineno-3-22" name="__codelineno-3-22"></a><span class="w">        </span><span class="n">reqOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReqOption</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-3-23" name="__codelineno-3-23"></a><span class="w">        </span><span class="c1">// 由于是同一次请求，所以请求id需要一致，获取上一次请求id</span><span class="w"></span>
-<a id="__codelineno-3-24" name="__codelineno-3-24"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setCid</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">getCid</span><span class="p">());</span><span class="w"></span>
-<a id="__codelineno-3-25" name="__codelineno-3-25"></a><span class="w">        </span><span class="c1">// 设置请求序号，默认为1</span><span class="w"></span>
-<a id="__codelineno-3-26" name="__codelineno-3-26"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setSeq</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-27" name="__codelineno-3-27"></a><span class="w">        </span><span class="c1">// 设置是否为最后一次请求，默认为true</span><span class="w"></span>
-<a id="__codelineno-3-28" name="__codelineno-3-28"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setIsEnd</span><span class="p">(</span><span class="n">ReqOption</span><span class="p">.</span><span class="na">FALSE</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-29" name="__codelineno-3-29"></a><span class="w">        </span><span class="c1">// 设置请求参数</span><span class="w"></span>
-<a id="__codelineno-3-30" name="__codelineno-3-30"></a><span class="w">        </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-31" name="__codelineno-3-31"></a><span class="w">        </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;yewu&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-32" name="__codelineno-3-32"></a><span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-3-33" name="__codelineno-3-33"></a><span class="w">                </span><span class="c1">// 填写中间件地址及端口号，及超时时间</span><span class="w"></span>
-<a id="__codelineno-3-34" name="__codelineno-3-34"></a><span class="w">                </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-35" name="__codelineno-3-35"></a><span class="w">                </span><span class="c1">// 请求类型，根据接口定义设置</span><span class="w"></span>
-<a id="__codelineno-3-36" name="__codelineno-3-36"></a><span class="w">                </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-37" name="__codelineno-3-37"></a><span class="w">                </span><span class="c1">// 中间件中的服务id，根据yml文件配置填写</span><span class="w"></span>
-<a id="__codelineno-3-38" name="__codelineno-3-38"></a><span class="w">                </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-39" name="__codelineno-3-39"></a><span class="w">                </span><span class="c1">// 设置访问的url</span><span class="w"></span>
-<a id="__codelineno-3-40" name="__codelineno-3-40"></a><span class="w">                </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-41" name="__codelineno-3-41"></a><span class="w">                </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-3-42" name="__codelineno-3-42"></a><span class="w">                </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-43" name="__codelineno-3-43"></a><span class="w">                </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-3-44" name="__codelineno-3-44"></a><span class="w">                </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-45" name="__codelineno-3-45"></a><span class="w">        </span><span class="c1">// 3. 第三次请求 （最后一次请求）</span><span class="w"></span>
-<a id="__codelineno-3-46" name="__codelineno-3-46"></a><span class="w">        </span><span class="n">reqOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ReqOption</span><span class="p">();</span><span class="w"></span>
-<a id="__codelineno-3-47" name="__codelineno-3-47"></a><span class="w">        </span><span class="c1">// 由于是同一次请求，所以请求id需要一致，获取上一次请求id</span><span class="w"></span>
-<a id="__codelineno-3-48" name="__codelineno-3-48"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setCid</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">getCid</span><span class="p">());</span><span class="w"></span>
-<a id="__codelineno-3-49" name="__codelineno-3-49"></a><span class="w">        </span><span class="c1">// 设置请求序号，默认为1</span><span class="w"></span>
-<a id="__codelineno-3-50" name="__codelineno-3-50"></a><span class="w">        </span><span class="n">reqOption</span><span class="p">.</span><span class="na">setSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-51" name="__codelineno-3-51"></a><span class="w">        </span><span class="c1">// 设置请求参数</span><span class="w"></span>
-<a id="__codelineno-3-52" name="__codelineno-3-52"></a><span class="w">        </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-53" name="__codelineno-3-53"></a><span class="w">        </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-3-54" name="__codelineno-3-54"></a><span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-3-55" name="__codelineno-3-55"></a><span class="w">                </span><span class="c1">// 填写中间件地址及端口号，及超时时间</span><span class="w"></span>
-<a id="__codelineno-3-56" name="__codelineno-3-56"></a><span class="w">                </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-57" name="__codelineno-3-57"></a><span class="w">                </span><span class="c1">// 请求类型，根据接口定义设置</span><span class="w"></span>
-<a id="__codelineno-3-58" name="__codelineno-3-58"></a><span class="w">                </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-59" name="__codelineno-3-59"></a><span class="w">                </span><span class="c1">// 中间件中的服务id，根据yml文件配置填写</span><span class="w"></span>
-<a id="__codelineno-3-60" name="__codelineno-3-60"></a><span class="w">                </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-61" name="__codelineno-3-61"></a><span class="w">                </span><span class="c1">// 设置访问的url</span><span class="w"></span>
-<a id="__codelineno-3-62" name="__codelineno-3-62"></a><span class="w">                </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-63" name="__codelineno-3-63"></a><span class="w">                </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-3-64" name="__codelineno-3-64"></a><span class="w">                </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-3-65" name="__codelineno-3-65"></a><span class="w">                </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-3-66" name="__codelineno-3-66"></a><span class="w">                </span><span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
+<span class="normal"><a href="#__codelineno-3-66">66</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1"></a>        <span class="c1">// 1.第一次请求</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2"></a>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3"></a>        <span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span> <span class="s">&quot;12110107bi45jh675g&quot;</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4"></a>        <span class="c1">// 传输设置</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5"></a>        <span class="n">ReqOption</span> <span class="n">reqOption</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReqOption</span><span class="p">();</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6"></a>        <span class="c1">// 设置是否为最后一次请求，默认为true</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setIsEnd</span><span class="p">(</span><span class="n">ReqOption</span><span class="p">.</span><span class="na">FALSE</span><span class="p">);</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8"></a>        <span class="n">InterCoResult</span> <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9"></a>                <span class="c1">// 填写中间件地址及端口号，及超时时间</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10"></a>                <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11"></a>                <span class="c1">// 请求类型，根据接口定义设置</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12"></a>                <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13"></a>                <span class="c1">// 中间件中的服务id，根据yml文件配置填写</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14"></a>                <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15"></a>                <span class="c1">// 设置访问的url</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16"></a>                <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17"></a>                <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18"></a>                <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19"></a>                <span class="c1">// 发送数据</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20"></a>                <span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21"></a>        <span class="c1">// 2. 第二次请求</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22"></a>        <span class="n">reqOption</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReqOption</span><span class="p">();</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23"></a>        <span class="c1">// 由于是同一次请求，所以请求id需要一致，获取上一次请求id</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setCid</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">getCid</span><span class="p">());</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25"></a>        <span class="c1">// 设置请求序号，默认为1</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setSeq</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27"></a>        <span class="c1">// 设置是否为最后一次请求，默认为true</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setIsEnd</span><span class="p">(</span><span class="n">ReqOption</span><span class="p">.</span><span class="na">FALSE</span><span class="p">);</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29"></a>        <span class="c1">// 设置请求参数</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30"></a>        <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31"></a>        <span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span> <span class="s">&quot;yewu&quot;</span><span class="p">);</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33"></a>                <span class="c1">// 填写中间件地址及端口号，及超时时间</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34"></a>                <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35"></a>                <span class="c1">// 请求类型，根据接口定义设置</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36"></a>                <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37"></a>                <span class="c1">// 中间件中的服务id，根据yml文件配置填写</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38"></a>                <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39"></a>                <span class="c1">// 设置访问的url</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40"></a>                <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-41" name="__codelineno-3-41"></a>                <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42"></a>                <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43"></a>                <span class="c1">// 发送数据</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44"></a>                <span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45"></a>        <span class="c1">// 3. 第三次请求 （最后一次请求）</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46"></a>        <span class="n">reqOption</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ReqOption</span><span class="p">();</span>
+<a id="__codelineno-3-47" name="__codelineno-3-47"></a>        <span class="c1">// 由于是同一次请求，所以请求id需要一致，获取上一次请求id</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setCid</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="na">getCid</span><span class="p">());</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49"></a>        <span class="c1">// 设置请求序号，默认为1</span>
+<a id="__codelineno-3-50" name="__codelineno-3-50"></a>        <span class="n">reqOption</span><span class="p">.</span><span class="na">setSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-3-51" name="__codelineno-3-51"></a>        <span class="c1">// 设置请求参数</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52"></a>        <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-3-53" name="__codelineno-3-53"></a>        <span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;loginName&quot;</span><span class="p">,</span> <span class="s">&quot;test&quot;</span><span class="p">);</span>
+<a id="__codelineno-3-54" name="__codelineno-3-54"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-3-55" name="__codelineno-3-55"></a>                <span class="c1">// 填写中间件地址及端口号，及超时时间</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56"></a>                <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<a id="__codelineno-3-57" name="__codelineno-3-57"></a>                <span class="c1">// 请求类型，根据接口定义设置</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58"></a>                <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span>
+<a id="__codelineno-3-59" name="__codelineno-3-59"></a>                <span class="c1">// 中间件中的服务id，根据yml文件配置填写</span>
+<a id="__codelineno-3-60" name="__codelineno-3-60"></a>                <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-61" name="__codelineno-3-61"></a>                <span class="c1">// 设置访问的url</span>
+<a id="__codelineno-3-62" name="__codelineno-3-62"></a>                <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/valid&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-63" name="__codelineno-3-63"></a>                <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-3-64" name="__codelineno-3-64"></a>                <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-3-65" name="__codelineno-3-65"></a>                <span class="c1">// 发送数据</span>
+<a id="__codelineno-3-66" name="__codelineno-3-66"></a>                <span class="p">.</span><span class="na">msg</span><span class="p">(</span><span class="n">reqOption</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
 <h2 id="_4">三、同步上传文件</h2>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
@@ -1528,27 +1532,29 @@
 </blockquote>
 </li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-4-1">1</a></span>
 <span class="normal"><a href="#__codelineno-4-2">2</a></span>
 <span class="normal"><a href="#__codelineno-4-3">3</a></span>
-<span class="normal"><a href="#__codelineno-4-4">4</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>{
+<span class="normal"><a href="#__codelineno-4-4">4</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1"></a>{
 <a id="__codelineno-4-2" name="__codelineno-4-2"></a> &quot;editor&quot;:&quot;XXXXXXXXX&quot;,
 <a id="__codelineno-4-3" name="__codelineno-4-3"></a> &quot;file&quot;:&quot;XXXXXXXXX&quot;,
 <a id="__codelineno-4-4" name="__codelineno-4-4"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 <ul>
 <li>响应信息</li>
 </ul>
-<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
+<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-5-1">1</a></span>
 <span class="normal"><a href="#__codelineno-5-2">2</a></span>
 <span class="normal"><a href="#__codelineno-5-3">3</a></span>
 <span class="normal"><a href="#__codelineno-5-4">4</a></span>
-<span class="normal"><a href="#__codelineno-5-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>{
+<span class="normal"><a href="#__codelineno-5-5">5</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1"></a>{
 <a id="__codelineno-5-2" name="__codelineno-5-2"></a> &quot;code&quot;: 0,
 <a id="__codelineno-5-3" name="__codelineno-5-3"></a> &quot;data&quot;: {},
 <a id="__codelineno-5-4" name="__codelineno-5-4"></a> &quot;msg&quot;: &quot;ActionOK&quot;
 <a id="__codelineno-5-5" name="__codelineno-5-5"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 文件上传输出结果如下:</p>
 <table>
 <thead>
@@ -1581,7 +1587,7 @@
 </tbody>
 </table>
 <h3 id="2_2">2. 代码示例</h3>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-6-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-6-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-6-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-6-4"> 4</a></span>
@@ -1599,26 +1605,27 @@
 <span class="normal"><a href="#__codelineno-6-16">16</a></span>
 <span class="normal"><a href="#__codelineno-6-17">17</a></span>
 <span class="normal"><a href="#__codelineno-6-18">18</a></span>
-<span class="normal"><a href="#__codelineno-6-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;editor&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-6-4" name="__codelineno-6-4"></a><span class="w">        </span><span class="c1">// 填写中间件地址及端口号，及超时时间</span><span class="w"></span>
-<a id="__codelineno-6-5" name="__codelineno-6-5"></a><span class="w">        </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">50000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-6" name="__codelineno-6-6"></a><span class="w">        </span><span class="c1">// 请求类型，根据接口定义设置</span><span class="w"></span>
-<a id="__codelineno-6-7" name="__codelineno-6-7"></a><span class="w">        </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">POST</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-8" name="__codelineno-6-8"></a><span class="w">        </span><span class="c1">// 中间件中的服务id，根据yml文件配置填写</span><span class="w"></span>
-<a id="__codelineno-6-9" name="__codelineno-6-9"></a><span class="w">        </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-10" name="__codelineno-6-10"></a><span class="w">        </span><span class="c1">// 设置访问的url</span><span class="w"></span>
-<a id="__codelineno-6-11" name="__codelineno-6-11"></a><span class="w">        </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/upload&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-12" name="__codelineno-6-12"></a><span class="w">        </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-6-13" name="__codelineno-6-13"></a><span class="w">        </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-14" name="__codelineno-6-14"></a><span class="w">        </span><span class="c1">// 设置文件在传输参数中字段</span><span class="w"></span>
-<a id="__codelineno-6-15" name="__codelineno-6-15"></a><span class="w">        </span><span class="p">.</span><span class="na">setFileField</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-6-16" name="__codelineno-6-16"></a><span class="w">        </span><span class="c1">// 设置传输的文件</span><span class="w"></span>
-<a id="__codelineno-6-17" name="__codelineno-6-17"></a><span class="w">        </span><span class="p">.</span><span class="na">setFile</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">File</span><span class="p">(</span><span class="s">&quot;/home/repchain/test.tar.gz&quot;</span><span class="p">))</span><span class="w"></span>
-<a id="__codelineno-6-18" name="__codelineno-6-18"></a><span class="w">        </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-6-19" name="__codelineno-6-19"></a><span class="w">        </span><span class="p">.</span><span class="na">sendFile</span><span class="p">();</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
+<span class="normal"><a href="#__codelineno-6-19">19</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1"></a><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2"></a><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;editor&quot;</span><span class="p">,</span> <span class="s">&quot;Jack&quot;</span><span class="p">);</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3"></a><span class="n">InterCoResult</span> <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4"></a>        <span class="c1">// 填写中间件地址及端口号，及超时时间</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5"></a>        <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6"></a>        <span class="c1">// 请求类型，根据接口定义设置</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7"></a>        <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">POST</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8"></a>        <span class="c1">// 中间件中的服务id，根据yml文件配置填写</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9"></a>        <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10"></a>        <span class="c1">// 设置访问的url</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11"></a>        <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/upload&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12"></a>        <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13"></a>        <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14"></a>        <span class="c1">// 设置文件在传输参数中字段</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15"></a>        <span class="p">.</span><span class="na">setFileField</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16"></a>        <span class="c1">// 设置传输的文件</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17"></a>        <span class="p">.</span><span class="na">setFile</span><span class="p">(</span><span class="k">new</span> <span class="n">File</span><span class="p">(</span><span class="s">&quot;/home/repchain/test.tar.gz&quot;</span><span class="p">))</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18"></a>        <span class="c1">// 发送数据</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19"></a>        <span class="p">.</span><span class="na">sendFile</span><span class="p">();</span>
+</code></pre></div>
+</td></tr></table>
 <h2 id="_5">四、同步下载文件</h2>
 <div class="admonition warning">
 <p class="admonition-title">注意</p>
@@ -1681,25 +1688,27 @@
 </blockquote>
 </li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-7-1">1</a></span>
 <span class="normal"><a href="#__codelineno-7-2">2</a></span>
-<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>{
+<span class="normal"><a href="#__codelineno-7-3">3</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1"></a>{
 <a id="__codelineno-7-2" name="__codelineno-7-2"></a> &quot;username&quot;:&quot;XXXXXXXXX&quot;,
 <a id="__codelineno-7-3" name="__codelineno-7-3"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 <ul>
 <li>响应信息</li>
 </ul>
-<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
+<p><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-8-1">1</a></span>
 <span class="normal"><a href="#__codelineno-8-2">2</a></span>
 <span class="normal"><a href="#__codelineno-8-3">3</a></span>
 <span class="normal"><a href="#__codelineno-8-4">4</a></span>
-<span class="normal"><a href="#__codelineno-8-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>{
+<span class="normal"><a href="#__codelineno-8-5">5</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1"></a>{
 <a id="__codelineno-8-2" name="__codelineno-8-2"></a> &quot;code&quot;: 0,
 <a id="__codelineno-8-3" name="__codelineno-8-3"></a> &quot;data&quot;: {},
 <a id="__codelineno-8-4" name="__codelineno-8-4"></a> &quot;msg&quot;: &quot;ActionOK&quot;
 <a id="__codelineno-8-5" name="__codelineno-8-5"></a>}
-</code></pre></div></td></tr></table></div>
+</code></pre></div>
+</td></tr></table>
 文件下载输出结果如下:</p>
 <table>
 <thead>
@@ -1740,14 +1749,15 @@
 <p>中间件约定的方式为，将文件路径写入到response的header中。
 </p>
 </blockquote>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
-<span class="normal"><a href="#__codelineno-9-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="c1">// 将文件绝对路径设置到header中，参数为filePath，此处需要填写服务器上文件的绝对路径</span><span class="w"></span>
-<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">response</span><span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;filePath&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/test.zip&quot;</span><span class="p">);</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span>
+<span class="normal"><a href="#__codelineno-9-2">2</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="c1">// 将文件绝对路径设置到header中，参数为filePath，此处需要填写服务器上文件的绝对路径</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2"></a><span class="n">response</span><span class="p">.</span><span class="na">setHeader</span><span class="p">(</span><span class="s">&quot;filePath&quot;</span><span class="p">,</span> <span class="s">&quot;/test.zip&quot;</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
 <ul>
 <li>调用方代码代码示例</li>
 </ul>
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-10-1"> 1</a></span>
 <span class="normal"><a href="#__codelineno-10-2"> 2</a></span>
 <span class="normal"><a href="#__codelineno-10-3"> 3</a></span>
 <span class="normal"><a href="#__codelineno-10-4"> 4</a></span>
@@ -1763,24 +1773,25 @@
 <span class="normal"><a href="#__codelineno-10-14">14</a></span>
 <span class="normal"><a href="#__codelineno-10-15">15</a></span>
 <span class="normal"><a href="#__codelineno-10-16">16</a></span>
-<span class="normal"><a href="#__codelineno-10-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a><span class="w">        </span><span class="c1">// 构造请求参数</span><span class="w"></span>
-<a id="__codelineno-10-2" name="__codelineno-10-2"></a><span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Object</span><span class="o">&gt;</span><span class="w"> </span><span class="n">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-3" name="__codelineno-10-3"></a><span class="w">        </span><span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;username&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jack&quot;</span><span class="p">);</span><span class="w"></span>
-<a id="__codelineno-10-4" name="__codelineno-10-4"></a><span class="w">        </span><span class="c1">// 发送请求，并获取返回结果</span><span class="w"></span>
-<a id="__codelineno-10-5" name="__codelineno-10-5"></a><span class="w">        </span><span class="n">InterCoResult</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MiddlewareClient</span><span class="w"></span>
-<a id="__codelineno-10-6" name="__codelineno-10-6"></a><span class="w">                </span><span class="c1">// 填写中间件地址及端口号，及超时时间</span><span class="w"></span>
-<a id="__codelineno-10-7" name="__codelineno-10-7"></a><span class="w">                </span><span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">500000</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-10-8" name="__codelineno-10-8"></a><span class="w">                </span><span class="c1">// 请求类型，根据接口定义设置</span><span class="w"></span>
-<a id="__codelineno-10-9" name="__codelineno-10-9"></a><span class="w">                </span><span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-10-10" name="__codelineno-10-10"></a><span class="w">                </span><span class="c1">// 中间件中的服务id，根据yml文件配置填写</span><span class="w"></span>
-<a id="__codelineno-10-11" name="__codelineno-10-11"></a><span class="w">                </span><span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-10-12" name="__codelineno-10-12"></a><span class="w">                </span><span class="c1">// 设置访问的url</span><span class="w"></span>
-<a id="__codelineno-10-13" name="__codelineno-10-13"></a><span class="w">                </span><span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/download&quot;</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-10-14" name="__codelineno-10-14"></a><span class="w">                </span><span class="c1">// 设置传输的数据</span><span class="w"></span>
-<a id="__codelineno-10-15" name="__codelineno-10-15"></a><span class="w">                </span><span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span><span class="w"></span>
-<a id="__codelineno-10-16" name="__codelineno-10-16"></a><span class="w">                </span><span class="c1">// 发送数据</span><span class="w"></span>
-<a id="__codelineno-10-17" name="__codelineno-10-17"></a><span class="w">                </span><span class="p">.</span><span class="na">download</span><span class="p">();</span><span class="w"></span>
-</code></pre></div></td></tr></table></div>
+<span class="normal"><a href="#__codelineno-10-17">17</a></span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1"></a>        <span class="c1">// 构造请求参数</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2"></a>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3"></a>        <span class="n">map</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="s">&quot;username&quot;</span><span class="p">,</span> <span class="s">&quot;Jack&quot;</span><span class="p">);</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4"></a>        <span class="c1">// 发送请求，并获取返回结果</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5"></a>        <span class="n">InterCoResult</span> <span class="n">result</span> <span class="o">=</span> <span class="n">MiddlewareClient</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6"></a>                <span class="c1">// 填写中间件地址及端口号，及超时时间</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7"></a>                <span class="p">.</span><span class="na">create</span><span class="p">(</span><span class="s">&quot;http://localhost:8888&quot;</span><span class="p">,</span> <span class="mi">500000</span><span class="p">)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8"></a>                <span class="c1">// 请求类型，根据接口定义设置</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9"></a>                <span class="p">.</span><span class="na">setHttpType</span><span class="p">(</span><span class="n">HttpType</span><span class="p">.</span><span class="na">GET</span><span class="p">)</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10"></a>                <span class="c1">// 中间件中的服务id，根据yml文件配置填写</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11"></a>                <span class="p">.</span><span class="na">setServiceId</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12"></a>                <span class="c1">// 设置访问的url</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13"></a>                <span class="p">.</span><span class="na">setUrl</span><span class="p">(</span><span class="s">&quot;/user/download&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14"></a>                <span class="c1">// 设置传输的数据</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15"></a>                <span class="p">.</span><span class="na">setForm</span><span class="p">(</span><span class="n">map</span><span class="p">)</span>
+<a id="__codelineno-10-16" name="__codelineno-10-16"></a>                <span class="c1">// 发送数据</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17"></a>                <span class="p">.</span><span class="na">download</span><span class="p">();</span>
+</code></pre></div>
+</td></tr></table>
 
               
             </article>
