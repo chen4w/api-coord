@@ -23,7 +23,7 @@ nav:
         - HTTP多次异步请求: 03.接口存证/02.HTTP请求存证/03.异步请求/02.多次异步请求.md
     - 查看存证: 03.接口存证/04.查看存证.md
   - 接入中间件: 
-    - 1.0: 
+    - 2.0: 
       - 前言: 04.接入中间件/01.1.0/01.前言.md 
       - 快速开始: 04.接入中间件/01.1.0/02.快速开始.md
       - 用户指南: 
@@ -72,5 +72,8 @@ plugins:
 extra:
   version: 
     provider: mike
+
+#extra_css:
+#  - css/pdf-print.css
 
 copyright: Copyright &copy; 2021-2022 RepChain Interface Cooperation
