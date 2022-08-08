@@ -8,6 +8,8 @@
 
 ## 相关文档
 
+ [RepChain 2.0 使用说明]( https://btajl.gitee.io/repchain)
+
  [RepChain 1.1 使用说明](https://btajl.gitee.io/rcdevelop-docs/#/)
 
  [RepChain 1.1 合约开发](http://btajl.gitee.io/repchain-tpldevelop/#/) 
