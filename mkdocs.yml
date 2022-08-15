@@ -42,12 +42,23 @@ nav:
 theme:
   name: material
   palette:
-    primary: green
+      - scheme: default
+        primary: green 
+        toggle:
+            icon: material/weather-night
+            name: Switch to dark mode
+      - scheme: slate
+        primary: red
+        toggle:
+            icon: material/weather-sunny
+            name: Switch to light mode
   favicon: img/favicon.ico
   logo: img/favicon.ico
   language: zh
   features:
     - content.code.annotate
+    - search.highlight
+    - navigation.top
 
 markdown_extensions:
   - admonition
@@ -61,6 +72,7 @@ markdown_extensions:
   - tables
 
 plugins:
+    - search:
     - with-pdf:
         author: RepChain DEV Team 
         toc_title: 目录
